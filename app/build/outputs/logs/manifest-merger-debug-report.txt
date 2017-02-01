@@ -34,10 +34,10 @@ MERGED from [com.android.support:support-compat:25.1.0] /home/milos/work/ludost/
 		ADDED from /home/milos/work/ludost/app/src/main/AndroidManifest.xml:7:9-43
 	android:theme
 		ADDED from /home/milos/work/ludost/app/src/main/AndroidManifest.xml:10:9-40
-activity#com.ignja.ludost.OpenGLES20Activity
+activity#com.ignja.ludost.activity.OpenGLES20Activity
 ADDED from /home/milos/work/ludost/app/src/main/AndroidManifest.xml:11:9-17:20
 	android:name
-		ADDED from /home/milos/work/ludost/app/src/main/AndroidManifest.xml:11:19-53
+		ADDED from /home/milos/work/ludost/app/src/main/AndroidManifest.xml:11:19-78
 intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
 ADDED from /home/milos/work/ludost/app/src/main/AndroidManifest.xml:12:13-16:29
 action#android.intent.action.MAIN
