@@ -684,7 +684,9 @@ int layout select_dialog_singlechoice_material 0x7f04002d
 int layout support_simple_spinner_dropdown_item 0x7f04002e
 int mipmap ic_launcher 0x7f030000
 int raw fragment_shader 0x7f060000
-int raw vertex_shader 0x7f060001
+int raw light_fragment_shader 0x7f060001
+int raw light_vertex_shader 0x7f060002
+int raw vertex_shader 0x7f060003
 int string abc_action_bar_home_description 0x7f070000
 int string abc_action_bar_home_description_format 0x7f070001
 int string abc_action_bar_home_subtitle_description_format 0x7f070002

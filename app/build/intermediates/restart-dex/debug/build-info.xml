@@ -2,203 +2,36 @@
 <instant-run
     abi="x86_64,x86"
     api-level="25"
-    density="xhdpi"
+    density="tvdpi"
     format="8"
     plugin-version="2.2.3"
-    timestamp="18726484306418"
-    token="9032794363780988334"
-    verifier="COMPATIBLE" >
+    timestamp="9356884748713"
+    token="-4146483618424052848"
+    verifier="FULL_BUILD_REQUESTED" >
 
     <task
         name="javac"
-        duration="315" />
+        duration="0" />
     <task
         name="instant-run-dex"
-        duration="89" />
+        duration="0" />
     <task
         name="instant-run-transform"
-        duration="36" />
+        duration="0" />
     <task
         name="verifier"
-        duration="1" />
+        duration="0" />
 
     <artifact
-        location="/home/milos/AndroidStudioProjects/Ludost/app/build/intermediates/reload-dex/debug/classes.dex"
-        type="RELOAD_DEX" />
+        location="/home/milos/work/ludost/app/build/outputs/apk/app-debug.apk"
+        type="MAIN" />
 
     <build
-        timestamp="5911825862531"
+        timestamp="9356884748713"
         verifier="FULL_BUILD_REQUESTED" >
         <artifact
-            location="/home/milos/AndroidStudioProjects/Ludost/app/build/outputs/apk/app-debug.apk"
+            location="/home/milos/work/ludost/app/build/outputs/apk/app-debug.apk"
             type="MAIN" />
-    </build>
-    <build
-        timestamp="6530425451156"
-        verifier="COLD_SWAP_REQUESTED" >
-        <artifact
-            location="/home/milos/AndroidStudioProjects/Ludost/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_0/classes.dex"
-            type="DEX" />
-    </build>
-    <build
-        timestamp="6608488858811"
-        verifier="COLD_SWAP_REQUESTED" >
-        <artifact
-            location="/home/milos/AndroidStudioProjects/Ludost/app/build/intermediates/instant-run-resources/resources-debug.ir.ap_"
-            type="RESOURCES" />
-    </build>
-    <build
-        timestamp="7055243639314"
-        verifier="COLD_SWAP_REQUESTED" >
-        <artifact
-            location="/home/milos/AndroidStudioProjects/Ludost/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_3/classes.dex"
-            type="DEX" />
-    </build>
-    <build
-        timestamp="15378813661519"
-        verifier="CLASS_ADDED" >
-        <artifact
-            location="/home/milos/AndroidStudioProjects/Ludost/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_5/classes.dex"
-            type="DEX" />
-        <artifact
-            location="/home/milos/AndroidStudioProjects/Ludost/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_6/classes.dex"
-            type="DEX" />
-        <artifact
-            location="/home/milos/AndroidStudioProjects/Ludost/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_4/classes.dex"
-            type="DEX" />
-    </build>
-    <build
-        timestamp="15867825685514"
-        verifier="COMPATIBLE" >
-        <artifact
-            location="/home/milos/AndroidStudioProjects/Ludost/app/build/intermediates/builds/debug/15867825685514/classes.dex"
-            type="RELOAD_DEX" />
-    </build>
-    <build
-        timestamp="15919876808389"
-        verifier="COMPATIBLE" >
-        <artifact
-            location="/home/milos/AndroidStudioProjects/Ludost/app/build/intermediates/builds/debug/15919876808389/classes.dex"
-            type="RELOAD_DEX" />
-    </build>
-    <build
-        timestamp="15938190934530"
-        verifier="COMPATIBLE" >
-        <artifact
-            location="/home/milos/AndroidStudioProjects/Ludost/app/build/intermediates/builds/debug/15938190934530/classes.dex"
-            type="RELOAD_DEX" />
-    </build>
-    <build
-        timestamp="16049954412376"
-        verifier="COMPATIBLE" >
-        <artifact
-            location="/home/milos/AndroidStudioProjects/Ludost/app/build/intermediates/builds/debug/16049954412376/classes.dex"
-            type="RELOAD_DEX" />
-    </build>
-    <build
-        timestamp="16095400673654"
-        verifier="COMPATIBLE" >
-        <artifact
-            location="/home/milos/AndroidStudioProjects/Ludost/app/build/intermediates/builds/debug/16095400673654/classes.dex"
-            type="RELOAD_DEX" />
-    </build>
-    <build
-        timestamp="16120168211812"
-        verifier="COMPATIBLE" >
-        <artifact
-            location="/home/milos/AndroidStudioProjects/Ludost/app/build/intermediates/builds/debug/16120168211812/classes.dex"
-            type="RELOAD_DEX" />
-    </build>
-    <build
-        timestamp="16181603983940"
-        verifier="COMPATIBLE" >
-        <artifact
-            location="/home/milos/AndroidStudioProjects/Ludost/app/build/intermediates/builds/debug/16181603983940/classes.dex"
-            type="RELOAD_DEX" />
-    </build>
-    <build
-        timestamp="16339075842908"
-        verifier="COMPATIBLE" >
-        <artifact
-            location="/home/milos/AndroidStudioProjects/Ludost/app/build/intermediates/builds/debug/16339075842908/classes.dex"
-            type="RELOAD_DEX" />
-    </build>
-    <build
-        timestamp="16365595420519"
-        verifier="COMPATIBLE" >
-        <artifact
-            location="/home/milos/AndroidStudioProjects/Ludost/app/build/intermediates/builds/debug/16365595420519/classes.dex"
-            type="RELOAD_DEX" />
-    </build>
-    <build
-        timestamp="16397455558553"
-        verifier="COMPATIBLE" >
-        <artifact
-            location="/home/milos/AndroidStudioProjects/Ludost/app/build/intermediates/builds/debug/16397455558553/classes.dex"
-            type="RELOAD_DEX" />
-    </build>
-    <build
-        timestamp="16451832308865"
-        verifier="COMPATIBLE" >
-        <artifact
-            location="/home/milos/AndroidStudioProjects/Ludost/app/build/intermediates/builds/debug/16451832308865/classes.dex"
-            type="RELOAD_DEX" />
-    </build>
-    <build
-        timestamp="16484537853385"
-        verifier="COMPATIBLE" >
-        <artifact
-            location="/home/milos/AndroidStudioProjects/Ludost/app/build/intermediates/builds/debug/16484537853385/classes.dex"
-            type="RELOAD_DEX" />
-    </build>
-    <build
-        timestamp="16499307377280"
-        verifier="COMPATIBLE" >
-        <artifact
-            location="/home/milos/AndroidStudioProjects/Ludost/app/build/intermediates/builds/debug/16499307377280/classes.dex"
-            type="RELOAD_DEX" />
-    </build>
-    <build
-        timestamp="16579348587102"
-        verifier="COMPATIBLE" >
-        <artifact
-            location="/home/milos/AndroidStudioProjects/Ludost/app/build/intermediates/builds/debug/16579348587102/classes.dex"
-            type="RELOAD_DEX" />
-    </build>
-    <build
-        timestamp="16652210723543"
-        verifier="COMPATIBLE" >
-        <artifact
-            location="/home/milos/AndroidStudioProjects/Ludost/app/build/intermediates/builds/debug/16652210723543/classes.dex"
-            type="RELOAD_DEX" />
-    </build>
-    <build
-        timestamp="16686550066160"
-        verifier="COMPATIBLE" >
-        <artifact
-            location="/home/milos/AndroidStudioProjects/Ludost/app/build/intermediates/builds/debug/16686550066160/classes.dex"
-            type="RELOAD_DEX" />
-    </build>
-    <build
-        timestamp="16764026698460"
-        verifier="COMPATIBLE" >
-        <artifact
-            location="/home/milos/AndroidStudioProjects/Ludost/app/build/intermediates/builds/debug/16764026698460/classes.dex"
-            type="RELOAD_DEX" />
-    </build>
-    <build
-        timestamp="18699084610913"
-        verifier="COMPATIBLE" >
-        <artifact
-            location="/home/milos/AndroidStudioProjects/Ludost/app/build/intermediates/builds/debug/18699084610913/classes.dex"
-            type="RELOAD_DEX" />
-    </build>
-    <build
-        timestamp="18726484306418"
-        verifier="COMPATIBLE" >
-        <artifact
-            location="/home/milos/AndroidStudioProjects/Ludost/app/build/intermediates/reload-dex/debug/classes.dex"
-            type="RELOAD_DEX" />
     </build>
 
 </instant-run>

@@ -1,7 +1,7 @@
-#Wed Feb 01 10:37:18 CET 2017
-base.0=/home/milos/AndroidStudioProjects/Ludost/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_18704e5c1a2d2f1b05a59cb9bc666c79a37f2687
-renamed.1=classes.dex
-renamed.0=classes2.dex
-file.1=/home/milos/AndroidStudioProjects/Ludost/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_754a167479c9593ae9f12945f8ea87d90fc9f5fb/classes.dex
-base.1=/home/milos/AndroidStudioProjects/Ludost/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_754a167479c9593ae9f12945f8ea87d90fc9f5fb
-file.0=/home/milos/AndroidStudioProjects/Ludost/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_18704e5c1a2d2f1b05a59cb9bc666c79a37f2687/classes.dex
+#Wed Feb 01 22:49:34 CET 2017
+base.0=/home/milos/work/ludost/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_4d4f7974f0a3004297257618053f875c6eba2e2e
+renamed.1=classes2.dex
+renamed.0=classes.dex
+file.1=/home/milos/work/ludost/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_4168417e3cf772d698876cee96c199472fb62207/classes.dex
+base.1=/home/milos/work/ludost/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_4168417e3cf772d698876cee96c199472fb62207
+file.0=/home/milos/work/ludost/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_4d4f7974f0a3004297257618053f875c6eba2e2e/classes.dex
