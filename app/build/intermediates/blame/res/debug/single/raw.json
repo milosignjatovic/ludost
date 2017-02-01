@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/home/milos/AndroidStudioProjects/Ludost/app/build/intermediates/res/merged/debug/raw/fragment_shader.glsl",
+        "source": "/home/milos/AndroidStudioProjects/Ludost/app/src/main/res/raw/fragment_shader.glsl"
+    },
+    {
+        "merged": "/home/milos/AndroidStudioProjects/Ludost/app/build/intermediates/res/merged/debug/raw/vertex_shader.glsl",
+        "source": "/home/milos/AndroidStudioProjects/Ludost/app/src/main/res/raw/vertex_shader.glsl"
+    }
+]
