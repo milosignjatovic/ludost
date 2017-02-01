@@ -1,6 +1,6 @@
 package com.ignja.ludost.object;
 
-import android.opengl.GLES20;
+import android.opengl.GLES32;
 
 import com.ignja.ludost.renderer.MyGLRenderer;
 
@@ -81,16 +81,16 @@ public class AbstractObject implements ObjectInterface {
 
         // prepare shaders and OpenGL program
         int vertexShader = MyGLRenderer.loadShader(
-                GLES20.GL_VERTEX_SHADER,
+                GLES32.GL_VERTEX_SHADER,
                 vertexShaderCode);
         int fragmentShader = MyGLRenderer.loadShader(
-                GLES20.GL_FRAGMENT_SHADER,
+                GLES32.GL_FRAGMENT_SHADER,
                 fragmentShaderCode);
 
-        mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
-        GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
-        GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
-        GLES20.glLinkProgram(mProgram);                  // create OpenGL program executables
+        mProgram = GLES32.glCreateProgram();             // create empty OpenGL Program
+        GLES32.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
+        GLES32.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
+        GLES32.glLinkProgram(mProgram);                  // create OpenGL program executables
     }
 
     public float[] getColor() {
