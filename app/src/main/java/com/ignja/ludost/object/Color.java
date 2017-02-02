@@ -6,13 +6,17 @@ package com.ignja.ludost.object;
 
 public class Color {
 
-    public static float[] GRAY_DARK = { 0.1f, 0.1f, 0.1f, 0.0f };
+    // {red, green, blue , alpha}
 
-    public static float[] GREEN = { 0f, 1f, 0f, 0.0f };
+    public static float[] GRAY_DARK = { 0.1f, 0.1f, 0.1f, 1.0f };
+
+    public static float[] GREEN = { 0f, 1f, 0f, 1.0f };
 
     public static float[] YELLOW = { 1f, 1f, 0f, 1.0f };
 
-    public static float[] BLUE = { 0f, 0f, 1f, 1.0f };
+    public static float[] BLUE = {
+            0f, 0f, 1f, 1.0f // dot 1
+    };
 
     public static float[] BLUE_DARK = { 0f, 0f, 0.4f, 1f };
 

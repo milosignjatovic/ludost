@@ -1,8 +1,10 @@
 package com.ignja.ludost.object;
 
 import android.opengl.GLES32;
+import android.util.Log;
 
 import com.ignja.ludost.renderer.MyGLRenderer;
+import com.ignja.ludost.util.LoggerConfig;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -18,39 +20,16 @@ public class AbstractObject implements ObjectInterface {
     private final FloatBuffer vertexBuffer;
     private final ShortBuffer drawListBuffer;
 
-    private final int mProgram;
-
-    private int mPositionHandle;
-    private int mColorHandle;
-    private int mMVPMatrixHandle;
-
     // number of coordinates per vertex in this array
     static final int COORDS_PER_VERTEX = 3;
+    static final int COORDS_PER_COLOR = 4;
+
+    static final int SHORT_SIZE = 2;
+    static final int FLOAT_SIZE = 4;
 
     private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
 
-    private final String vertexShaderCode =
-            // This matrix member variable provides a hook to manipulate
-            // the coordinates of the objects that use this vertex shader
-            "uniform mat4 uMVPMatrix;" +
-                    "attribute vec4 vPosition;" +
-                    "void main() {" +
-                    // The matrix must be included as a modifier of gl_Position.
-                    // Note that the uMVPMatrix factor *must be first* in order
-                    // for the matrix multiplication product to be correct.
-                    "  gl_Position = uMVPMatrix * vPosition;" +
-                    "}";
-
-    private final String fragmentShaderCode =
-            "precision mediump float;" +
-                    "uniform vec4 vColor;" +
-                    "void main() {" +
-                    "  gl_FragColor = vColor;" +
-                    "}";
-
-    private float[] coords;
-
-    private float[] color;
+    private FloatBuffer colorBuffer;
 
     private short[] drawOrder;
 
@@ -58,43 +37,43 @@ public class AbstractObject implements ObjectInterface {
     // TODO Not in the object itself
 
     protected AbstractObject(float[] coords, float[] color, short[] drawOrder) {
-        this.coords = coords;
-        this.color = color;
-        this.drawOrder = drawOrder;
+        if (color.length/COORDS_PER_COLOR != drawOrder.length) {
+            if (LoggerConfig.ON) {
+                Log.e("D", "COLOR ERROR");
+                throw new RuntimeException("COLOR ERROR 22");
+            }
+        }
+
         // initialize vertex byte buffer for shape coordinates
         ByteBuffer bb = ByteBuffer.allocateDirect(
                 // (# of coordinate values * 4 bytes per float)
-                coords.length * 4);
+                coords.length * FLOAT_SIZE);
         bb.order(ByteOrder.nativeOrder());
         vertexBuffer = bb.asFloatBuffer();
         vertexBuffer.put(coords);
         vertexBuffer.position(0);
 
+        colorBuffer = ByteBuffer
+            .allocateDirect(color.length * FLOAT_SIZE) // allocate memory
+            .order(ByteOrder.nativeOrder()) // adjust to device buffer storage order
+            .asFloatBuffer() // convert to float buffer
+            .put(color); // put data
+        colorBuffer.position(0); // rewind buffer
+
+        this.drawOrder = drawOrder;
+
         // initialize byte buffer for the draw list
         ByteBuffer dlb = ByteBuffer.allocateDirect(
                 // (# of coordinate values * 2 bytes per short)
-                drawOrder.length * 2);
+                drawOrder.length * SHORT_SIZE);
         dlb.order(ByteOrder.nativeOrder());
         drawListBuffer = dlb.asShortBuffer();
         drawListBuffer.put(drawOrder);
         drawListBuffer.position(0);
-
-        // prepare shaders and OpenGL program
-        int vertexShader = MyGLRenderer.loadShader(
-                GLES32.GL_VERTEX_SHADER,
-                vertexShaderCode);
-        int fragmentShader = MyGLRenderer.loadShader(
-                GLES32.GL_FRAGMENT_SHADER,
-                fragmentShaderCode);
-
-        mProgram = GLES32.glCreateProgram();             // create empty OpenGL Program
-        GLES32.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
-        GLES32.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
-        GLES32.glLinkProgram(mProgram);                  // create OpenGL program executables
     }
 
-    public float[] getColor() {
-        return color;
+    public FloatBuffer getColorBuffer() {
+        return colorBuffer;
     }
 
     public short[] getDrawOrder() {

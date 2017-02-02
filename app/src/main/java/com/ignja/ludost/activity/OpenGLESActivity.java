@@ -35,8 +35,8 @@ public class OpenGLESActivity extends Activity {
         MyGLRenderer mRenderer = new MyGLRenderer(this);
         mGLView = new MyGLSurfaceView(this, mRenderer);
         // Render the view only when there is a change in the drawing data
-        //mGLView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
-        mGLView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
+        mGLView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+        //mGLView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
         setContentView(mGLView);
     }
 
