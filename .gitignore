@@ -36,6 +36,9 @@ proguard/
 .idea/tasks.xml
 .idea/datasources.xml
 .idea/dataSources.ids
+.idea/markdown-navigator
+.idea/markdown-navigator.xml
+.idea/modules.xml
 
 
 # Ignore gradle files
