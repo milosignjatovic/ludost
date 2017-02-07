@@ -39,6 +39,7 @@ proguard/
 .idea/markdown-navigator
 .idea/markdown-navigator.xml
 .idea/modules.xml
+.idea/misc.xml
 
 
 # Ignore gradle files
