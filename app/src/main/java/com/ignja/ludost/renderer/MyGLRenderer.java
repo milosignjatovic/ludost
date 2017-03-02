@@ -71,10 +71,20 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     private final float[] mRotationMatrix = new float[16];
 
+    /** Store the accumulated rotation. */
+    private final float[] mAccumulatedRotation = new float[16];
+
     private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
 
+    /**
+     * Horizontal angle
+     */
+    private float hAngle;
 
-    private float mAngle;
+    /**
+     * Vertical angle
+     */
+    private float vAngle;
 
     private final Context context;
 
@@ -112,11 +122,15 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Set the background frame color
         GLES32.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-        addObject(createBlueSquare());
-        addObject(createGreenTriangle());
+        GLES32.glEnable(GLES32.GL_DEPTH_TEST);
+        GLES32.glDepthFunc(GLES32.GL_LEQUAL);
+        GLES32.glDisable(GLES32.GL_CULL_FACE);
+
+        //addObject(createBlueSquare());
+        //addObject(createGreenTriangle());
         addObject(createBlueDarkSquare());
-        addObject(createRedTriangle());
-        addObject(createYellowTriangle());
+        //addObject(createRedTriangle());
+        //addObject(createYellowTriangle());
         addObject(createPinkCube());
 
         Board board = new Board();
@@ -124,7 +138,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         // Set the camera position (View matrix)
         Matrix.setLookAtM(mViewMatrix, 0,
-                -0f, -1f, -3f, //eye
+                0f, -4f, -2f, //eye
                 0f, 0f, 0f, // center
                 0f, 1.0f, 0.0f // eye vertical
         );
@@ -158,7 +172,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         for (AbstractObject obj : objectsList) {
 
             // Calculate (apply) TOUCH transformation (rotation)
-            Matrix.setRotateM(mRotationMatrix, 0, mAngle + angle, 0, 0, 1.0f);
+            Matrix.setRotateM(mRotationMatrix, 0, hAngle + angle, 0, 0, 1.0f);
+            Matrix.rotateM(mRotationMatrix, 0, vAngle, 1.0f, 0, 0);
+            //Matrix.setRotateM(mRotationMatrix, 0, vAngle, 1.0f, 0, 0);
             // Combine the rotation matrix with the projection and camera view
             // Note that the mMVPMatrix factor *must be first* in order
             // for the matrix multiplication product to be correct.
@@ -188,7 +204,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     }
 
     private Cube createPinkCube() {
-        return new Cube(0.4f, Color.PINK);
+        return new Cube(0.5f, Color.GRAY_LIGHT);
     }
 
     private AbstractObject createYellowTriangle() {
@@ -203,19 +219,19 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     private AbstractObject createBlueDarkSquare() {
         return new Square(new float[]{
-                -0.5f, 0.5f, 1f,
-                -0.5f, -0.5f, 1f,
-                0.5f, -0.5f, 1f,
-                0.5f, 0.5f, 1f,
+                -3f, 3f, 0.25f,
+                -3f, -3f, 0.25f,
+                3f, -3f, 0.25f,
+                3f, 3f, 0.25f,
         }, Color.BLUE_DARK);
     }
 
     private Triangle createRedTriangle() {
         float mi3Coords[] = {
                 // in counterclockwise order:
-                0.0f,  0.0f, 0f,   // top
-                0.0f, -1f, 0f,   // bottom left
-                1f, 0f, 0f    // bottom right
+                0.0f,  0.0f, 0.3f,   // top
+                0.0f, -1f, 0.3f,   // bottom left
+                1f, 0f, 0.3f    // bottom right
         };
 
         return new Triangle(mi3Coords, Color.RED);
@@ -303,8 +319,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // in the onDrawFrame() method
         Matrix.frustumM(mProjectionMatrix, 0,
                 -ratio, ratio, -1, 1, // left, right, bottom, top
-                2, // near
-                8 // far
+                2f, // near
+                10.0f // far
         );
 
     }
@@ -334,15 +350,31 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
      *
      * @return - A float representing the rotation angle.
      */
-    public float getAngle() {
-        return mAngle;
+    public float getHAngle() {
+        return hAngle;
     }
 
     /**
      * Sets the rotation angle of the triangle shape (mTriangle).
      */
-    public void setAngle(float angle) {
-        mAngle = angle;
+    public void setHAngle(float angle) {
+        hAngle = angle;
+    }
+
+    /**
+     * Returns the rotation angle of the triangle shape (mTriangle).
+     *
+     * @return - A float representing the rotation angle.
+     */
+    public float getVAngle() {
+        return vAngle;
+    }
+
+    /**
+     * Sets the rotation angle of the triangle shape (mTriangle).
+     */
+    public void setVAngle(float angle) {
+        vAngle = angle;
     }
 
 }
