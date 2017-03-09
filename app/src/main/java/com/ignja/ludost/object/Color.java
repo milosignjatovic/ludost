@@ -24,6 +24,8 @@ public class Color {
 
     public static float[] RED = { 1f, 0f, 0f, 1.0f };
 
+    public static float[] RED_DARK = { 0.4f, 0f, 0f, 1.0f };
+
     public static float[] PINK = { 1f, 0f, 1f, 1.0f };
 
     public static float[] WHITE = { 1f, 1f, 1f, 1.0f };

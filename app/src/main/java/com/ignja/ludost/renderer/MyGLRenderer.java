@@ -29,6 +29,7 @@ import com.ignja.ludost.R;
 
 import com.ignja.ludost.logic.Board;
 import com.ignja.ludost.logic.Game;
+import com.ignja.ludost.logic.Player;
 import com.ignja.ludost.object.AbstractObject;
 import com.ignja.ludost.object.Color;
 import com.ignja.ludost.object.Cube;
@@ -74,8 +75,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     /** Store the accumulated rotation. */
     private final float[] mAccumulatedRotation = new float[16];
 
-    private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
-
     /**
      * Horizontal angle
      */
@@ -90,9 +89,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     private int glProgram;
 
-    // number of coordinates per vertex in this array
-    static final int COORDS_PER_VERTEX = 3;
-    static final int COORDS_PER_COLOR = 4;
+    /**
+     * Game game
+     */
+    private Game game;
 
     public MyGLRenderer(Context context) {
         this.context = context;
@@ -128,13 +128,17 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         //addObject(createBlueSquare());
         //addObject(createGreenTriangle());
-        addObject(createBlueDarkSquare());
+        //addObject(createBlueDarkSquare());
         //addObject(createRedTriangle());
         //addObject(createYellowTriangle());
-        addObject(createPinkCube());
+        //addObject(createPinkCube());
+
 
         Board board = new Board();
-        Game game = new Game(board);
+        Player player1 = new Player();
+        Player player2 = new Player();
+        Player[] playerArray = new Player[] {player1, player2};
+        this.game = new Game(board, playerArray);
 
         // Set the camera position (View matrix)
         Matrix.setLookAtM(mViewMatrix, 0,
@@ -165,29 +169,16 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         // Use the following code to generate constant rotation.
         // Leave this code out when using TouchEvents.
-         long time = SystemClock.uptimeMillis() % 4000L;
-         float angle = 0.090f * ((int) time);
-        angle = 0;
+        long time = SystemClock.uptimeMillis() ; // % 4000L;
+        float angle = 0.03f * ((int) time) * 7 / 22;
+        // angle = 0;
 
-        for (AbstractObject obj : objectsList) {
+        Matrix.setRotateM(mRotationMatrix, 0, hAngle + angle, 0, 0, 1.0f);
+        Matrix.rotateM(mRotationMatrix, 0, vAngle, 1.0f, 0, 0);
+        Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mRotationMatrix, 0);
 
-            // Calculate (apply) TOUCH transformation (rotation)
-            Matrix.setRotateM(mRotationMatrix, 0, hAngle + angle, 0, 0, 1.0f);
-            Matrix.rotateM(mRotationMatrix, 0, vAngle, 1.0f, 0, 0);
-            //Matrix.setRotateM(mRotationMatrix, 0, vAngle, 1.0f, 0, 0);
-            // Combine the rotation matrix with the projection and camera view
-            // Note that the mMVPMatrix factor *must be first* in order
-            // for the matrix multiplication product to be correct.
-            Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mRotationMatrix, 0);
-
-            // TODO Calculate objects position and rotation
-            // Matrix.translateM(scratch, 0, 0.5f, 0, 0);
-            // Matrix.setRotateM(mRotationMatrix, 0, mAngle*2, 0, 0, 1.0f);
-            // Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mRotationMatrix, 0);
-
-            // Draw object
-            this.draw(obj, scratch);
-        }
+        //this.game.draw(mMVPMatrix, glProgram);
+        this.game.draw(scratch, glProgram);
     }
 
     private void clearScene() {
@@ -204,7 +195,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     }
 
     private Cube createPinkCube() {
-        return new Cube(0.5f, Color.GRAY_LIGHT);
+        return new Cube(0.3f, Color.GRAY_LIGHT);
     }
 
     private AbstractObject createYellowTriangle() {
@@ -218,11 +209,12 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     }
 
     private AbstractObject createBlueDarkSquare() {
+        float a = 4.0f;
         return new Square(new float[]{
-                -3f, 3f, 0.25f,
-                -3f, -3f, 0.25f,
-                3f, -3f, 0.25f,
-                3f, 3f, 0.25f,
+                -a, a, 0.25f,
+                -a, -a, 0.25f,
+                a, -a, 0.25f,
+                a, a, 0.25f,
         }, Color.BLUE_DARK);
     }
 
@@ -263,49 +255,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
      * @param mvpMatrix float[]
      */
     private void draw(AbstractObject object, float[] mvpMatrix) {
-        // get handle to vertex shader's vPosition member
-        int mPositionHandle = GLES32.glGetAttribLocation(glProgram, "vPosition");
+        ObjectRenderer objectRenderer = new ObjectRenderer();
+        objectRenderer.render(object, mvpMatrix, this.glProgram);
 
-        // Enable a handle to the triangle vertices
-        GLES32.glEnableVertexAttribArray(mPositionHandle);
-
-        // Prepare the triangle coordinate data
-        GLES32.glVertexAttribPointer(
-                mPositionHandle, COORDS_PER_VERTEX,
-                GLES32.GL_FLOAT, false,
-                vertexStride, object.getVertexBuffer());
-
-        // get handle to fragment shader's vColor member
-        int mColorHandle = GLES32.glGetAttribLocation(glProgram, "vColor");
-
-        // Enable a handle to the triangle vertices
-        GLES32.glEnableVertexAttribArray(mColorHandle);
-
-        // Prepare the triangle color data
-        GLES32.glVertexAttribPointer(
-                mColorHandle, COORDS_PER_COLOR,
-                GLES32.GL_FLOAT, false,
-                COORDS_PER_COLOR * 4, object.getColorBuffer());
-        MyGLRenderer.checkGlError("MIK glVertexAttribPointer");
-
-        // get handle to shape's transformation matrix
-        int mMVPMatrixHandle = GLES32.glGetUniformLocation(glProgram, "uMVPMatrix");
-        MyGLRenderer.checkGlError("glGetUniformLocation");
-
-        // Apply the projection and view transformation
-        GLES32.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mvpMatrix, 0);
-        MyGLRenderer.checkGlError("glUniformMatrix4fv");
-
-        // Draw the square
-        GLES32.glDrawElements(
-                GLES32.GL_TRIANGLES, object.getDrawOrder().length,
-                GLES32.GL_UNSIGNED_SHORT, object.getDrawListBuffer());
-
-        // Disable vertex array
-        GLES32.glDisableVertexAttribArray(mPositionHandle);
-
-        // Disable color array
-        GLES32.glDisableVertexAttribArray(mColorHandle);
     }
 
     @Override
