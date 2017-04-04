@@ -169,9 +169,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         // Use the following code to generate constant rotation.
         // Leave this code out when using TouchEvents.
-        long time = SystemClock.uptimeMillis() ; // % 4000L;
-        float angle = 0.03f * ((int) time) * 7 / 22;
-        // angle = 0;
+        //long time = SystemClock.uptimeMillis() ; // % 4000L;
+        //float angle = 0.03f * ((int) time) * 7 / 22;
+        float angle = 0;
 
         Matrix.setRotateM(mRotationMatrix, 0, hAngle + angle, 0, 0, 1.0f);
         Matrix.rotateM(mRotationMatrix, 0, vAngle, 1.0f, 0, 0);
