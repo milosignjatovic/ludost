@@ -1,10 +1,11 @@
-package com.ignja.ludost.object;
+package com.ignja.ludost.renderable;
 
 /**
- * Created by milos on 01/02/17.
+ * Created by Milos on 01/02/17.
+
  */
 
-public class Cube extends AbstractObject {
+public class Cube extends AbstractRenderable {
 
 
     public Cube(float a, float[] color) {

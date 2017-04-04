@@ -22,19 +22,18 @@ import android.content.Context;
 import android.opengl.GLES32;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
-import android.os.SystemClock;
 import android.util.Log;
 
 import com.ignja.ludost.R;
 
-import com.ignja.ludost.logic.Board;
+import com.ignja.ludost.object.Board;
 import com.ignja.ludost.logic.Game;
-import com.ignja.ludost.logic.Player;
-import com.ignja.ludost.object.AbstractObject;
-import com.ignja.ludost.object.Color;
-import com.ignja.ludost.object.Cube;
-import com.ignja.ludost.object.Square;
-import com.ignja.ludost.object.Triangle;
+import com.ignja.ludost.object.Player;
+import com.ignja.ludost.renderable.AbstractRenderable;
+import com.ignja.ludost.util.Color;
+import com.ignja.ludost.renderable.Cube;
+import com.ignja.ludost.renderable.Square;
+import com.ignja.ludost.renderable.Triangle;
 import com.ignja.ludost.util.LoggerConfig;
 import com.ignja.ludost.util.ShaderHelper;
 import com.ignja.ludost.util.TextResourceReader;
@@ -55,7 +54,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     private static final String TAG = "MyGLRenderer";
 
-    private List<AbstractObject> objectsList;
+    private List<AbstractRenderable> objectsList;
 
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
     private final float[] mMVPMatrix = new float[16];
@@ -149,7 +148,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     }
 
-    public void addObject(AbstractObject object) {
+    public void addObject(AbstractRenderable object) {
         objectsList.add(object);
     }
 
@@ -198,7 +197,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         return new Cube(0.3f, Color.GRAY_LIGHT);
     }
 
-    private AbstractObject createYellowTriangle() {
+    private AbstractRenderable createYellowTriangle() {
         float yellowTriangleCoords[] = {
                 -1.0f,  0.5f, 2.0f,   // top
                 -1.0f, -0.5f, 2.0f,   // bottom left
@@ -208,7 +207,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         return new Triangle(yellowTriangleCoords, Color.YELLOW);
     }
 
-    private AbstractObject createBlueDarkSquare() {
+    private AbstractRenderable createBlueDarkSquare() {
         float a = 4.0f;
         return new Square(new float[]{
                 -a, a, 0.25f,
@@ -229,7 +228,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         return new Triangle(mi3Coords, Color.RED);
     }
 
-    private AbstractObject createBlueSquare() {
+    private AbstractRenderable createBlueSquare() {
         float squareCoords[] = {
                 -0.5f,  0.5f, 0f,   // top left
                 -0.5f, -0.5f, 0f,   // bottom left
@@ -238,7 +237,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         return new Square(squareCoords, Color.BLUE);
     }
 
-    private AbstractObject createGreenTriangle() {
+    private AbstractRenderable createGreenTriangle() {
         float triangleCoords[] = {
                 // in counterclockwise order:
                 -0.2f,  0f, -1.0f,   // top
@@ -251,10 +250,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     /**
      * Draw single object into scene
-     * @param object {@link AbstractObject}
+     * @param object {@link AbstractRenderable}
      * @param mvpMatrix float[]
      */
-    private void draw(AbstractObject object, float[] mvpMatrix) {
+    private void draw(AbstractRenderable object, float[] mvpMatrix) {
         ObjectRenderer objectRenderer = new ObjectRenderer();
         objectRenderer.render(object, mvpMatrix, this.glProgram);
 

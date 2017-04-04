@@ -1,7 +1,8 @@
-package com.ignja.ludost.object;
+package com.ignja.ludost.util;
 
 /**
  * Created by milos on 27/01/17.
+
  */
 
 public class Color {

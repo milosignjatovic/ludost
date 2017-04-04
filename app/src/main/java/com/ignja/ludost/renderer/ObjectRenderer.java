@@ -2,10 +2,11 @@ package com.ignja.ludost.renderer;
 
 import android.opengl.GLES32;
 
-import com.ignja.ludost.object.AbstractObject;
+import com.ignja.ludost.renderable.AbstractRenderable;
 
 /**
- * Created by milos on 09/03/17.
+ * Created by Ignja on 09/03/17.
+ *
  */
 
 public class ObjectRenderer {
@@ -18,10 +19,10 @@ public class ObjectRenderer {
 
     /**
      * Draw single object into scene
-     * @param object {@link AbstractObject}
+     * @param object {@link AbstractRenderable}
      * @param mvpMatrix float[]
      */
-    public void render(AbstractObject object, float[] mvpMatrix, int glProgram) {
+    public void render(AbstractRenderable object, float[] mvpMatrix, int glProgram) {
         // get handle to vertex shader's vPosition member
         int mPositionHandle = GLES32.glGetAttribLocation(glProgram, "vPosition");
 

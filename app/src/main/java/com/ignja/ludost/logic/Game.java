@@ -1,9 +1,12 @@
 package com.ignja.ludost.logic;
 
-import com.ignja.ludost.renderer.MyGLRenderer;
+import com.ignja.ludost.object.Board;
+import com.ignja.ludost.object.Dice;
+import com.ignja.ludost.object.Player;
 
 /**
- * Created by milos on 01/02/17.
+ * Created by Ignja on 01/02/17.
+ *
  */
 
 public class Game {

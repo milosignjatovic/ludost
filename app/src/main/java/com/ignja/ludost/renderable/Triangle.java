@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ignja.ludost.object;
+package com.ignja.ludost.renderable;
 
 /**
  * A two-dimensional triangle for use as a drawn object in OpenGL ES 2.0.
  */
-public class Triangle extends AbstractObject {
+public class Triangle extends AbstractRenderable {
 
     /**
      * Sets up the drawing object data for use in an OpenGL ES context.
