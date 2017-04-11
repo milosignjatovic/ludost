@@ -134,8 +134,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 
         Board board = new Board();
-        Player player1 = new Player();
-        Player player2 = new Player();
+        Player player1 = new Player(board, Color.RED);
+        Player player2 = new Player(board, Color.GREEN);
         Player[] playerArray = new Player[] {player1, player2};
         this.game = new Game(board, playerArray);
 

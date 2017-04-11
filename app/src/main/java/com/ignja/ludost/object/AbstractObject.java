@@ -29,26 +29,30 @@ abstract class AbstractObject {
      */
     private String name = "";
 
-    AbstractObject() {
+    AbstractObject(float[] color) {
         Random rand = new Random();
-        this.object = new Cube(rand.nextFloat()/3, Color.GRAY_LIGHT);
-        this.point = new Point(2 * (rand.nextFloat() - 0.5f), 2 * (rand.nextFloat() - 0.5f));
+//        this.object = new Cube(rand.nextFloat()/4 + 0.1f, Color.GRAY_LIGHT);
+//        this.point = new Point(rand.nextFloat() + 0.3f, rand.nextFloat() + 0.5f);
+        this.object = new Cube(0.2f, color);
+        this.point = new Point(rand.nextFloat() + 1f, 0);
         this.name = "";
     }
 
-    AbstractObject(Point point) {
-        this();
+    AbstractObject(Point point, float[] color) {
+        this(color);
         this.point = point;
     }
 
-    AbstractObject(Point point, AbstractRenderable object) {
-        this(point);
-        this.object = object;
+    protected float getX() {
+        return this.point.x;
     }
 
-    AbstractObject(Point point, AbstractRenderable object, String name) {
-        this(point, object);
-        this.name = name;
+    protected float getY() {
+        return this.point.y;
+    }
+
+    protected float getZ() {
+        return this.point.z;
     }
 
     public void draw(float[] mvpMatrix, int glProgram) {

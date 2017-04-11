@@ -19,10 +19,10 @@ public class Board extends AbstractObject {
     private ArrayList<BoardPosition> boardPositions = new ArrayList<>();
 
     public Board() {
-        super();
+        super(Color.BLUE);
         this.object = this.createBlueDarkSquare();
-        for (int i = 1; i <= POSITIONS; i++) {
-            this.boardPositions.add(new BoardPosition(i/5, i/5));
+        for (int i = 0; i <= POSITIONS; i++) {
+            this.boardPositions.add(i, new BoardPosition(i/16f, i/16f));
         }
     }
 
@@ -34,6 +34,10 @@ public class Board extends AbstractObject {
                 a, -a, 0.15f,
                 a, a, 0.15f
         }, Color.BLUE);
+    }
+
+    public BoardPosition getPosition(int index) {
+        return this.boardPositions.get(index);
     }
 
 }

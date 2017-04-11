@@ -1,5 +1,7 @@
 package com.ignja.ludost.object;
 
+import android.opengl.Matrix;
+
 import com.ignja.ludost.util.Color;
 import com.ignja.ludost.renderer.ObjectRenderer;
 
@@ -13,23 +15,37 @@ public class Player extends AbstractObject {
 
     private ArrayList<Piece> pieces = new ArrayList<>();
 
-    public Player() {
-        super();
-        this.addPiece();
-        this.addPiece();
-        this.addPiece();
-        this.addPiece();
+    private Board board;
+
+    private float[] color;
+
+    public Player(Board board, float[] color) {
+        super(color);
+        this.board = board;
+        this.color = color;
+        this.addPiece(0);
+        this.addPiece(1);
+        this.addPiece(2);
+        this.addPiece(3);
+        this.addPiece(4);
+        this.addPiece(5);
+        this.addPiece(6);
+        this.addPiece(7);
     }
 
-    private void addPiece() {
-        pieces.add(new Piece());
+    private void addPiece(int positionIndex) {
+        pieces.add(new Piece(this.board.getPosition(positionIndex), this.color));
     }
 
     public void draw(float[] mvpMatrix, int glProgram) {
         super.draw(mvpMatrix, glProgram);
         ObjectRenderer objectRenderer = new ObjectRenderer();
         for (Piece piece : pieces) {
-//            objectRenderer.render(piece, mvpMatrix, glProgram);
+            Matrix.translateM(mvpMatrix, 0,
+                    piece.boardPosition.getX(),
+                    piece.boardPosition.getY(),
+                    piece.boardPosition.getZ());
+            objectRenderer.render(piece.object, mvpMatrix, glProgram);
         }
     }
 
