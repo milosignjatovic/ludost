@@ -19,7 +19,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import android.content.Context;
-import android.opengl.GLES32;
+import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.util.Log;
@@ -116,14 +116,14 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
             ShaderHelper.validateProgram(glProgram);
         }
 
-        GLES32.glUseProgram(glProgram);
+        GLES30.glUseProgram(glProgram);
 
         // Set the background frame color
-        GLES32.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        GLES30.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-        GLES32.glEnable(GLES32.GL_DEPTH_TEST);
-        GLES32.glDepthFunc(GLES32.GL_LEQUAL);
-        GLES32.glDisable(GLES32.GL_CULL_FACE);
+        GLES30.glEnable(GLES30.GL_DEPTH_TEST);
+        GLES30.glDepthFunc(GLES30.GL_LEQUAL);
+        GLES30.glDisable(GLES30.GL_CULL_FACE);
 
         //addObject(createBlueSquare());
         //addObject(createGreenTriangle());
@@ -182,7 +182,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     private void clearScene() {
         // clear surface on each frame? // todo not needed?
-        GLES32.glClearColor(
+        GLES30.glClearColor(
                 Color.GRAY_DARK[0],
                 Color.GRAY_DARK[1],
                 Color.GRAY_DARK[2],
@@ -190,7 +190,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         );
 
         // Draw background color
-        GLES32.glClear(GLES32.GL_COLOR_BUFFER_BIT | GLES32.GL_DEPTH_BUFFER_BIT);
+        GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);
     }
 
     private Cube createPinkCube() {
@@ -262,7 +262,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     @Override
     public void onSurfaceChanged(GL10 unused, int width, int height) {
         // Adjust the viewport based on geometry changes, such as screen rotation
-        GLES32.glViewport(0, 0, width, height);
+        GLES30.glViewport(0, 0, width, height);
 
         float ratio = (float) width / height;
 
@@ -281,7 +281,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     * just after making it:
     *
     * <pre>
-    * mColorHandle = GLES32.glGetUniformLocation(mProgram, "vColor");
+    * mColorHandle = GLES30.glGetUniformLocation(mProgram, "vColor");
     * MyGLRenderer.checkGlError("glGetUniformLocation");</pre>
     *
     * If the operation is not successful, the check throws an error.
@@ -290,7 +290,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     */
     public static void checkGlError(String glOperation) {
         int error;
-        while ((error = GLES32.glGetError()) != GLES32.GL_NO_ERROR) {
+        while ((error = GLES30.glGetError()) != GLES30.GL_NO_ERROR) {
             Log.e(TAG, glOperation + ": glError " + error);
             throw new RuntimeException(glOperation + ": glError " + error);
         }

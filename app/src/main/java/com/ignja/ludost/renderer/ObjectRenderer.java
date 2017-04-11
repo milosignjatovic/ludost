@@ -1,6 +1,6 @@
 package com.ignja.ludost.renderer;
 
-import android.opengl.GLES32;
+import android.opengl.GLES30;
 
 import com.ignja.ludost.renderable.AbstractRenderable;
 
@@ -24,48 +24,48 @@ public class ObjectRenderer {
      */
     public void render(AbstractRenderable object, float[] mvpMatrix, int glProgram) {
         // get handle to vertex shader's vPosition member
-        int mPositionHandle = GLES32.glGetAttribLocation(glProgram, "vPosition");
+        int mPositionHandle = GLES30.glGetAttribLocation(glProgram, "vPosition");
 
         // Enable a handle to the triangle vertices
-        GLES32.glEnableVertexAttribArray(mPositionHandle);
+        GLES30.glEnableVertexAttribArray(mPositionHandle);
 
         // Prepare the triangle coordinate data
-        GLES32.glVertexAttribPointer(
+        GLES30.glVertexAttribPointer(
                 mPositionHandle, COORDS_PER_VERTEX,
-                GLES32.GL_FLOAT, false,
+                GLES30.GL_FLOAT, false,
                 vertexStride, object.getVertexBuffer());
 
         // get handle to fragment shader's vColor member
-        int mColorHandle = GLES32.glGetAttribLocation(glProgram, "vColor");
+        int mColorHandle = GLES30.glGetAttribLocation(glProgram, "vColor");
 
         // Enable a handle to the triangle vertices
-        GLES32.glEnableVertexAttribArray(mColorHandle);
+        GLES30.glEnableVertexAttribArray(mColorHandle);
 
         // Prepare the triangle color data
-        GLES32.glVertexAttribPointer(
+        GLES30.glVertexAttribPointer(
                 mColorHandle, COORDS_PER_COLOR,
-                GLES32.GL_FLOAT, false,
+                GLES30.GL_FLOAT, false,
                 COORDS_PER_COLOR * 4, object.getColorBuffer());
         MyGLRenderer.checkGlError("MIK glVertexAttribPointer");
 
         // get handle to shape's transformation matrix
-        int mMVPMatrixHandle = GLES32.glGetUniformLocation(glProgram, "uMVPMatrix");
+        int mMVPMatrixHandle = GLES30.glGetUniformLocation(glProgram, "uMVPMatrix");
         MyGLRenderer.checkGlError("glGetUniformLocation");
 
         // Apply the projection and view transformation
-        GLES32.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mvpMatrix, 0);
+        GLES30.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mvpMatrix, 0);
         MyGLRenderer.checkGlError("glUniformMatrix4fv");
 
         // Draw the square
-        GLES32.glDrawElements(
-                GLES32.GL_TRIANGLES, object.getDrawOrder().length,
-                GLES32.GL_UNSIGNED_SHORT, object.getDrawListBuffer());
+        GLES30.glDrawElements(
+                GLES30.GL_TRIANGLES, object.getDrawOrder().length,
+                GLES30.GL_UNSIGNED_SHORT, object.getDrawListBuffer());
 
         // Disable vertex array
-        GLES32.glDisableVertexAttribArray(mPositionHandle);
+        GLES30.glDisableVertexAttribArray(mPositionHandle);
 
         // Disable color array
-        GLES32.glDisableVertexAttribArray(mColorHandle);
+        GLES30.glDisableVertexAttribArray(mColorHandle);
     }
 
 }
