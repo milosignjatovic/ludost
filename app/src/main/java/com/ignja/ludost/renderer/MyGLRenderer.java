@@ -71,9 +71,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     private final float[] mRotationMatrix = new float[16];
 
-    /** Store the accumulated rotation. */
-    private final float[] mAccumulatedRotation = new float[16];
-
     /**
      * Horizontal angle
      */
@@ -172,12 +169,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         //float angle = 0.03f * ((int) time) * 7 / 22;
         float angle = 0;
 
-        Matrix.setRotateM(mRotationMatrix, 0, hAngle + angle, 0, 0, 1.0f);
-        Matrix.rotateM(mRotationMatrix, 0, vAngle, 1.0f, 0, 0);
-        Matrix.multiplyMM(scratch, 0, mMVPMatrix, 0, mRotationMatrix, 0);
+        Matrix.rotateM(mMVPMatrix, 0, hAngle + angle, 0, 0, 1.0f);
 
-        //this.game.draw(mMVPMatrix, glProgram);
-        this.game.draw(scratch, glProgram);
+        this.game.draw(mMVPMatrix, glProgram);
     }
 
     private void clearScene() {

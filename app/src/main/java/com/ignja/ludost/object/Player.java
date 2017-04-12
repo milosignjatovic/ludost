@@ -1,6 +1,7 @@
 package com.ignja.ludost.object;
 
 import android.opengl.Matrix;
+import android.renderscript.Matrix4f;
 
 import com.ignja.ludost.util.Color;
 import com.ignja.ludost.renderer.ObjectRenderer;
@@ -19,6 +20,8 @@ public class Player extends AbstractObject {
 
     private float[] color;
 
+    private float[] res;
+
     public Player(Board board, float[] color) {
         super(color);
         this.board = board;
@@ -27,10 +30,6 @@ public class Player extends AbstractObject {
         this.addPiece(1);
         this.addPiece(2);
         this.addPiece(3);
-        this.addPiece(4);
-        this.addPiece(5);
-        this.addPiece(6);
-        this.addPiece(7);
     }
 
     private void addPiece(int positionIndex) {

@@ -16,13 +16,15 @@ public class Board extends AbstractObject {
 
     private static final int POSITIONS = 8;
 
+
+
     private ArrayList<BoardPosition> boardPositions = new ArrayList<>();
 
     public Board() {
         super(Color.BLUE);
         this.object = this.createBlueDarkSquare();
         for (int i = 0; i <= POSITIONS; i++) {
-            this.boardPositions.add(i, new BoardPosition(i/16f, i/16f));
+            this.boardPositions.add(i, new BoardPosition(this, i/8f, i/8f));
         }
     }
 

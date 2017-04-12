@@ -3,6 +3,8 @@ package com.ignja.ludost.object;
 /**
  * Created by Ignja on 4/4/17.
  *
+ * Represents point in space
+ *
  */
 
 public class Point {
