@@ -38,13 +38,8 @@ public class Player extends AbstractObject {
 
     public void draw(float[] mvpMatrix, int glProgram) {
         super.draw(mvpMatrix, glProgram);
-        ObjectRenderer objectRenderer = new ObjectRenderer();
         for (Piece piece : pieces) {
-            Matrix.translateM(mvpMatrix, 0,
-                    piece.boardPosition.getX(),
-                    piece.boardPosition.getY(),
-                    piece.boardPosition.getZ());
-            objectRenderer.render(piece.object, mvpMatrix, glProgram);
+            piece.draw(mvpMatrix, glProgram);
         }
     }
 
