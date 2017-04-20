@@ -1,5 +1,7 @@
 package com.ignja.ludost.renderable;
 
+import java.util.Random;
+
 /**
  * Created by Ignja on 01/02/17.
 
@@ -8,37 +10,37 @@ package com.ignja.ludost.renderable;
 public class Cuboid extends AbstractRenderable {
 
 
-    public Cuboid(float a, float[] color) {
+    public Cuboid(float a, float b, float c, float[] color) {
         super(new float[]{
-                a/8f, a/8f, a/2f, // TOP
-                a/8f, -a/8f, a/2f,
-                -a/8f, -a/8f, a/2f,
-                -a/8f, a/8f, a/2f,
+                a/2f, b/2f, c/2f, // TOP
+                a/2f, -b/2f, c/2f,
+                -a/2f, -b/2f, c/2f,
+                -a/2f, b/2f, c/2f,
 
-                -a/8f, a/8f, a/2f, // LEFT
-                -a/8f, a/8f, -a/2f,
-                -a/8f, -a/8f, -a/2f,
-                -a/8f, -a/8f, a/2f,
+                -a/2f, b/2f, c/2f, // LEFT
+                -a/2f, b/2f, -c/2f,
+                -a/2f, -b/2f, -c/2f,
+                -a/2f, -b/2f, c/2f,
 
-                a/8f, a/8f, a/2f, // RIGHT
-                a/8f, a/8f, -a/2f,
-                a/8f, -a/8f, -a/2f,
-                a/8f, -a/8f, a/2f,
+                a/2f, b/2f, c/2f, // RIGHT
+                a/2f, b/2f, -c/2f,
+                a/2f, -b/2f, -c/2f,
+                a/2f, -b/2f, c/2f,
 
-                a/8f, a/8f, -a/2f, // BOTTOM
-                a/8f, -a/8f, -a/2f,
-                -a/8f, -a/8f, -a/2f,
-                -a/8f, a/8f, -a/2f,
+                a/2f, b/2f, -c/2f, // BOTTOM
+                a/2f, -b/2f, -c/2f,
+                -a/2f, -b/2f, -c/2f,
+                -a/2f, b/2f, -c/2f,
 
-                a/8f, -a/8f, a/2f, // FRONT
-                a/8f, -a/8f, -a/2f,
-                -a/8f, -a/8f, -a/2f,
-                -a/8f, -a/8f, a/2f,
+                a/2, -b/2, c/2, // FRONT
+                a/2, -b/2, -c/2,
+                -a/2, -b/2, -c/2,
+                -a/2, -b/2, c/2,
 
-                a/8f, a/8f, a/2f, // REAR
-                a/8f, a/8f, -a/2f,
-                -a/8f, a/8f, -a/2f,
-                -a/8f, a/8f, a/2f,
+                a/2, b/2, c/2, // REAR
+                a/2, b/2, -c/2,
+                -a/2, b/2, -c/2,
+                -a/2, b/2, c/2,
 
 
         }, new float[]{

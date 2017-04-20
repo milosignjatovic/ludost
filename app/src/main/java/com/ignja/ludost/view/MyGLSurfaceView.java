@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 
 import com.ignja.ludost.renderer.MyGLRenderer;
+import com.ignja.ludost.util.LoggerConfig;
 
 /**
  * A view container where OpenGL ES graphics can be drawn on screen.
@@ -66,7 +67,9 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
                 float dx = x - mPreviousX;
                 float dy = y - mPreviousY;
-                Log.i("DRAG", "dx: " + Float.toString(dx) + ", dy: " + Float.toString(dy));
+                if (LoggerConfig.ON) {
+                    Log.i("DRAG", "dx: " + Float.toString(dx) + ", dy: " + Float.toString(dy));
+                }
 
                 // reverse direction of rotation above the mid-line
                 if (y > getHeight() / 2) {
@@ -79,10 +82,10 @@ public class MyGLSurfaceView extends GLSurfaceView {
                 //}
 
                 mRenderer.setHAngle(
-                        mRenderer.getHAngle() +
+                        mRenderer.getHAngle() -
                         (dx * TOUCH_SCALE_FACTOR));  // = 180.0f / 320
 
-                float yAngle = mRenderer.getVAngle() +
+                float yAngle = mRenderer.getVAngle() -
                         (dy * TOUCH_SCALE_FACTOR);
                 //yAngle = (yAngle > 0) ? ((yAngle < 90) ? yAngle: 90) : 0;
                 //mRenderer.setVAngle(yAngle);

@@ -32,7 +32,6 @@ abstract class AbstractObject {
     private String name = "";
 
     AbstractObject(float[] color) {
-        Random rand = new Random();
         this.object = new Cube(0.2f, color);
         this.point = new Point();
         this.name = "";
@@ -40,6 +39,11 @@ abstract class AbstractObject {
 
     AbstractObject(Point point, float[] color) {
         this(color);
+        this.point = point;
+    }
+
+    AbstractObject(Point point) {
+        this(point, Color.RED_DARK);
         this.point = point;
     }
 

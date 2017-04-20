@@ -22,14 +22,14 @@ public class Player extends AbstractObject {
 
     private float[] res;
 
-    public Player(Board board, float[] color) {
+    public Player(Board board, float[] color, int index) {
         super(color);
         this.board = board;
         this.color = color;
-        this.addPiece(0);
-        this.addPiece(1);
-        this.addPiece(2);
-        this.addPiece(3);
+        this.addPiece(4 * index);
+        this.addPiece(4 * index + 1);
+        this.addPiece(4 * index + 2);
+        this.addPiece(4 * index + 3);
     }
 
     private void addPiece(int positionIndex) {

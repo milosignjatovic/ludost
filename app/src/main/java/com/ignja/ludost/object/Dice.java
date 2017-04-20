@@ -14,8 +14,8 @@ public class Dice extends AbstractObject {
     private int value;
 
     public Dice() {
-        super(Color.GREEN);
-        this.object = new Cube(0.3f, Color.YELLOW);
+        super(new Point(0, 0, 0.35f));
+        this.object = new Cube(0.7f, Color.WHITE);
         roll();
     }
 

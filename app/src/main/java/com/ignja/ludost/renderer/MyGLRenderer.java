@@ -131,16 +131,18 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
 
         Board board = new Board();
-        Player player1 = new Player(board, Color.RED);
-        Player player2 = new Player(board, Color.GREEN);
-        Player[] playerArray = new Player[] {player1, player2};
+        Player player1 = new Player(board, Color.RED_DARK, 0);
+        Player player2 = new Player(board, Color.GREEN_DARK, 1);
+        Player player3 = new Player(board, Color.ORANGE, 2);
+        Player player4 = new Player(board, Color.PINK, 3);
+        Player[] playerArray = new Player[] {player1, player2, player3, player4};
         this.game = new Game(board, playerArray);
 
         // Set the camera position (View matrix)
         Matrix.setLookAtM(mViewMatrix, 0,
-                0f, -4f, -2f, //eye
+                0f, -8f, 6f, //eye
                 0f, 0f, 0f, // center
-                0f, 1.0f, 0.0f // eye vertical
+                0f, -1.0f, 0.0f // eye vertical
         );
 
     }
@@ -263,9 +265,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // this projection matrix is applied to object coordinates
         // in the onDrawFrame() method
         Matrix.frustumM(mProjectionMatrix, 0,
-                -ratio, ratio, -1, 1, // left, right, bottom, top
+                ratio, -ratio, 1, -1, // left, right, bottom, top
                 2f, // near
-                10.0f // far
+                20.0f // far
         );
 
     }

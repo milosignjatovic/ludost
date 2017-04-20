@@ -21,12 +21,12 @@ public class BoardPosition extends AbstractObject {
     }
 
     private AbstractRenderable createBlackSquare() {
-        float a = 0.4f;
+        float a = 0.22f;
         return new Square(new float[]{
-                -a, a, 0.1f,
-                -a, -a, 0.1f,
-                a, -a, 0.1f,
-                a, a, 0.1f
+                -a, a, 0.01f,
+                -a, -a, 0.01f,
+                a, -a, 0.01f,
+                a, a, 0.01f
         }, Color.GRAY_DARK);
     }
 }
