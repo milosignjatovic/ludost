@@ -30,16 +30,8 @@ proguard/
 # Mac OS X clutter
 *.DS_Store
 
-# Intellij IDEA (see https://intellij-support.jetbrains.com/entries/23393067)
-.idea/workspace.xml
-.idea/libraries
-.idea/tasks.xml
-.idea/datasources.xml
-.idea/dataSources.ids
-.idea/markdown-navigator
-.idea/markdown-navigator.xml
-.idea/modules.xml
-.idea/misc.xml
+# Intellij IDEA (see https://intellij-support.jetbrains.com/entries/23393067)SSS
+.idea/
 
 
 # Ignore gradle files
