@@ -31,4 +31,11 @@ public class Game {
         }
     }
 
+    public void handleClickEvent(int screenWidth, int screenHeight, float touchX, float touchY, float[] viewMatrix, float[] projMatrix) {
+        this.board.handleClickEvent(screenWidth, screenHeight, touchX, touchY, viewMatrix, projMatrix);
+        this.dice.handleClickEvent(screenWidth, screenHeight, touchX, touchY, viewMatrix, projMatrix);
+        for (int i = 0; i < player.length; i++) {
+            this.player[i].handleClickEvent(screenWidth, screenHeight, touchX, touchY, viewMatrix, projMatrix);
+        }
+    }
 }

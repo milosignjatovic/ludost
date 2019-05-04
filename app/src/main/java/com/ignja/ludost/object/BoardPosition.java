@@ -29,4 +29,5 @@ public class BoardPosition extends AbstractObject {
                 a, a, 0.01f
         }, Color.GRAY_DARK);
     }
+
 }

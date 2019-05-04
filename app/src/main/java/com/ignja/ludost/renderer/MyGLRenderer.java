@@ -21,7 +21,9 @@ import javax.microedition.khronos.opengles.GL10;
 import android.content.Context;
 import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
+import android.opengl.GLU;
 import android.opengl.Matrix;
+import android.os.SystemClock;
 import android.util.Log;
 
 import com.ignja.ludost.R;
@@ -38,7 +40,9 @@ import com.ignja.ludost.util.LoggerConfig;
 import com.ignja.ludost.util.ShaderHelper;
 import com.ignja.ludost.util.TextResourceReader;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -51,6 +55,10 @@ import java.util.List;
  * </ul>
  */
 public class MyGLRenderer implements GLSurfaceView.Renderer {
+
+    public static float nearZ = 2.0f;
+    public static float farZ = 20.0f;
+
 
     private static final String TAG = "MyGLRenderer";
 
@@ -70,6 +78,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     private final float[] mViewMatrix = new float[16];
 
     private final float[] mRotationMatrix = new float[16];
+
+    private int screenWidth;
+    private int screenHeight;
 
     /**
      * Horizontal angle
@@ -151,6 +162,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         objectsList.add(object);
     }
 
+    private boolean touch = false;
+    private float touchX = 0f;
+    private float touchY = 0f;
+
     @Override
     public void onDrawFrame(GL10 unused) {
         float[] scratch = new float[16];
@@ -160,6 +175,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Calculate the projection and view transformation
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 
+
         // Draw square
         //this.draw(blueSquare, mMVPMatrix);
 
@@ -167,13 +183,20 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         // Use the following code to generate constant rotation.
         // Leave this code out when using TouchEvents.
-        //long time = SystemClock.uptimeMillis() ; // % 4000L;
-        //float angle = 0.03f * ((int) time) * 7 / 22;
+//        long time = SystemClock.uptimeMillis() ; // % 4000L;
+//        float angle = 0.03f * ((int) time) * 7 / 22;
+//        if (LoggerConfig.ON) {
+//            Log.i("AUTOROTATE", Float.toString(angle));
+//        }
         float angle = 0;
-
         Matrix.rotateM(mMVPMatrix, 0, hAngle + angle, 0, 0, 1.0f);
 
         this.game.draw(mMVPMatrix, glProgram);
+
+        if (touch) {
+            this.game.handleClickEvent(screenWidth, screenHeight, touchX, touchY, mViewMatrix, mProjectionMatrix);
+            touch = false;
+        }
     }
 
     private void clearScene() {
@@ -257,8 +280,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onSurfaceChanged(GL10 unused, int width, int height) {
+        screenWidth = width;
+        screenHeight = height;
         // Adjust the viewport based on geometry changes, such as screen rotation
         GLES30.glViewport(0, 0, width, height);
+        if (LoggerConfig.ON) {
+            Log.i("", "W: " + width + ", H: " + height);
+        }
 
         float ratio = (float) width / height;
 
@@ -266,8 +294,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // in the onDrawFrame() method
         Matrix.frustumM(mProjectionMatrix, 0,
                 ratio, -ratio, 1, -1, // left, right, bottom, top
-                2f, // near
-                20.0f // far
+                nearZ,
+                farZ
         );
 
     }
@@ -324,4 +352,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         vAngle = angle;
     }
 
+    public void handleClickEvent(float x, float y) {
+        touch = true;
+        touchX = x;
+        touchY =  y;
+        game.handleClickEvent(screenWidth, screenHeight, x, y, mViewMatrix, mMVPMatrix);
+    }
 }

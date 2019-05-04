@@ -7,7 +7,7 @@ package com.ignja.ludost.util;
 public class LoggerConfig {
 
     /**
-     * Enable aplication log
+     * Enable application log
      *
      * Set to FALSE because of
      * JNI DETECTED ERROR IN APPLICATION: input is

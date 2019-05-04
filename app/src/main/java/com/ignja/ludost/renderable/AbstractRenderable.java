@@ -27,6 +27,7 @@ public class AbstractRenderable implements RenderableInterface {
     static final int FLOAT_SIZE = 4;
 
     private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
+    public final float[] coords;
 
     private FloatBuffer colorBuffer;
 
@@ -36,6 +37,7 @@ public class AbstractRenderable implements RenderableInterface {
     // TODO Not in the object itself
 
     protected AbstractRenderable(float[] coords, float[] color, short[] drawOrder) {
+        this.coords = coords;
         if (color.length/COORDS_PER_COLOR != drawOrder.length) {
             if (LoggerConfig.ON) {
                 Log.e("D", "COLOR ERROR");

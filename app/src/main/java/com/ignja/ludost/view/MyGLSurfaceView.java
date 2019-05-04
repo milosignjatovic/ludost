@@ -58,43 +58,55 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
         float x = e.getX();
         float y = e.getY();
-
         switch (e.getAction()) {
-//            case MotionEvent.ACTION_DOWN:
-//                String m = x + " - " + y;
-//                Log.i("M", m);
+            case MotionEvent.ACTION_DOWN:
+                handleClickEvent(x, y);
+                break;
             case MotionEvent.ACTION_MOVE:
-
-                float dx = x - mPreviousX;
-                float dy = y - mPreviousY;
-                if (LoggerConfig.ON) {
-                    Log.i("DRAG", "dx: " + Float.toString(dx) + ", dy: " + Float.toString(dy));
-                }
-
-                // reverse direction of rotation above the mid-line
-                if (y > getHeight() / 2) {
-                    dx = dx * -1 ;
-                }
-
-                // reverse direction of rotation to left of the mid-line
-                //if (x < getWidth() / 2) {
-                //    dy = dy * -1 ;
-                //}
-
-                mRenderer.setHAngle(
-                        mRenderer.getHAngle() -
-                        (dx * TOUCH_SCALE_FACTOR));  // = 180.0f / 320
-
-                float yAngle = mRenderer.getVAngle() -
-                        (dy * TOUCH_SCALE_FACTOR);
-                //yAngle = (yAngle > 0) ? ((yAngle < 90) ? yAngle: 90) : 0;
-                //mRenderer.setVAngle(yAngle);
-                requestRender();
+                handleDragEvent(x, y);
+                break;
         }
 
         mPreviousX = x;
         mPreviousY = y;
         return true;
+    }
+
+    private void handleClickEvent(float x, float y) {
+        String m = x + " - " + y;
+        if (LoggerConfig.ON) {
+            Log.i("CLICK", m);
+        }
+        mRenderer.handleClickEvent(x, y);
+        requestRender();
+    }
+
+    private void handleDragEvent(float x, float y) {
+        float dx = x - mPreviousX;
+        float dy = y - mPreviousY;
+        if (LoggerConfig.ON) {
+            Log.i("DRAG", "dx: " + Float.toString(dx) + ", dy: " + Float.toString(dy));
+        }
+
+        // reverse direction of rotation above the mid-line
+        if (y > getHeight() / 2) {
+            dx = dx * -1 ;
+        }
+
+        // reverse direction of rotation to left of the mid-line
+        //if (x < getWidth() / 2) {
+        //    dy = dy * -1 ;
+        //}
+
+        mRenderer.setHAngle(
+                mRenderer.getHAngle() -
+                        (dx * TOUCH_SCALE_FACTOR));  // = 180.0f / 320
+
+        float yAngle = mRenderer.getVAngle() -
+                (dy * TOUCH_SCALE_FACTOR);
+//                yAngle = (yAngle > 0) ? ((yAngle < 90) ? yAngle: 90) : 0;
+//                mRenderer.setVAngle(yAngle);
+        requestRender();
     }
 
     public Renderer getRenderer() {

@@ -10,10 +10,12 @@ import com.ignja.ludost.renderable.Cuboid;
 
 public class Piece extends AbstractObject {
 
+
     BoardPosition boardPosition;
 
     Piece(BoardPosition boardPosition, float[] color) {
         super(new Point(boardPosition.getX(), boardPosition.getY(), 0.35f), color);
+        this.TAG = "PieceObject";
         this.object = new Cuboid(0.2f, 0.2f, 0.7f, color);
         this.moveTo(boardPosition); // Not needed here?
     }

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 public class Board extends AbstractObject {
 
+
     private static final int POSITIONS = 8;
 
     private float a = 10f;
@@ -21,6 +22,7 @@ public class Board extends AbstractObject {
 
     public Board() {
         super(Color.BLUE);
+        this.TAG = "BoardObject";
         this.object = this.createBoardSquare();
 
         // start 0

@@ -43,4 +43,10 @@ public class Player extends AbstractObject {
         }
     }
 
+    public void handleClickEvent(int screenWidth, int screenHeight, float touchX, float touchY, float[] viewMatrix, float[] projMatrix) {
+        for (Piece piece : pieces) {
+            piece.handleClickEvent(screenWidth, screenHeight, touchX, touchY, viewMatrix, projMatrix);
+        }
+    }
+
 }
