@@ -79,6 +79,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     private final float[] mRotationMatrix = new float[16];
 
+    private final float[] mModelMatrix = new float[16];
+
     private int screenWidth;
     private int screenHeight;
 
@@ -194,7 +196,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         this.game.draw(mMVPMatrix, glProgram);
 
         if (touch) {
-            this.game.handleClickEvent(screenWidth, screenHeight, touchX, touchY, mViewMatrix, mProjectionMatrix);
+            this.game.handleClickEvent(screenWidth, screenHeight, touchX, touchY, mViewMatrix, mProjectionMatrix, hAngle + angle);
             touch = false;
         }
     }
@@ -356,6 +358,5 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         touch = true;
         touchX = x;
         touchY =  y;
-        game.handleClickEvent(screenWidth, screenHeight, x, y, mViewMatrix, mMVPMatrix);
     }
 }

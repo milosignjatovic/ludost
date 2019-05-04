@@ -1,11 +1,5 @@
 package com.ignja.ludost.object;
 
-import android.opengl.Matrix;
-import android.renderscript.Matrix4f;
-
-import com.ignja.ludost.util.Color;
-import com.ignja.ludost.renderer.ObjectRenderer;
-
 import java.util.ArrayList;
 
 /**
@@ -43,9 +37,9 @@ public class Player extends AbstractObject {
         }
     }
 
-    public void handleClickEvent(int screenWidth, int screenHeight, float touchX, float touchY, float[] viewMatrix, float[] projMatrix) {
+    public void handleClickEvent(int screenWidth, int screenHeight, float touchX, float touchY, float[] viewMatrix, float[] projMatrix, float hAngle) {
         for (Piece piece : pieces) {
-            piece.handleClickEvent(screenWidth, screenHeight, touchX, touchY, viewMatrix, projMatrix);
+            piece.handleClickEvent(screenWidth, screenHeight, touchX, touchY, viewMatrix, projMatrix, hAngle);
         }
     }
 

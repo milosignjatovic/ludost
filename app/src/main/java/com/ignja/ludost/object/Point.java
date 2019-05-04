@@ -32,5 +32,9 @@ public class Point {
         this.z = z;
     }
 
+    public float[] toArray() {
+        return new float[]{x, y, z, 1};
+    }
+
 
 }

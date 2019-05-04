@@ -147,4 +147,11 @@ public class Board extends AbstractObject {
         boardPosition.draw(mvpMatrix, glProgram);
     }
 
+    public void handleClickEvent(int screenWidth, int screenHeight, float touchX, float touchY, float[] viewMatrix, float[] projMatrix, float hAngle) {
+        super.handleClickEvent(screenWidth, screenHeight, touchX, touchY, viewMatrix, projMatrix, hAngle);
+        for (BoardPosition boardPosition : boardPositions) {
+            boardPosition.handleClickEvent(screenWidth, screenHeight, touchX, touchY, viewMatrix, projMatrix, hAngle);
+        }
+    }
+
 }

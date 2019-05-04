@@ -15,7 +15,7 @@ public class BoardPosition extends AbstractObject {
     Board board;
 
     public BoardPosition(Board board, float x, float y) {
-        super(new Point(x, y), Color.GRAY_DARK);
+        super(new Point(x, y));
         this.object = createBlackSquare();
         this.board = board;
     }

@@ -18,6 +18,7 @@ package com.ignja.ludost.activity;
 import android.app.Activity;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.view.WindowManager;
 
 import com.ignja.ludost.renderer.MyGLRenderer;
 import com.ignja.ludost.view.MyGLSurfaceView;
@@ -29,7 +30,9 @@ public class OpenGLESActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        // Hide Title bar (GL in full screen)
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         // Create a GLSurfaceView instance and set it
         // as the ContentView for this Activity
         MyGLRenderer mRenderer = new MyGLRenderer(this);

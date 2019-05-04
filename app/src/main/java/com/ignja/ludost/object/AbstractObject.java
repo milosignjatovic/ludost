@@ -5,11 +5,8 @@ import android.opengl.Matrix;
 import android.util.Log;
 
 import com.ignja.ludost.renderable.AbstractRenderable;
-import com.ignja.ludost.renderable.Cube;
 import com.ignja.ludost.renderer.ObjectRenderer;
 import com.ignja.ludost.util.Color;
-
-import java.util.Random;
 
 /**
  * Created by Ignja on 4/4/17.
@@ -37,8 +34,10 @@ abstract class AbstractObject {
      */
     private String name;
 
+    private float[] color;
+
     AbstractObject(float[] color) {
-        this.object = new Cube(0.2f, color);
+        this.color = color;
         this.point = new Point();
         this.name = "";
     }
@@ -79,76 +78,73 @@ abstract class AbstractObject {
         }
     }
 
-    public void handleClickEvent(int screenWidth, int screenHeight, float touchX, float touchY, float[] viewMatrix, float[] projMatrix) {
-        this.rayPicking(screenWidth, screenHeight, touchX, touchY, viewMatrix, projMatrix);
+    public void handleClickEvent(int screenWidth, int screenHeight, float touchX, float touchY, float[] viewMatrix, float[] projMatrix, float hAngle) {
+        this.rayPicking(screenWidth, screenHeight, touchX, touchY, viewMatrix, projMatrix, hAngle);
     }
 
-    /**
-     * TODO Rotation is not included in math
-     * TODO More than one triangle hit ;)
-     */
-    public void rayPicking(int viewWidth, int viewHeight, float rx, float ry, float[] viewMatrix, float[] projMatrix) {
+    public void rayPicking(int viewWidth, int viewHeight, float rx, float ry, float[] viewMatrix, float[] projMatrix, float hAngle) {
+        if (this.object != null) {
+            float [] near_xyz = unProject(rx, ry, 0, viewMatrix, projMatrix, viewWidth, viewHeight);
+            float [] far_xyz = unProject(rx, ry, 1, viewMatrix, projMatrix, viewWidth, viewHeight);
+            float[] vertices;
+            vertices = this.object.coords;
 
-        float [] near_xyz = unProject(rx, ry, 0, viewMatrix, projMatrix, viewWidth, viewHeight);
-        float [] far_xyz = unProject(rx, ry, 1, viewMatrix, projMatrix, viewWidth, viewHeight);
+            float[] tmpMatrix;
+            tmpMatrix = viewMatrix.clone();
+            Matrix.rotateM(tmpMatrix, 0, hAngle, 0, 0, 1.0f);
+            Matrix.translateM(tmpMatrix, 0, getX(), getY(), getZ());
+            short[] drawOrder = this.object.getDrawOrder();
+            for (int i = 0; i < drawOrder.length/3; i++) {
+                float[] resultVector = new float[4];
+                float[] inputVector = new float[4];
 
-        float[] vertices;
-        vertices = this.object.coords;
+                // A
+                inputVector[0] = vertices[drawOrder[3*i]*3];
+                inputVector[1] = vertices[drawOrder[3*i]*3+1];
+                inputVector[2] = vertices[drawOrder[3*i]*3+2];
+                inputVector[3] = 1;
+                Matrix.multiplyMV(resultVector, 0, tmpMatrix, 0, inputVector,0);
+                float[] a = new float[3];
+                a[0] = resultVector[0]/resultVector[3];
+                a[1] = resultVector[1]/resultVector[3];
+                a[2] = resultVector[2]/resultVector[3];
 
-        int coordCount = vertices.length;
-        short[] drawOrder = this.object.getDrawOrder();
-        float[] convertedSquare = new float[coordCount];
+                // B
+                inputVector[0] = vertices[drawOrder[3*i+1]*3];
+                inputVector[1] = vertices[drawOrder[3*i+1]*3+1];
+                inputVector[2] = vertices[drawOrder[3*i+1]*3+2];
+                inputVector[3] = 1;
+                Matrix.multiplyMV(resultVector, 0, tmpMatrix, 0, inputVector,0);
+                float[] b = new float[3];
+                b[0] = resultVector[0]/resultVector[3];
+                b[1] = resultVector[1]/resultVector[3];
+                b[2] = resultVector[2]/resultVector[3];
 
-        // foreach triangle in object (3 vertices for 1 triangle)
-        for (int i = 0; i < drawOrder.length/3; i++) {
-            float[] resultVector = new float[4];
-            float[] inputVector = new float[4];
-            // A
-            inputVector[0] = vertices[drawOrder[3*i]*3];
-            inputVector[1] = vertices[drawOrder[3*i]*3+1];
-            inputVector[2] = vertices[drawOrder[3*i]*3+2];
-            inputVector[3] = 1;
-            Matrix.multiplyMV(resultVector, 0, viewMatrix, 0, inputVector,0);
-            float[] a = new float[3];
-            a[0] = resultVector[0]/resultVector[3];
-            a[1] = resultVector[1]/resultVector[3];
-            a[2] = resultVector[2]/resultVector[3];
-
-            // B
-            inputVector[0] = vertices[drawOrder[3*i+1]*3];
-            inputVector[1] = vertices[drawOrder[3*i+1]*3+1];
-            inputVector[2] = vertices[drawOrder[3*i+1]*3+2];
-            inputVector[3] = 1;
-            Matrix.multiplyMV(resultVector, 0, viewMatrix, 0, inputVector,0);
-            float[] b = new float[3];
-            b[0] = resultVector[0]/resultVector[3];
-            b[1] = resultVector[1]/resultVector[3];
-            b[2] = resultVector[2]/resultVector[3];
-
-            // C
-            inputVector[0] = vertices[drawOrder[3*i+2]*3];
-            inputVector[1] = vertices[drawOrder[3*i+2]*3+1];
-            inputVector[2] = vertices[drawOrder[3*i+2]*3+2];
-            inputVector[3] = 1;
-            Matrix.multiplyMV(resultVector, 0, viewMatrix, 0, inputVector,0);
-            float[] c = new float[3];
-            c[0] = resultVector[0]/resultVector[3];
-            c[1] = resultVector[1]/resultVector[3];
-            c[2] = resultVector[2]/resultVector[3];
+                // C
+                inputVector[0] = vertices[drawOrder[3*i+2]*3];
+                inputVector[1] = vertices[drawOrder[3*i+2]*3+1];
+                inputVector[2] = vertices[drawOrder[3*i+2]*3+2];
+                inputVector[3] = 1;
+                Matrix.multiplyMV(resultVector, 0, tmpMatrix, 0, inputVector,0);
+                float[] c = new float[3];
+                c[0] = resultVector[0]/resultVector[3];
+                c[1] = resultVector[1]/resultVector[3];
+                c[2] = resultVector[2]/resultVector[3];
 
 
-            Triangle t1 = new Triangle(
-                    new float[] {a[0], a[1], a[2]},
-                    new float[] {b[0], b[1], b[2]},
-                    new float[] {c[0], c[1], c[2]});
+                Triangle t1 = new Triangle(
+                        new float[] {a[0], a[1], a[2]},
+                        new float[] {b[0], b[1], b[2]},
+                        new float[] {c[0], c[1], c[2]});
 
-            float[] intersectionPoint = new float[3];
-            int intersects1 = Triangle.intersectRayAndTriangle(near_xyz, far_xyz, t1, intersectionPoint);
+                float[] intersectionPoint = new float[3];
+                int intersects1 = Triangle.intersectRayAndTriangle(near_xyz, far_xyz, t1, intersectionPoint);
 
-            if (intersects1 == 1 || intersects1 == 2) {
-                Log.d(TAG, "HIT  " + name);
+                if (intersects1 == 1 || intersects1 == 2) {
+                    Log.d(TAG, "HIT  " + this + "; Removing object...");
+                    this.object = null;
+                }
             }
-
         }
 
     }
