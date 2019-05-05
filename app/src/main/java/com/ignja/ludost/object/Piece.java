@@ -22,6 +22,7 @@ public class Piece extends AbstractObject {
 
     public void moveTo(BoardPosition boardPosition) {
         this.boardPosition = boardPosition;
+        this.setPoint(new Point(boardPosition.getX(), boardPosition.getY(), 0.35f));
     }
 
 }

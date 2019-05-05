@@ -30,6 +30,10 @@ public class Player extends AbstractObject {
         pieces.add(new Piece(this.board.getPosition(positionIndex), this.color));
     }
 
+    public ArrayList<Piece> getPieces() {
+        return pieces;
+    }
+
     public void draw(float[] mvpMatrix, int glProgram) {
         super.draw(mvpMatrix, glProgram);
         for (Piece piece : pieces) {

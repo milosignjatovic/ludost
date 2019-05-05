@@ -20,8 +20,8 @@ import android.opengl.GLSurfaceView;
 import android.util.Log;
 import android.view.MotionEvent;
 
-import com.ignja.ludost.renderer.MyGLRenderer;
 import com.ignja.ludost.util.LoggerConfig;
+import com.ignja.ludost.util.Shared;
 
 /**
  * A view container where OpenGL ES graphics can be drawn on screen.
@@ -30,18 +30,15 @@ import com.ignja.ludost.util.LoggerConfig;
  */
 public class MyGLSurfaceView extends GLSurfaceView {
 
-    private final MyGLRenderer mRenderer;
-
-    public MyGLSurfaceView(Context context, MyGLRenderer renderer) {
+    public MyGLSurfaceView(Context context) {
         super(context);
-        mRenderer = renderer;
         // Create an OpenGL ES 2.0 context.
         setEGLContextClientVersion(2);
         //fix for error No Config chosen, but I don't know what this does.
         super.setEGLConfigChooser(8 , 8, 8, 8, 16, 0);
         // Set the Renderer for drawing on the GLSurfaceView
         //mRenderer = new MyGLRenderer();
-        setRenderer(mRenderer);
+        setRenderer(Shared.renderer());
 
     }
 
@@ -77,7 +74,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
         if (LoggerConfig.ON) {
             Log.i("CLICK", m);
         }
-        mRenderer.handleClickEvent(x, y);
+        Shared.renderer().handleClickEvent(x, y);
         requestRender();
     }
 
@@ -98,11 +95,11 @@ public class MyGLSurfaceView extends GLSurfaceView {
         //    dy = dy * -1 ;
         //}
 
-        mRenderer.setHAngle(
-                mRenderer.getHAngle() -
+        Shared.renderer().setHAngle(
+                Shared.renderer().getHAngle() -
                         (dx * TOUCH_SCALE_FACTOR));  // = 180.0f / 320
 
-        float yAngle = mRenderer.getVAngle() -
+        float yAngle = Shared.renderer().getVAngle() -
                 (dy * TOUCH_SCALE_FACTOR);
 //                yAngle = (yAngle > 0) ? ((yAngle < 90) ? yAngle: 90) : 0;
 //                mRenderer.setVAngle(yAngle);
@@ -110,7 +107,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
     }
 
     public Renderer getRenderer() {
-        return mRenderer;
+        return Shared.renderer();
     }
 
 }

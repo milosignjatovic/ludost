@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.view.WindowManager;
 
 import com.ignja.ludost.renderer.MyGLRenderer;
+import com.ignja.ludost.util.Shared;
 import com.ignja.ludost.view.MyGLSurfaceView;
 
 public class OpenGLESActivity extends Activity {
@@ -35,11 +36,13 @@ public class OpenGLESActivity extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         // Create a GLSurfaceView instance and set it
         // as the ContentView for this Activity
-        MyGLRenderer mRenderer = new MyGLRenderer(this);
-        mGLView = new MyGLSurfaceView(this, mRenderer);
+        // Shared class is used to store singletons
+        Shared.context(this);
+        Shared.renderer(new MyGLRenderer());
+        mGLView = new MyGLSurfaceView(this);
         // Render the view only when there is a change in the drawing data
-        mGLView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
-        //mGLView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
+        //mGLView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+        mGLView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
         setContentView(mGLView);
     }
 

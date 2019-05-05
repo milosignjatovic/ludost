@@ -12,12 +12,13 @@ import com.ignja.ludost.util.Color;
 
 public class BoardPosition extends AbstractObject {
 
-    Board board;
+    private Board board;
 
     public BoardPosition(Board board, float x, float y) {
         super(new Point(x, y));
+        this.TAG = "BoardPosition";
         this.object = createBlackSquare();
-        this.board = board;
+        this.setParent(board);
     }
 
     private AbstractRenderable createBlackSquare() {

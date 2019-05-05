@@ -4,16 +4,21 @@ import android.opengl.GLU;
 import android.opengl.Matrix;
 import android.util.Log;
 
+import com.ignja.ludost.core.Scene;
 import com.ignja.ludost.renderable.AbstractRenderable;
+import com.ignja.ludost.renderable.Triangle;
 import com.ignja.ludost.renderer.ObjectRenderer;
 import com.ignja.ludost.util.Color;
+import com.ignja.ludost.util.Utils;
+
+import java.util.Arrays;
 
 /**
  * Created by Ignja on 4/4/17.
  *
  */
 
-abstract class AbstractObject {
+public abstract class AbstractObject {
 
     protected String TAG = "AbstractObject";
 
@@ -24,10 +29,20 @@ abstract class AbstractObject {
      */
     private Point point;
 
+    private Scene scene;
+
+    private AbstractObject parent;
+
     /**
      * Renderable. TODO ArrayList? (more than one renderable in single object)
      */
-    protected AbstractRenderable object;
+    public AbstractRenderable object;
+
+    protected boolean isClicked = false;
+
+    protected float[] intersectionPoint;
+
+    protected float distance;
 
     /**
      * Object name
@@ -35,6 +50,12 @@ abstract class AbstractObject {
     private String name;
 
     private float[] color;
+
+    public AbstractObject() {
+        this.color = Color.ORANGE;
+        this.point = new Point();
+        this.name = "";
+    }
 
     AbstractObject(float[] color) {
         this.color = color;
@@ -82,7 +103,7 @@ abstract class AbstractObject {
         this.rayPicking(screenWidth, screenHeight, touchX, touchY, viewMatrix, projMatrix, hAngle);
     }
 
-    public void rayPicking(int viewWidth, int viewHeight, float rx, float ry, float[] viewMatrix, float[] projMatrix, float hAngle) {
+    private void rayPicking(int viewWidth, int viewHeight, float rx, float ry, float[] viewMatrix, float[] projMatrix, float hAngle) {
         if (this.object != null) {
             float [] near_xyz = unProject(rx, ry, 0, viewMatrix, projMatrix, viewWidth, viewHeight);
             float [] far_xyz = unProject(rx, ry, 1, viewMatrix, projMatrix, viewWidth, viewHeight);
@@ -131,25 +152,49 @@ abstract class AbstractObject {
                 c[1] = resultVector[1]/resultVector[3];
                 c[2] = resultVector[2]/resultVector[3];
 
-
                 Triangle t1 = new Triangle(
                         new float[] {a[0], a[1], a[2]},
                         new float[] {b[0], b[1], b[2]},
                         new float[] {c[0], c[1], c[2]});
 
                 float[] intersectionPoint = new float[3];
-                int intersects1 = Triangle.intersectRayAndTriangle(near_xyz, far_xyz, t1, intersectionPoint);
-
+                int intersects1 = Utils.intersectRayAndTriangle(near_xyz, far_xyz, t1, intersectionPoint);
                 if (intersects1 == 1 || intersects1 == 2) {
-                    Log.d(TAG, "HIT  " + this + "; Removing object...");
-                    this.object = null;
+                    // TODO Eye object instead of constants?
+                    float distance = (float) Math.sqrt(
+                        (intersectionPoint[0]-0f)*(intersectionPoint[0]-0f)
+                            + (intersectionPoint[1]-8f)*(intersectionPoint[1]-8f)
+                            + (intersectionPoint[2]-6f)*(intersectionPoint[2]-6f)
+                    );
+                    this.click();
+                    this.distance = distance;
+                    this.intersectionPoint = intersectionPoint;
+                    Log.d(TAG, "HIT  " + this
+                            + " Intersection point: " + Arrays.toString(intersectionPoint)
+                            + ", Distance: " + distance);
                 }
             }
         }
 
     }
 
-    private  float[] unProject( float xTouch, float yTouch, float winz,
+    public float getClickDistance() {
+        return this.distance;
+    }
+
+    public boolean isClicked() {
+        return isClicked;
+    }
+
+    public void click() {
+        this.isClicked = true;
+    }
+
+    public void unclick() {
+        this.isClicked = false;
+    }
+
+    private float[] unProject( float xTouch, float yTouch, float winz,
                                 float[] viewMatrix,
                                 float[] projMatrix,
                                 int width, int height) {
@@ -173,4 +218,19 @@ abstract class AbstractObject {
         return out;
     }
 
+    public void setParent(AbstractObject parent) {
+        this.parent = parent;
+    }
+
+    public void setScene(Scene scene) {
+        this.scene = scene;
+    }
+
+    public void setPoint(Point point) {
+        this.point = point;
+    }
+
+    public Point getPoint() {
+        return point;
+    }
 }

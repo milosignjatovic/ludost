@@ -28,6 +28,7 @@ import android.util.Log;
 
 import com.ignja.ludost.R;
 
+import com.ignja.ludost.core.Scene;
 import com.ignja.ludost.object.Board;
 import com.ignja.ludost.logic.Game;
 import com.ignja.ludost.object.Player;
@@ -38,6 +39,7 @@ import com.ignja.ludost.renderable.Square;
 import com.ignja.ludost.renderable.Triangle;
 import com.ignja.ludost.util.LoggerConfig;
 import com.ignja.ludost.util.ShaderHelper;
+import com.ignja.ludost.util.Shared;
 import com.ignja.ludost.util.TextResourceReader;
 
 import java.lang.reflect.Array;
@@ -94,18 +96,19 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
      */
     private float vAngle;
 
-    private final Context context;
+    //private final Context context;
 
     private int glProgram;
 
-    /**
-     * Game game
-     */
-    private Game game;
 
-    public MyGLRenderer(Context context) {
-        this.context = context;
-    }
+    /**
+     * Scene
+     */
+    private Scene scene;
+
+//    public MyGLRenderer(Context context) {
+//        this.context = context;
+//    }
 
     @Override
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
@@ -113,9 +116,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         objectsList = new ArrayList<>();
 
         String vertexShaderSource = TextResourceReader
-                .readTextFileFromResource(context, R.raw.vertex_shader);
+                .readTextFileFromResource(Shared.context(), R.raw.vertex_shader);
         String fragmentShaderSource = TextResourceReader
-                .readTextFileFromResource(context, R.raw.fragment_shader);
+                .readTextFileFromResource(Shared.context(), R.raw.fragment_shader);
 
         int vertexShader = ShaderHelper.compileVertexShader(vertexShaderSource);
         int fragmentShader = ShaderHelper.compileFragmentShader(fragmentShaderSource);
@@ -135,21 +138,15 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES30.glDepthFunc(GLES30.GL_LEQUAL);
         GLES30.glDisable(GLES30.GL_CULL_FACE);
 
-        //addObject(createBlueSquare());
-        //addObject(createGreenTriangle());
-        //addObject(createBlueDarkSquare());
-        //addObject(createRedTriangle());
-        //addObject(createYellowTriangle());
-        //addObject(createPinkCube());
-
-
         Board board = new Board();
         Player player1 = new Player(board, Color.RED_DARK, 0);
         Player player2 = new Player(board, Color.GREEN_DARK, 1);
         Player player3 = new Player(board, Color.ORANGE, 2);
         Player player4 = new Player(board, Color.PINK, 3);
         Player[] playerArray = new Player[] {player1, player2, player3, player4};
-        this.game = new Game(board, playerArray);
+        this.scene = new Scene();
+        Game game = new Game(board, playerArray);
+        this.scene.setGame(game);
 
         // Set the camera position (View matrix)
         Matrix.setLookAtM(mViewMatrix, 0,
@@ -193,10 +190,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         float angle = 0;
         Matrix.rotateM(mMVPMatrix, 0, hAngle + angle, 0, 0, 1.0f);
 
-        this.game.draw(mMVPMatrix, glProgram);
+        this.scene.getGame().draw(mMVPMatrix, glProgram);
 
         if (touch) {
-            this.game.handleClickEvent(screenWidth, screenHeight, touchX, touchY, mViewMatrix, mProjectionMatrix, hAngle + angle);
+            this.scene.handleClickEvent(screenWidth, screenHeight, touchX, touchY, mViewMatrix, mProjectionMatrix, hAngle + angle);
             touch = false;
         }
     }
@@ -212,61 +209,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         // Draw background color
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);
-    }
-
-    private Cube createPinkCube() {
-        return new Cube(0.3f, Color.GRAY_LIGHT);
-    }
-
-    private AbstractRenderable createYellowTriangle() {
-        float yellowTriangleCoords[] = {
-                -1.0f,  0.5f, 2.0f,   // top
-                -1.0f, -0.5f, 2.0f,   // bottom left
-                -0.5f, 0.5f, 2.0f    // bottom right
-        };
-
-        return new Triangle(yellowTriangleCoords, Color.YELLOW);
-    }
-
-    private AbstractRenderable createBlueDarkSquare() {
-        float a = 4.0f;
-        return new Square(new float[]{
-                -a, a, 0.25f,
-                -a, -a, 0.25f,
-                a, -a, 0.25f,
-                a, a, 0.25f,
-        }, Color.BLUE_DARK);
-    }
-
-    private Triangle createRedTriangle() {
-        float mi3Coords[] = {
-                // in counterclockwise order:
-                0.0f,  0.0f, 0.3f,   // top
-                0.0f, -1f, 0.3f,   // bottom left
-                1f, 0f, 0.3f    // bottom right
-        };
-
-        return new Triangle(mi3Coords, Color.RED);
-    }
-
-    private AbstractRenderable createBlueSquare() {
-        float squareCoords[] = {
-                -0.5f,  0.5f, 0f,   // top left
-                -0.5f, -0.5f, 0f,   // bottom left
-                0.5f, -0.5f, 0f,   // bottom right
-                0.5f,  0.5f, 0f }; // top right
-        return new Square(squareCoords, Color.BLUE);
-    }
-
-    private AbstractRenderable createGreenTriangle() {
-        float triangleCoords[] = {
-                // in counterclockwise order:
-                -0.2f,  0f, -1.0f,   // top
-                0f, -0.2f, -1.0f,   // bottom left
-                0.2f, -0f, -1.0f    // bottom right
-        };
-
-        return new Triangle(triangleCoords, Color.GREEN);
     }
 
     /**

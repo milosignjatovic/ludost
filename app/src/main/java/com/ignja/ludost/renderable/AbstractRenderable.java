@@ -27,6 +27,7 @@ public class AbstractRenderable implements RenderableInterface {
     static final int FLOAT_SIZE = 4;
 
     private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
+
     public final float[] coords;
 
     private FloatBuffer colorBuffer;
