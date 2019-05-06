@@ -1,10 +1,14 @@
 package com.ignja.ludost.statemachine;
 
+import java.util.concurrent.Executor;
+
 /**
  * Created by milos on 5/6/19.
  */
 public class FlowBuilder<C extends StatefulContext> {
     private State<C> startState;
+
+    private Executor executor;
 
     protected FlowBuilder(State<C> startState) {
         this.startState = startState;
@@ -37,5 +41,9 @@ public class FlowBuilder<C extends StatefulContext> {
 
     public static <C extends StatefulContext> State<C> state() {
         return new State<C>();
+    }
+
+    protected void execute(Runnable task) {
+        executor.execute(task);
     }
 }

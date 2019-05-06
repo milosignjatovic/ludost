@@ -14,23 +14,25 @@ public class State<C extends StatefulContext> {
     private String name;
     private Map<Event, State> transitions = new HashMap<Event, State>();
 
-    private StateHandler onEnterHandler;
-    private StateHandler onLeaveHandler;
+    private StateMachine<C> runner;
+
+    private StateHandler<C> onEnterHandler;
+    private StateHandler<C> onLeaveHandler;
 
     public State() {
-        this.name = "State+" + (idCounter++);
+        this.name = "State_" + (idCounter++);
     }
 
     public State(String name) {
         this.name = name;
     }
 
-    public State whenEnter(StateHandler onEnterHandler) {
+    public State<C> whenEnter(StateHandler<C> onEnterHandler) {
         this.onEnterHandler = onEnterHandler;
         return this;
     }
 
-    public State whenLeave(StateHandler onLeaveHandler) {
+    public State<C> whenLeave(StateHandler<C> onLeaveHandler) {
         this.onLeaveHandler = onLeaveHandler;
         return this;
     }
@@ -63,12 +65,31 @@ public class State<C extends StatefulContext> {
         return name;
     }
 
-    protected void enter() throws Exception {
-        onEnterHandler.call(this);
+    protected void enter(final C context) {
+        try {
+            onEnterHandler.call(State.this, context);
+        } catch (Exception e) {
+            // TODO
+        }
     }
 
-    protected void leave() throws Exception {
-        // TODO try catch
-        onLeaveHandler.call(this);
+    protected void leave(final C context) {
+        try {
+            onLeaveHandler.call(State.this, context);
+        } catch (Exception e) {
+            // TODO
+        }
+    }
+
+    protected void setStateMachine(StateMachine<C> runner) {
+        this.runner = runner;
+        for (Event<C> event : transitions.keySet()) {
+            event.setStateMachine(runner);
+        }
+        for (State<C> nextState : transitions.values()) {
+            if (nextState.runner == null) {
+                nextState.setStateMachine(runner);
+            }
+        }
     }
 }

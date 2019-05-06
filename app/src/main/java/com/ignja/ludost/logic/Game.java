@@ -1,6 +1,5 @@
 package com.ignja.ludost.logic;
 
-import android.opengl.Matrix;
 import android.util.Log;
 
 import com.ignja.ludost.object.AbstractObject;
@@ -8,7 +7,6 @@ import com.ignja.ludost.object.Board;
 import com.ignja.ludost.object.Dice;
 import com.ignja.ludost.object.Piece;
 import com.ignja.ludost.object.Player;
-import com.ignja.ludost.renderer.ObjectRenderer;
 import com.ignja.ludost.statemachine.*;
 
 import java.util.ArrayList;
@@ -45,11 +43,12 @@ public class Game extends AbstractObject {
     private final Event<GameFlowContext> onExit = FlowBuilder.event();
     private final Event<GameFlowContext> onPlayerSelected = FlowBuilder.event();
     private final Event<GameFlowContext> onPieceSelected = FlowBuilder.event();
-    private final Event<GameFlowContext> onDiceClcik = FlowBuilder.event();
+    private final Event<GameFlowContext> onDiceClick = FlowBuilder.event();
 
     private StateMachine<GameFlowContext> flow;
 
     public Game(Board board, Player[] player) {
+        this.TAG = "GAME LOGIC";
         this.dice = new Dice();
         this.dice.setParent(this);
         this.board = board;
@@ -58,14 +57,63 @@ public class Game extends AbstractObject {
         for (Player p: player) {
             p.setParent(this);
         }
+        initFlow();
+        bindFlow();
+        this.flow.start(new GameFlowContext());
+    }
+
+    /**
+     * Initialize FinalStateMachine
+     */
+    private void initFlow() {
+        if (flow != null) {
+            return;
+        }
         flow = FlowBuilder.from(INIT_STATE).transit(
                 onStart.to(SELECT_PLAYER).transit(
                         onPlayerSelected.to(ROLL_DICE).transit(
-                                onPieceSelected.to(SELECT_PLAYER)
+                                onDiceClick.to(SELECT_PIECE).transit(
+                                    onPieceSelected.to(SELECT_PLAYER)
+                                )
                         )
                 ),
                 onExit.to(INIT_STATE)
-        );
+        ).executor(new UIThreadExecutor());
+    }
+
+    private void bindFlow() {
+        INIT_STATE.whenEnter(new StateHandler<GameFlowContext>() {
+            @Override
+            public void call(State<GameFlowContext> state, GameFlowContext context) throws Exception {
+                Log.i(TAG, "INIT_STATE entered");
+                onStart.trigger(context);
+            }
+        }).whenLeave(new StateHandler<GameFlowContext>() {
+            @Override
+            public void call(State<GameFlowContext> state, GameFlowContext context) throws Exception {
+                Log.i(TAG, "INIT_STATE exited");
+            }
+        });
+        SELECT_PLAYER.whenEnter(new StateHandler<GameFlowContext>() {
+            @Override
+            public void call(State<GameFlowContext> state, GameFlowContext context) throws Exception {
+                Log.i(TAG, "SELECT PLAYER entered");
+            }
+        });
+        ROLL_DICE.whenEnter(new StateHandler<GameFlowContext>() {
+            @Override
+            public void call(State<GameFlowContext> state, GameFlowContext context) throws Exception {
+                Log.i(TAG, "ROLL_DICE entered");
+            }
+        });
+        onDiceClick.whenTriggered(new EventHandler<GameFlowContext>() {
+            @Override
+            public void call(Event<GameFlowContext> event, State<GameFlowContext> from, State<GameFlowContext> to, GameFlowContext context) throws Exception {
+                int diceResult = (int)(Math.random()*6) + 1;
+                Log.i(TAG, "Dice rolled: " + diceResult);
+            }
+        });
+
     }
 
     public void draw(float[] mvpMatrix, int glProgram) {
@@ -93,13 +141,19 @@ public class Game extends AbstractObject {
                 }
             }
         }
-        Log.i("CLICKED OBJECTS: ", String.valueOf(clickedObjects));
+        Log.i("CLICKED OBJECTS", String.valueOf(clickedObjects));
         if (nearestHit != null) {
-            Log.i("NEAREST HIT!!!: ", nearestHit.toString());
+            Log.i("NEAREST HIT", nearestHit.toString());
             if (nearestHit instanceof Piece) {
                 //nearestHit.object = null;
                 double randomPosition = Math.random() * 72;
                 ((Piece) nearestHit).moveTo(this.board.getPosition((int)randomPosition));
+            } else if (nearestHit instanceof Dice) {
+                try {
+                    onDiceClick.trigger(this.flow.getContext());
+                } catch (Exception e) {
+                    // TODO
+                }
             }
         }
     }

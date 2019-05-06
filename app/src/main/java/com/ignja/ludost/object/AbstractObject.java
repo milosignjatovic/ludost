@@ -169,7 +169,7 @@ public abstract class AbstractObject {
                     this.click();
                     this.distance = distance;
                     this.intersectionPoint = intersectionPoint;
-                    Log.d(TAG, "HIT  " + this
+                    Log.d(TAG, "HIT " + this
                             + " Intersection point: " + Arrays.toString(intersectionPoint)
                             + ", Distance: " + distance);
                 }
