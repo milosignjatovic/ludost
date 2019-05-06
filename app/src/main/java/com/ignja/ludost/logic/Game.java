@@ -9,6 +9,7 @@ import com.ignja.ludost.object.Dice;
 import com.ignja.ludost.object.Piece;
 import com.ignja.ludost.object.Player;
 import com.ignja.ludost.renderer.ObjectRenderer;
+import com.ignja.ludost.statemachine.*;
 
 import java.util.ArrayList;
 
@@ -25,6 +26,29 @@ public class Game extends AbstractObject {
 
     private Dice dice;
 
+    private static class GameFlowContext extends StatefulContext {
+        private String info = "Pomozi boze";
+    }
+
+    /**
+     * Ludost game states
+     */
+    private final State<GameFlowContext> INIT_STATE = FlowBuilder.state();
+    private final State<GameFlowContext> SELECT_PLAYER = FlowBuilder.state();
+    private final State<GameFlowContext> ROLL_DICE = FlowBuilder.state();
+    private final State<GameFlowContext> SELECT_PIECE = FlowBuilder.state();
+
+    /**
+     * Ludost game events
+     */
+    private final Event<GameFlowContext> onStart = FlowBuilder.event();
+    private final Event<GameFlowContext> onExit = FlowBuilder.event();
+    private final Event<GameFlowContext> onPlayerSelected = FlowBuilder.event();
+    private final Event<GameFlowContext> onPieceSelected = FlowBuilder.event();
+    private final Event<GameFlowContext> onDiceClcik = FlowBuilder.event();
+
+    private StateMachine<GameFlowContext> flow;
+
     public Game(Board board, Player[] player) {
         this.dice = new Dice();
         this.dice.setParent(this);
@@ -34,6 +58,14 @@ public class Game extends AbstractObject {
         for (Player p: player) {
             p.setParent(this);
         }
+        flow = FlowBuilder.from(INIT_STATE).transit(
+                onStart.to(SELECT_PLAYER).transit(
+                        onPlayerSelected.to(ROLL_DICE).transit(
+                                onPieceSelected.to(SELECT_PLAYER)
+                        )
+                ),
+                onExit.to(INIT_STATE)
+        );
     }
 
     public void draw(float[] mvpMatrix, int glProgram) {
