@@ -1,6 +1,8 @@
 package com.ignja.ludost.object;
 
-import com.ignja.gles.renderable.Cuboid;
+import com.ignja.gl.object.AbstractObject;
+import com.ignja.gl.object.Point;
+import com.ignja.gl.renderable.Cuboid;
 
 /**
  * Created by milos on 4/4/17.

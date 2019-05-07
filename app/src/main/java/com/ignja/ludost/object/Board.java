@@ -1,8 +1,9 @@
 package com.ignja.ludost.object;
 
-import com.ignja.gles.renderable.AbstractRenderable;
-import com.ignja.ludost.util.Color;
-import com.ignja.gles.renderable.Square;
+import com.ignja.gl.object.AbstractObject;
+import com.ignja.gl.renderable.AbstractRenderable;
+import com.ignja.gl.util.Color;
+import com.ignja.gl.renderable.Square;
 
 import java.util.ArrayList;
 
@@ -147,10 +148,10 @@ public class Board extends AbstractObject {
         boardPosition.draw(mvpMatrix, glProgram);
     }
 
-    public void handleClickEvent(int screenWidth, int screenHeight, float touchX, float touchY, float[] viewMatrix, float[] projMatrix, float hAngle) {
-        super.handleClickEvent(screenWidth, screenHeight, touchX, touchY, viewMatrix, projMatrix, hAngle);
+    public void handleClickEvent(int screenWidth, int screenHeight, float touchX, float touchY, float[] viewMatrix, float[] projectionMatrix, float hAngle) {
+        super.handleClickEvent(screenWidth, screenHeight, touchX, touchY, viewMatrix, projectionMatrix, hAngle);
         for (BoardPosition boardPosition : boardPositions) {
-            boardPosition.handleClickEvent(screenWidth, screenHeight, touchX, touchY, viewMatrix, projMatrix, hAngle);
+            boardPosition.handleClickEvent(screenWidth, screenHeight, touchX, touchY, viewMatrix, projectionMatrix, hAngle);
         }
     }
 

@@ -1,7 +1,9 @@
 package com.ignja.ludost.object;
 
-import com.ignja.ludost.util.Color;
-import com.ignja.gles.renderable.Cube;
+import com.ignja.gl.object.AbstractObject;
+import com.ignja.gl.object.Point;
+import com.ignja.gl.util.Color;
+import com.ignja.gl.renderable.Cube;
 
 /**
  * Created by Ignja on 01/02/17.

@@ -1,5 +1,7 @@
 package com.ignja.ludost.object;
 
+import com.ignja.gl.object.AbstractObject;
+
 import java.util.ArrayList;
 
 /**
@@ -41,9 +43,9 @@ public class Player extends AbstractObject {
         }
     }
 
-    public void handleClickEvent(int screenWidth, int screenHeight, float touchX, float touchY, float[] viewMatrix, float[] projMatrix, float hAngle) {
+    public void handleClickEvent(int screenWidth, int screenHeight, float touchX, float touchY, float[] viewMatrix, float[] projectionMatrix, float hAngle) {
         for (Piece piece : pieces) {
-            piece.handleClickEvent(screenWidth, screenHeight, touchX, touchY, viewMatrix, projMatrix, hAngle);
+            piece.handleClickEvent(screenWidth, screenHeight, touchX, touchY, viewMatrix, projectionMatrix, hAngle);
         }
     }
 

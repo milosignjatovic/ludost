@@ -1,8 +1,10 @@
 package com.ignja.ludost.object;
 
-import com.ignja.gles.renderable.AbstractRenderable;
-import com.ignja.gles.renderable.Square;
-import com.ignja.ludost.util.Color;
+import com.ignja.gl.object.AbstractObject;
+import com.ignja.gl.object.Point;
+import com.ignja.gl.renderable.AbstractRenderable;
+import com.ignja.gl.renderable.Square;
+import com.ignja.gl.util.Color;
 
 /**
  * Created by milos on 4/4/17.

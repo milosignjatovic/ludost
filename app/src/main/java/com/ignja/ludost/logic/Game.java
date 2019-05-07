@@ -2,13 +2,14 @@ package com.ignja.ludost.logic;
 
 import android.util.Log;
 
-import com.ignja.gles.fsm.*;
-import com.ignja.ludost.object.AbstractObject;
+import com.ignja.gl.core.TextureVo;
+import com.ignja.gl.fsm.*;
+import com.ignja.gl.object.AbstractObject;
 import com.ignja.ludost.object.Board;
 import com.ignja.ludost.object.Dice;
 import com.ignja.ludost.object.Piece;
 import com.ignja.ludost.object.Player;
-import com.ignja.ludost.util.LoggerConfig;
+import com.ignja.gl.util.LoggerConfig;
 
 import java.util.ArrayList;
 
@@ -46,7 +47,7 @@ public class Game extends AbstractObject {
     private final Event<GameFlowContext> onPieceSelected = FlowBuilder.event();
     private final Event<GameFlowContext> onDiceClick = FlowBuilder.event();
 
-    private StateMachine<GameFlowContext> flow;
+    private StateMachineFlow<GameFlowContext> flow;
 
     public Game(Board board, Player[] player) {
         this.TAG = "LUDOST GAME LOGIC";
@@ -54,6 +55,10 @@ public class Game extends AbstractObject {
         this.dice.setParent(this);
         this.board = board;
         this.board.setParent(this);
+
+        TextureVo texture = new TextureVo("stonetexture");
+        this.board.addTexture(texture);
+
         this.player = player;
         for (Player p: player) {
             p.setParent(this);
@@ -125,11 +130,11 @@ public class Game extends AbstractObject {
         }
     }
 
-    public void handleClickEvent(int screenWidth, int screenHeight, float touchX, float touchY, float[] viewMatrix, float[] projMatrix, float hAngle) {
-        this.board.handleClickEvent(screenWidth, screenHeight, touchX, touchY, viewMatrix, projMatrix, hAngle);
-        this.dice.handleClickEvent(screenWidth, screenHeight, touchX, touchY, viewMatrix, projMatrix, hAngle);
+    public void handleClickEvent(int screenWidth, int screenHeight, float touchX, float touchY, float[] viewMatrix, float[] projectionMatrix, float hAngle) {
+        this.board.handleClickEvent(screenWidth, screenHeight, touchX, touchY, viewMatrix, projectionMatrix, hAngle);
+        this.dice.handleClickEvent(screenWidth, screenHeight, touchX, touchY, viewMatrix, projectionMatrix, hAngle);
         for (int i = 0; i < player.length; i++) {
-            this.player[i].handleClickEvent(screenWidth, screenHeight, touchX, touchY, viewMatrix, projMatrix, hAngle);
+            this.player[i].handleClickEvent(screenWidth, screenHeight, touchX, touchY, viewMatrix, projectionMatrix, hAngle);
         }
         ArrayList<AbstractObject> clickedObjects = getClicked();
         AbstractObject nearestHit = null;
@@ -166,17 +171,17 @@ public class Game extends AbstractObject {
         ArrayList<AbstractObject> objects = new ArrayList<>();
         if (this.board.isClicked()) {
             objects.add(this.board);
-            this.board.unclick();
+            this.board.unClick();
         }
         if (this.dice.isClicked()) {
             objects.add(this.dice);
-            this.dice.unclick();
+            this.dice.unClick();
         }
         for (Player p : player) {
             for (Piece piece : p.getPieces()) {
                 if (piece.isClicked()) {
                     objects.add(piece);
-                    piece.unclick();
+                    piece.unClick();
                 }
             }
         }

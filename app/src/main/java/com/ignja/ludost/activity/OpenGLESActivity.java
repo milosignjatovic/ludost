@@ -16,13 +16,17 @@
 package com.ignja.ludost.activity;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.view.WindowManager;
 
-import com.ignja.gles.renderer.MyGLRenderer;
-import com.ignja.ludost.util.Shared;
-import com.ignja.ludost.view.MyGLSurfaceView;
+import com.ignja.gl.core.TextureManager;
+import com.ignja.gl.renderer.MyGLRenderer;
+import com.ignja.gl.util.Shared;
+import com.ignja.gl.util.Utils;
+import com.ignja.gl.view.MyGLSurfaceView;
+import com.ignja.ludost.R;
 
 public class OpenGLESActivity extends Activity {
 
