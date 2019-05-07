@@ -1,6 +1,6 @@
 package com.ignja.ludost.util;
 
-import com.ignja.ludost.renderable.Triangle;
+import com.ignja.gles.renderable.Triangle;
 
 import java.util.Arrays;
 

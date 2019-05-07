@@ -1,9 +1,8 @@
 package com.ignja.ludost.util;
 
 import android.app.Activity;
-import android.opengl.GLSurfaceView;
 
-import com.ignja.ludost.renderer.MyGLRenderer;
+import com.ignja.gles.renderer.MyGLRenderer;
 
 /**
  * Created by milos on 5/5/19.

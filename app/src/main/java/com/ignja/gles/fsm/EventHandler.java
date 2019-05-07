@@ -1,4 +1,4 @@
-package com.ignja.ludost.statemachine;
+package com.ignja.gles.fsm;
 
 /**
  * Created by milos on 5/6/19.

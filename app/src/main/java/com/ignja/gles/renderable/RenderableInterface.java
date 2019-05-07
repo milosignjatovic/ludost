@@ -1,4 +1,4 @@
-package com.ignja.ludost.renderable;
+package com.ignja.gles.renderable;
 
 /**
  * Created by Ignja on 27/01/17.

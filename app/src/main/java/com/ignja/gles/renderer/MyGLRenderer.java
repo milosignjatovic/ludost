@@ -13,17 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ignja.ludost.renderer;
+package com.ignja.gles.renderer;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import android.content.Context;
 import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
-import android.opengl.GLU;
 import android.opengl.Matrix;
-import android.os.SystemClock;
 import android.util.Log;
 
 import com.ignja.ludost.R;
@@ -32,19 +29,14 @@ import com.ignja.ludost.core.Scene;
 import com.ignja.ludost.object.Board;
 import com.ignja.ludost.logic.Game;
 import com.ignja.ludost.object.Player;
-import com.ignja.ludost.renderable.AbstractRenderable;
+import com.ignja.gles.renderable.AbstractRenderable;
 import com.ignja.ludost.util.Color;
-import com.ignja.ludost.renderable.Cube;
-import com.ignja.ludost.renderable.Square;
-import com.ignja.ludost.renderable.Triangle;
 import com.ignja.ludost.util.LoggerConfig;
 import com.ignja.ludost.util.ShaderHelper;
 import com.ignja.ludost.util.Shared;
 import com.ignja.ludost.util.TextResourceReader;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**

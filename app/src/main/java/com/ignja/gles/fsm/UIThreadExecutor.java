@@ -1,4 +1,4 @@
-package com.ignja.ludost.statemachine;
+package com.ignja.gles.fsm;
 
 import android.os.Handler;
 import android.os.Looper;

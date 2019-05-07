@@ -5,10 +5,11 @@ import android.opengl.Matrix;
 import android.util.Log;
 
 import com.ignja.ludost.core.Scene;
-import com.ignja.ludost.renderable.AbstractRenderable;
-import com.ignja.ludost.renderable.Triangle;
-import com.ignja.ludost.renderer.ObjectRenderer;
+import com.ignja.gles.renderable.AbstractRenderable;
+import com.ignja.gles.renderable.Triangle;
+import com.ignja.gles.renderer.ObjectRenderer;
 import com.ignja.ludost.util.Color;
+import com.ignja.ludost.util.LoggerConfig;
 import com.ignja.ludost.util.Utils;
 
 import java.util.Arrays;
@@ -169,9 +170,11 @@ public abstract class AbstractObject {
                     this.click();
                     this.distance = distance;
                     this.intersectionPoint = intersectionPoint;
-                    Log.d(TAG, "HIT " + this
-                            + " Intersection point: " + Arrays.toString(intersectionPoint)
-                            + ", Distance: " + distance);
+                    if (LoggerConfig.ON) {
+                        Log.d(TAG, "HIT " + this
+                                + " Intersection point: " + Arrays.toString(intersectionPoint)
+                                + ", Distance: " + distance);
+                    }
                 }
             }
         }

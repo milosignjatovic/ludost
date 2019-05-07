@@ -1,4 +1,4 @@
-package com.ignja.ludost.renderable;
+package com.ignja.gles.renderable;
 
 import android.util.Log;
 

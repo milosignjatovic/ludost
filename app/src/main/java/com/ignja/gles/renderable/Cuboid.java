@@ -1,6 +1,4 @@
-package com.ignja.ludost.renderable;
-
-import java.util.Random;
+package com.ignja.gles.renderable;
 
 /**
  * Created by Ignja on 01/02/17.

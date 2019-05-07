@@ -1,7 +1,7 @@
 package com.ignja.ludost.object;
 
-import com.ignja.ludost.renderable.AbstractRenderable;
-import com.ignja.ludost.renderable.Square;
+import com.ignja.gles.renderable.AbstractRenderable;
+import com.ignja.gles.renderable.Square;
 import com.ignja.ludost.util.Color;
 
 /**

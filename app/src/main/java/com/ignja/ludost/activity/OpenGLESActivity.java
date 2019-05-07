@@ -20,7 +20,7 @@ import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.view.WindowManager;
 
-import com.ignja.ludost.renderer.MyGLRenderer;
+import com.ignja.gles.renderer.MyGLRenderer;
 import com.ignja.ludost.util.Shared;
 import com.ignja.ludost.view.MyGLSurfaceView;
 

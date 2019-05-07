@@ -2,12 +2,13 @@ package com.ignja.ludost.logic;
 
 import android.util.Log;
 
+import com.ignja.gles.fsm.*;
 import com.ignja.ludost.object.AbstractObject;
 import com.ignja.ludost.object.Board;
 import com.ignja.ludost.object.Dice;
 import com.ignja.ludost.object.Piece;
 import com.ignja.ludost.object.Player;
-import com.ignja.ludost.statemachine.*;
+import com.ignja.ludost.util.LoggerConfig;
 
 import java.util.ArrayList;
 
@@ -48,7 +49,7 @@ public class Game extends AbstractObject {
     private StateMachine<GameFlowContext> flow;
 
     public Game(Board board, Player[] player) {
-        this.TAG = "GAME LOGIC";
+        this.TAG = "LUDOST GAME LOGIC";
         this.dice = new Dice();
         this.dice.setParent(this);
         this.board = board;
@@ -141,11 +142,14 @@ public class Game extends AbstractObject {
                 }
             }
         }
-        Log.i("CLICKED OBJECTS", String.valueOf(clickedObjects));
+        if (LoggerConfig.ON) {
+            Log.i("Clicked objects", String.valueOf(clickedObjects));
+        }
         if (nearestHit != null) {
-            Log.i("NEAREST HIT", nearestHit.toString());
+            if (LoggerConfig.ON) {
+                Log.i("Nearest hit", nearestHit.toString());
+            }
             if (nearestHit instanceof Piece) {
-                //nearestHit.object = null;
                 double randomPosition = Math.random() * 72;
                 ((Piece) nearestHit).moveTo(this.board.getPosition((int)randomPosition));
             } else if (nearestHit instanceof Dice) {

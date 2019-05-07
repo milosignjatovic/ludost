@@ -1,4 +1,4 @@
-package com.ignja.ludost.renderable;
+package com.ignja.gles.renderable;
 
 /**
  * A two-dimensional square for use as a drawn object in OpenGL ES 2.0.

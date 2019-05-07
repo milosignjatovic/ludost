@@ -1,10 +1,9 @@
-package com.ignja.ludost.statemachine;
+package com.ignja.gles.fsm;
 
 import android.util.Log;
 
 import com.ignja.ludost.util.LoggerConfig;
 
-import java.nio.InvalidMarkException;
 import java.util.HashMap;
 import java.util.Map;
 

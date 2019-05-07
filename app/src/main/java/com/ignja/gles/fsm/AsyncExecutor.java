@@ -1,4 +1,4 @@
-package com.ignja.ludost.statemachine;
+package com.ignja.gles.fsm;
 
 import android.support.annotation.NonNull;
 

@@ -1,9 +1,8 @@
-package com.ignja.ludost.renderer;
+package com.ignja.gles.renderer;
 
 import android.opengl.GLES30;
 
-import com.ignja.ludost.renderable.AbstractRenderable;
-import com.ignja.ludost.util.Shared;
+import com.ignja.gles.renderable.AbstractRenderable;
 
 /**
  * Created by Ignja on 09/03/17.
