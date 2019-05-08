@@ -17,35 +17,26 @@ package com.ignja.gl.renderer;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
-import javax.microedition.khronos.opengles.GL11;
 
 import android.graphics.Bitmap;
-import android.opengl.GLES10;
 import android.opengl.GLES30;
-import android.opengl.GLES32;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLUtils;
 import android.opengl.Matrix;
 import android.util.Log;
 
 import com.ignja.gl.core.TextureManager;
-import com.ignja.gl.core.TextureVo;
-import com.ignja.gl.object.AbstractObject;
 import com.ignja.ludost.R;
 
-import com.ignja.gl.object.Scene;
+import com.ignja.gl.core.Scene;
 import com.ignja.ludost.object.Board;
 import com.ignja.ludost.logic.Game;
 import com.ignja.ludost.object.Player;
-import com.ignja.gl.renderable.AbstractRenderable;
 import com.ignja.gl.util.Color;
 import com.ignja.gl.util.LoggerConfig;
 import com.ignja.gl.util.ShaderHelper;
 import com.ignja.gl.util.Shared;
 import com.ignja.gl.util.TextResourceReader;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Provides drawing instructions for a GLSurfaceView object. This class

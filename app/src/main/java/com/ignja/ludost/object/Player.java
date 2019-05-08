@@ -1,6 +1,7 @@
 package com.ignja.ludost.object;
 
-import com.ignja.gl.object.AbstractObject;
+import com.ignja.gl.object.Object3d;
+import com.ignja.gl.object.Object3dContainer;
 
 import java.util.ArrayList;
 
@@ -8,7 +9,7 @@ import java.util.ArrayList;
  * Created by Ignja on 01/02/17.
  *
  */
-public class Player extends AbstractObject {
+public class Player extends Object3dContainer {
 
     private ArrayList<Piece> pieces = new ArrayList<>();
 

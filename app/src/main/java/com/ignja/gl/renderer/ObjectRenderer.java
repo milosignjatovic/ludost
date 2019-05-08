@@ -1,18 +1,8 @@
 package com.ignja.gl.renderer;
 
-import android.opengl.GLES10;
-import android.opengl.GLES10Ext;
-import android.opengl.GLES11Ext;
 import android.opengl.GLES30;
-import android.opengl.GLES32;
 
-import com.ignja.gl.core.TextureVo;
-import com.ignja.gl.object.AbstractObject;
 import com.ignja.gl.renderable.AbstractRenderable;
-import com.ignja.gl.util.Shared;
-
-import javax.microedition.khronos.opengles.GL10;
-import javax.microedition.khronos.opengles.GL11;
 
 /**
  * Created by Ignja on 09/03/17.

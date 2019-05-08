@@ -19,8 +19,10 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.WindowManager;
 
+import com.ignja.gl.core.ISceneController;
 import com.ignja.gl.core.TextureManager;
 import com.ignja.gl.renderer.MyGLRenderer;
 import com.ignja.gl.util.Shared;
@@ -28,7 +30,7 @@ import com.ignja.gl.util.Utils;
 import com.ignja.gl.view.MyGLSurfaceView;
 import com.ignja.ludost.R;
 
-public class OpenGLESActivity extends Activity {
+public class OpenGLESActivity extends Activity implements ISceneController {
 
     private GLSurfaceView mGLView;
 
@@ -67,5 +69,35 @@ public class OpenGLESActivity extends Activity {
         // If you de-allocated graphic objects for onPause()
         // this is a good place to re-allocate them.
         mGLView.onResume();
+    }
+
+    @Override
+    public void initScene() {
+
+    }
+
+    @Override
+    public void updateScene() {
+
+    }
+
+    @Override
+    public Handler getInitSceneHandler() {
+        return null;
+    }
+
+    @Override
+    public Runnable getInitSceneRunnable() {
+        return null;
+    }
+
+    @Override
+    public Handler getUpdateSceneHandler() {
+        return null;
+    }
+
+    @Override
+    public Runnable getUpdateSceneRunnable() {
+        return null;
     }
 }

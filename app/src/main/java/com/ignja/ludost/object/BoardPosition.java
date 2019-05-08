@@ -1,6 +1,7 @@
 package com.ignja.ludost.object;
 
-import com.ignja.gl.object.AbstractObject;
+import com.ignja.gl.object.Object3d;
+import com.ignja.gl.object.Object3dContainer;
 import com.ignja.gl.object.Point;
 import com.ignja.gl.renderable.AbstractRenderable;
 import com.ignja.gl.renderable.Square;
@@ -12,7 +13,7 @@ import com.ignja.gl.util.Color;
  * Represents position on the board
  */
 
-public class BoardPosition extends AbstractObject {
+public class BoardPosition extends Object3dContainer {
 
     private Board board;
 

@@ -4,15 +4,18 @@ import android.opengl.GLU;
 import android.opengl.Matrix;
 import android.util.Log;
 
+import com.ignja.gl.core.FacesBufferedList;
+import com.ignja.gl.core.Scene;
 import com.ignja.gl.core.TextureList;
 import com.ignja.gl.core.TextureVo;
+import com.ignja.gl.core.Vertices;
 import com.ignja.gl.renderable.AbstractRenderable;
 import com.ignja.gl.renderable.Triangle;
 import com.ignja.gl.renderer.ObjectRenderer;
 import com.ignja.gl.util.Color;
 import com.ignja.gl.util.LoggerConfig;
-import com.ignja.gl.util.Shared;
 import com.ignja.gl.util.Utils;
+import com.ignja.gl.vo.Number3d;
 
 import java.util.Arrays;
 
@@ -21,9 +24,9 @@ import java.util.Arrays;
  *
  */
 
-public abstract class AbstractObject {
+public abstract class Object3d {
 
-    protected String TAG = "AbstractObject";
+    protected String TAG = "Object3d";
 
     private float[] mMVMatrix = new float[16];
 
@@ -34,7 +37,11 @@ public abstract class AbstractObject {
 
     private Scene scene;
 
-    private AbstractObject parent;
+    private IObject3dContainer parent;
+
+    private Number3d _position = new Number3d(0,0,0);
+    private Number3d _rotation = new Number3d(0,0,0);
+    private Number3d _scale = new Number3d(1,1,1);
 
     /**
      * Renderable. TODO ArrayList? (more than one renderable in single object)
@@ -50,38 +57,72 @@ public abstract class AbstractObject {
     /**
      * Object name
      */
-    private String name;
+    protected String name;
 
-    private float[] color;
+    protected float[] color;
 
     protected TextureList _textures;
 
-    public AbstractObject() {
+    protected Vertices _vertices;
+
+    protected FacesBufferedList _faces;
+
+    public Object3d() {
         this.color = Color.ORANGE;
         this.point = new Point();
         this.name = "";
     }
 
-    public AbstractObject(float[] color) {
+    public Object3d(float[] color) {
         this.color = color;
         this.point = new Point();
         this.name = "";
         _textures = new TextureList();
     }
 
-    public AbstractObject(Point point, float[] color) {
+    public Object3d(Point point, float[] color) {
         this(color);
         this.point = point;
     }
 
-    public AbstractObject(Point point) {
+    public Object3d(Point point) {
         this(point, Color.RED_DARK);
         this.point = point;
     }
 
-    AbstractObject(AbstractRenderable renderable, Point point, float[] color) {
+    Object3d(AbstractRenderable renderable, Point point, float[] color) {
         this(point, color);
         this.object = renderable;
+    }
+
+    /**
+     * Maximum number of vertices and faces must be specified at instantiation.
+     */
+    public Object3d(int $maxVertices, int $maxFaces)
+    {
+        _vertices = new Vertices($maxVertices, true,true,true);
+        _faces = new FacesBufferedList($maxFaces);
+        _textures = new TextureList();
+    }
+
+    /**
+     * Adds three arguments
+     */
+    public Object3d(int $maxVertices, int $maxFaces, Boolean $useUvs, Boolean $useNormals, Boolean $useVertexColors)
+    {
+        _vertices = new Vertices($maxVertices, $useUvs,$useNormals,$useVertexColors);
+        _faces = new FacesBufferedList($maxFaces);
+        _textures = new TextureList();
+    }
+
+    /**
+     * This constructor is convenient for cloning purposes
+     */
+    public Object3d(Vertices $vertices, FacesBufferedList $faces, TextureList $textures)
+    {
+        _vertices = $vertices;
+        _faces = $faces;
+        _textures = $textures;
     }
 
     public float getX() {
@@ -98,7 +139,7 @@ public abstract class AbstractObject {
 
     public void draw(float[] mvpMatrix, int glProgram) {
         ObjectRenderer objectRenderer = new ObjectRenderer();
-        if (this.object != null) {
+        if (this.object != null && this.point != null) {
             Matrix.translateM(mvpMatrix, 0, getX(), getY(), getZ());
             objectRenderer.render(this.object, mvpMatrix, glProgram);
             Matrix.translateM(mvpMatrix, 0, -getX(), -getY(), -getZ());
@@ -110,7 +151,7 @@ public abstract class AbstractObject {
     }
 
     private void rayPicking(int viewWidth, int viewHeight, float rx, float ry, float[] viewMatrix, float[] projectionMatrix, float hAngle) {
-        if (this.object != null) {
+        if (this.object != null && this.point != null) {
             float [] near_xyz = unProject(rx, ry, 0, viewMatrix, projectionMatrix, viewWidth, viewHeight);
             float [] far_xyz = unProject(rx, ry, 1, viewMatrix, projectionMatrix, viewWidth, viewHeight);
             float[] vertices;
@@ -182,6 +223,8 @@ public abstract class AbstractObject {
                     }
                 }
             }
+        } else {
+            Log.i(TAG, "Sta je ovo?");
         }
 
     }
@@ -221,7 +264,7 @@ public abstract class AbstractObject {
         return out;
     }
 
-    public void setParent(AbstractObject parent) {
+    public void setParent(IObject3dContainer parent) {
         this.parent = parent;
     }
 
@@ -233,12 +276,67 @@ public abstract class AbstractObject {
         this.point = point;
     }
 
+    public IObject3dContainer parent()
+    {
+        return parent;
+    }
+
+    public void parent(IObject3dContainer $container) /*package-private*/
+    {
+        parent = $container;
+    }
+
+    /**
+     * Called by Scene
+     */
+    public void scene(Scene $scene) /*package-private*/
+    {
+        scene = $scene;
+    }
+    /**
+     * Called by DisplayObjectContainer
+     */
+    Scene scene() /*package-private*/
+    {
+        return scene;
+    }
+
+
     public Point getPoint() {
         return point;
     }
 
     public void addTexture(TextureVo texture) {
         this._textures.add(texture);
+    }
+
+    /**
+     * X/Y/Z position of object.
+     */
+    public Number3d position()
+    {
+        return _position;
+    }
+
+    /**
+     * X/Y/Z euler rotation of object, using Euler angles.
+     * Units should be in degrees, to match OpenGL usage.
+     */
+    public Number3d rotation()
+    {
+        return _rotation;
+    }
+
+    /**
+     * X/Y/Z scale of object.
+     */
+    public Number3d scale()
+    {
+        return _scale;
+    }
+
+    public String name() {
+        return name;
     }
 
 }

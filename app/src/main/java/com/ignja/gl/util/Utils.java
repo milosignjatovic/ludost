@@ -8,6 +8,9 @@ import com.ignja.gl.renderable.Triangle;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
 import java.util.Arrays;
 
 /**
@@ -20,6 +23,8 @@ public class Utils {
      *
      */
     private static final float SMALL_NUM =  0.00000001f;
+
+    private static final int BYTES_PER_FLOAT = 4;
 
     /**
      * intersectRayAndTriangle(): intersect a ray with a 3D triangle
@@ -113,6 +118,19 @@ public class Utils {
         }
 
         return bitmap;
+    }
+
+    public static FloatBuffer makeFloatBuffer4(float $a, float $b, float $c, float $d)
+    {
+        ByteBuffer b = ByteBuffer.allocateDirect(4 * BYTES_PER_FLOAT);
+        b.order(ByteOrder.nativeOrder());
+        FloatBuffer buffer = b.asFloatBuffer();
+        buffer.put($a);
+        buffer.put($b);
+        buffer.put($c);
+        buffer.put($d);
+        buffer.position(0);
+        return buffer;
     }
 
 }

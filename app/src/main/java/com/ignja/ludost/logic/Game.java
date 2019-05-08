@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.ignja.gl.core.TextureVo;
 import com.ignja.gl.fsm.*;
-import com.ignja.gl.object.AbstractObject;
+import com.ignja.gl.object.Object3d;
 import com.ignja.ludost.object.Board;
 import com.ignja.ludost.object.Dice;
 import com.ignja.ludost.object.Piece;
@@ -18,7 +18,9 @@ import java.util.ArrayList;
  *
  */
 
-public class Game extends AbstractObject {
+public class Game {
+
+    protected String TAG = "Game (Flow? Logic?)";
 
     private Board board;
 
@@ -52,16 +54,13 @@ public class Game extends AbstractObject {
     public Game(Board board, Player[] player) {
         this.TAG = "LUDOST GAME LOGIC";
         this.dice = new Dice();
-        this.dice.setParent(this);
         this.board = board;
-        this.board.setParent(this);
 
         TextureVo texture = new TextureVo("stonetexture");
         this.board.addTexture(texture);
 
         this.player = player;
         for (Player p: player) {
-            p.setParent(this);
         }
         initFlow();
         bindFlow();
@@ -136,9 +135,9 @@ public class Game extends AbstractObject {
         for (int i = 0; i < player.length; i++) {
             this.player[i].handleClickEvent(screenWidth, screenHeight, touchX, touchY, viewMatrix, projectionMatrix, hAngle);
         }
-        ArrayList<AbstractObject> clickedObjects = getClicked();
-        AbstractObject nearestHit = null;
-        for (AbstractObject clickedObject: clickedObjects) {
+        ArrayList<Object3d> clickedObjects = getClicked();
+        Object3d nearestHit = null;
+        for (Object3d clickedObject: clickedObjects) {
             if (null == nearestHit) {
                 nearestHit = clickedObject;
             } else {
@@ -167,8 +166,8 @@ public class Game extends AbstractObject {
         }
     }
 
-    private ArrayList<AbstractObject> getClicked() {
-        ArrayList<AbstractObject> objects = new ArrayList<>();
+    private ArrayList<Object3d> getClicked() {
+        ArrayList<Object3d> objects = new ArrayList<>();
         if (this.board.isClicked()) {
             objects.add(this.board);
             this.board.unClick();
