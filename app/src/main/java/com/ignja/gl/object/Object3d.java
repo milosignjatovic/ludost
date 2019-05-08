@@ -28,20 +28,13 @@ public abstract class Object3d {
 
     protected String TAG = "Object3d";
 
-    private float[] mMVMatrix = new float[16];
-
-    /**
-     * Object position in space
-     */
-    private Number3d point;
-
     private Scene scene;
 
     private IObject3dContainer parent;
 
-    private Number3d _position = new Number3d(0,0,0);
-    private Number3d _rotation = new Number3d(0,0,0);
-    private Number3d _scale = new Number3d(1,1,1);
+    private Number3d position = new Number3d(0,0,0);
+    private Number3d rotation = new Number3d(0,0,0);
+    private Number3d scale = new Number3d(1,1,1);
 
     /**
      * Renderable. TODO ArrayList? (more than one renderable in single object)
@@ -69,29 +62,29 @@ public abstract class Object3d {
 
     public Object3d() {
         this.color = Color.ORANGE;
-        this.point = new Number3d();
+        this.position = new Number3d();
         this.name = "";
     }
 
     public Object3d(float[] color) {
         this.color = color;
-        this.point = new Number3d();
+        this.position = new Number3d();
         this.name = "";
         _textures = new TextureList();
     }
 
-    public Object3d(Number3d point, float[] color) {
+    public Object3d(Number3d position, float[] color) {
         this(color);
-        this.point = point;
+        this.position = position;
     }
 
-    public Object3d(Number3d point) {
-        this(point, Color.RED_DARK);
-        this.point = point;
+    public Object3d(Number3d position) {
+        this(position, Color.RED_DARK);
+        this.position = position;
     }
 
-    Object3d(AbstractRenderable renderable, Number3d point, float[] color) {
-        this(point, color);
+    Object3d(AbstractRenderable renderable, Number3d position, float[] color) {
+        this(position, color);
         this.object = renderable;
     }
 
@@ -126,20 +119,20 @@ public abstract class Object3d {
     }
 
     public float getX() {
-        return this.point.x;
+        return this.position.x;
     }
 
     public float getY() {
-        return this.point.y;
+        return this.position.y;
     }
 
     public float getZ() {
-        return this.point.z;
+        return this.position.z;
     }
 
     public void draw(float[] mvpMatrix, int glProgram) {
         ObjectRenderer objectRenderer = new ObjectRenderer();
-        if (this.object != null && this.point != null) {
+        if (this.object != null && this.position != null) {
             Matrix.translateM(mvpMatrix, 0, getX(), getY(), getZ());
             objectRenderer.render(this.object, mvpMatrix, glProgram);
             Matrix.translateM(mvpMatrix, 0, -getX(), -getY(), -getZ());
@@ -150,8 +143,9 @@ public abstract class Object3d {
         this.rayPicking(screenWidth, screenHeight, touchX, touchY, viewMatrix, projectionMatrix, hAngle);
     }
 
+    // TODO Extract from Object?
     private void rayPicking(int viewWidth, int viewHeight, float rx, float ry, float[] viewMatrix, float[] projectionMatrix, float hAngle) {
-        if (this.object != null && this.point != null) {
+        if (this.object != null && this.position != null) {
             float [] near_xyz = unProject(rx, ry, 0, viewMatrix, projectionMatrix, viewWidth, viewHeight);
             float [] far_xyz = unProject(rx, ry, 1, viewMatrix, projectionMatrix, viewWidth, viewHeight);
             float[] vertices;
@@ -272,10 +266,6 @@ public abstract class Object3d {
         this.scene = scene;
     }
 
-    public void setPoint(Number3d point) {
-        this.point = point;
-    }
-
     public IObject3dContainer parent()
     {
         return parent;
@@ -301,21 +291,16 @@ public abstract class Object3d {
         return scene;
     }
 
-
-    public Number3d getPoint() {
-        return point;
-    }
-
     public void addTexture(TextureVo texture) {
         this._textures.add(texture);
     }
 
-    /**
-     * X/Y/Z position of object.
-     */
-    public Number3d position()
-    {
-        return _position;
+    public Number3d position() {
+        return position;
+    }
+
+    public void position(Number3d position) {
+        this.position = position;
     }
 
     /**
@@ -324,7 +309,7 @@ public abstract class Object3d {
      */
     public Number3d rotation()
     {
-        return _rotation;
+        return rotation;
     }
 
     /**
@@ -332,7 +317,7 @@ public abstract class Object3d {
      */
     public Number3d scale()
     {
-        return _scale;
+        return scale;
     }
 
     public String name() {

@@ -59,12 +59,12 @@ public class Color4
 	/**
 	 *  Convenience method to set all properties in one line.
 	 */
-	public void setAll(short $r, short $g, short $b, short $a)
+	public void setAll(int $r, int $g, int $b, int $a)
 	{
-		r = $r;
-		g = $g;
-		b = $b;
-		a = $a;
+		r = (short)$r;
+		g = (short)$g;
+		b = (short)$b;
+		a = (short)$a;
 	}
 	
 	/**

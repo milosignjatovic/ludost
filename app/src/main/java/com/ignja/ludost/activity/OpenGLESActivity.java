@@ -23,6 +23,7 @@ import android.os.Handler;
 import android.view.WindowManager;
 
 import com.ignja.gl.core.ISceneController;
+import com.ignja.gl.core.Scene;
 import com.ignja.gl.core.TextureManager;
 import com.ignja.gl.renderer.MyGLRenderer;
 import com.ignja.gl.util.Shared;
@@ -34,6 +35,8 @@ public class OpenGLESActivity extends Activity implements ISceneController {
 
     private GLSurfaceView mGLView;
 
+    public Scene scene;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +47,8 @@ public class OpenGLESActivity extends Activity implements ISceneController {
         // as the ContentView for this Activity
         // Shared class is used to store singletons
         Shared.context(this);
-        Shared.renderer(new MyGLRenderer());
+        scene = new Scene(this);
+        Shared.renderer(new MyGLRenderer(scene));
         mGLView = new MyGLSurfaceView(this);
         // Render the view only when there is a change in the drawing data
         //mGLView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);

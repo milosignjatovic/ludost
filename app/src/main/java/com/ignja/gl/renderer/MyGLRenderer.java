@@ -26,6 +26,7 @@ import android.opengl.Matrix;
 import android.util.Log;
 
 import com.ignja.gl.core.TextureManager;
+import com.ignja.gl.vo.Light;
 import com.ignja.ludost.R;
 
 import com.ignja.gl.core.Scene;
@@ -48,6 +49,8 @@ import com.ignja.gl.util.TextResourceReader;
  * </ul>
  */
 public class MyGLRenderer implements GLSurfaceView.Renderer {
+
+    public static final int NUM_GLLIGHTS = 8;
 
     public static float nearZ = 2.0f;
     public static float farZ = 20.0f;
@@ -81,12 +84,18 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     private int glProgram;
 
-    private Scene scene;
+    private Scene _scene;
 
     private GL10 _gl;
 
     public MyGLRenderer() {
         Shared.textureManager(new TextureManager());
+    }
+
+    public MyGLRenderer(Scene scene) {
+        _scene = scene;
+        Shared.textureManager(new TextureManager());
+
     }
 
     private void setGl(GL10 $gl) {
@@ -127,10 +136,18 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         Player player3 = new Player(board, Color.ORANGE, 2);
         Player player4 = new Player(board, Color.PINK, 3);
         Player[] playerArray = new Player[] {player1, player2, player3, player4};
-        this.scene = new Scene();
-        this.scene.initScene();
+        //this._scene = new Scene();
+        this._scene.initScene();
         Game game = new Game(board, playerArray);
-        this.scene.setGame(game);
+        this._scene.setGame(game);
+
+        Light _light = new Light();
+        _light.position.setAll(0, 0, +3);
+        _light.diffuse.setAll(255, 255, 255, 255);
+        _light.ambient.setAll(0, 0, 0, 0);
+        _light.specular.setAll(0, 0, 0, 0);
+        _light.emissive.setAll(0, 0, 0, 0);
+        _scene.lights().add(_light);
 
         // Set the camera position (View matrix)
         Matrix.setLookAtM(mViewMatrix, 0,
@@ -139,6 +156,113 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
                 0f, -1.0f, 0.0f // eye vertical
         );
 
+        // TODO Simple light
+        //drawSetupLights();
+
+    }
+
+    protected void drawSetupLights()
+    {
+        // GL_LIGHTS enabled/disabled based on enabledDirty list
+        for (int glIndex = 0; glIndex < NUM_GLLIGHTS; glIndex++)
+        {
+            if (_scene.lights().glIndexEnabledDirty()[glIndex] == true)
+            {
+                if (_scene.lights().glIndexEnabled()[glIndex] == true)
+                {
+                    _gl.glEnable(GL10.GL_LIGHT0 + glIndex);
+
+                    // make light's properties dirty to force update
+                    // _scene.lights().getLightByGlIndex(glIndex).setAllDirty();
+                }
+                else
+                {
+                    _gl.glDisable(GL10.GL_LIGHT0 + glIndex);
+                }
+
+                _scene.lights().glIndexEnabledDirty()[glIndex] = false; // clear dirtyflag
+            }
+        }
+
+        // Lights' properties
+
+        Light[] lights = _scene.lights().toArray();
+        for (int i = 0; i < lights.length; i++)
+        {
+            Light light = lights[i];
+
+//            if (light.isDirty()) // .. something has changed
+//            {
+                // Check all of Light's properties for dirty
+
+                int glLightId = GL10.GL_LIGHT0 + _scene.lights().getGlIndexByLight(light);
+
+//                if (light.position.isDirty())
+//                {
+//                    light.commitPositionAndTypeBuffer();
+//                    _gl.glLightfv(glLightId, GL10.GL_POSITION, light._positionAndTypeBuffer);
+//                    light.position.clearDirtyFlag();
+//                }
+//                if (light.ambient.isDirty())
+//                {
+//                    light.ambient.commitToFloatBuffer();
+//                    _gl.glLightfv(glLightId, GL10.GL_AMBIENT, light.ambient.floatBuffer());
+//                    light.ambient.clearDirtyFlag();
+//                }
+//                if (light.diffuse.isDirty())
+//                {
+//                    light.diffuse.commitToFloatBuffer();
+//                    _gl.glLightfv(glLightId, GL10.GL_DIFFUSE, light.diffuse.floatBuffer());
+//                    light.diffuse.clearDirtyFlag();
+//                }
+//                if (light.specular.isDirty())
+//                {
+//                    light.specular.commitToFloatBuffer();
+//                    _gl.glLightfv(glLightId, GL10.GL_SPECULAR, light.specular.floatBuffer());
+//                    light.specular.clearDirtyFlag();
+//                }
+//                if (light.emissive.isDirty())
+//                {
+//                    light.emissive.commitToFloatBuffer();
+//                    _gl.glLightfv(glLightId, GL10.GL_EMISSION, light.emissive.floatBuffer());
+//                    light.emissive.clearDirtyFlag();
+//                }
+//
+//                if (light.direction.isDirty())
+//                {
+//                    light.direction.commitToFloatBuffer();
+//                    _gl.glLightfv(glLightId, GL10.GL_SPOT_DIRECTION, light.direction.floatBuffer());
+//                    light.direction.clearDirtyFlag();
+//                }
+//                if (light._spotCutoffAngle.isDirty())
+//                {
+//                    _gl.glLightf(glLightId, GL10.GL_SPOT_CUTOFF, light._spotCutoffAngle.get());
+//                }
+//                if (light._spotExponent.isDirty())
+//                {
+//                    _gl.glLightf(glLightId, GL10.GL_SPOT_EXPONENT, light._spotExponent.get());
+//                }
+
+//                if (light._isVisible.isDirty())
+//                {
+                    if (light.isVisible()) {
+                        _gl.glEnable(glLightId);
+                    } else {
+                        _gl.glDisable(glLightId);
+                    }
+//                    light._isVisible.clearDirtyFlag();
+//                }
+
+//                if (light._attenuation.isDirty())
+//                {
+                    //_gl.glLightf(glLightId, GL10.GL_CONSTANT_ATTENUATION, light._attenuation.x);
+                    //_gl.glLightf(glLightId, GL10.GL_LINEAR_ATTENUATION, light._attenuation.y);
+                    //_gl.glLightf(glLightId, GL10.GL_QUADRATIC_ATTENUATION, light._attenuation.z);
+//                }
+
+//                light.clearDirtyFlag();
+//            }
+        }
     }
 
     private boolean touch = false;
@@ -170,10 +294,10 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         float angle = 0;
         Matrix.rotateM(mMVPMatrix, 0, hAngle + angle, 0, 0, 1.0f);
 
-        this.scene.getGame().draw(mMVPMatrix, glProgram);
+        this._scene.getGame().draw(mMVPMatrix, glProgram);
 
         if (touch) {
-            this.scene.handleClickEvent(screenWidth, screenHeight, touchX, touchY, mViewMatrix, mProjectionMatrix, hAngle + angle);
+            this._scene.handleClickEvent(screenWidth, screenHeight, touchX, touchY, mViewMatrix, mProjectionMatrix, hAngle + angle);
             touch = false;
         }
     }

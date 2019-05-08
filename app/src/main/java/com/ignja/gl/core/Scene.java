@@ -16,6 +16,8 @@ import java.util.ArrayList;
  */
 public class Scene implements IObject3dContainer {
 
+    private ManagedLightList _lights;
+
     private ArrayList<Object3d> _children = new ArrayList<>();
 
     private float[] camera;
@@ -25,6 +27,11 @@ public class Scene implements IObject3dContainer {
     private Game game;
 
     private ISceneController _sceneController;
+
+    public Scene(ISceneController sceneController) {
+        _sceneController = sceneController;
+        _lights = new ManagedLightList();
+    }
 
     public void setGame(Game game) {
         this.game = game;
@@ -109,6 +116,14 @@ public class Scene implements IObject3dContainer {
     public int numChildren()
     {
         return _children.size();
+    }
+
+    /**
+     * Lights used by the Scene
+     */
+    public ManagedLightList lights()
+    {
+        return _lights;
     }
 
 }

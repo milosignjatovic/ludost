@@ -18,11 +18,6 @@ public class Dice extends Object3dContainer {
         super(new Number3d(0, 0, 0.35f));
         this.TAG = "DiceObject";
         this.object = new Cube(0.7f, Color.WHITE);
-        roll();
-    }
-
-    private int roll() {
-        return 4;
     }
 
     private int getValue() {

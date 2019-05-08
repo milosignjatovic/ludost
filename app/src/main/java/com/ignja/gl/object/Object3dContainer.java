@@ -21,12 +21,12 @@ public class Object3dContainer extends Object3d implements IObject3dContainer
 		super(color);
 	}
 
-	public Object3dContainer(Number3d point) {
-		super(point);
+	public Object3dContainer(Number3d position) {
+		super(position);
 	}
 
-	public Object3dContainer(Number3d point, float[] color) {
-		super(point, color);
+	public Object3dContainer(Number3d position, float[] color) {
+		super(position, color);
 	}
 
 	/**

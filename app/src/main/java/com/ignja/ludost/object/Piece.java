@@ -6,11 +6,9 @@ import com.ignja.gl.vo.Number3d;
 
 /**
  * Created by milos on 4/4/17.
-
  */
 
 public class Piece extends Object3dContainer {
-
 
     BoardPosition boardPosition;
 
@@ -23,7 +21,7 @@ public class Piece extends Object3dContainer {
 
     public void moveTo(BoardPosition boardPosition) {
         this.boardPosition = boardPosition;
-        this.setPoint(new Number3d(boardPosition.getX(), boardPosition.getY(), 0.35f));
+        this.position(new Number3d(boardPosition.getX(), boardPosition.getY(), 0.35f));
     }
 
 }
