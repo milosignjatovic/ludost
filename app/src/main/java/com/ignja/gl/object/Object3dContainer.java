@@ -1,9 +1,9 @@
 package com.ignja.gl.object;
 
 import com.ignja.gl.core.FacesBufferedList;
-import com.ignja.gl.core.Scene;
 import com.ignja.gl.core.TextureList;
 import com.ignja.gl.core.Vertices;
+import com.ignja.gl.vo.Number3d;
 
 import java.util.ArrayList;
 
@@ -21,11 +21,11 @@ public class Object3dContainer extends Object3d implements IObject3dContainer
 		super(color);
 	}
 
-	public Object3dContainer(Point point) {
+	public Object3dContainer(Number3d point) {
 		super(point);
 	}
 
-	public Object3dContainer(Point point, float[] color) {
+	public Object3dContainer(Number3d point, float[] color) {
 		super(point, color);
 	}
 

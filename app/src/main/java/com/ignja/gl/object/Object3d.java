@@ -33,7 +33,7 @@ public abstract class Object3d {
     /**
      * Object position in space
      */
-    private Point point;
+    private Number3d point;
 
     private Scene scene;
 
@@ -69,28 +69,28 @@ public abstract class Object3d {
 
     public Object3d() {
         this.color = Color.ORANGE;
-        this.point = new Point();
+        this.point = new Number3d();
         this.name = "";
     }
 
     public Object3d(float[] color) {
         this.color = color;
-        this.point = new Point();
+        this.point = new Number3d();
         this.name = "";
         _textures = new TextureList();
     }
 
-    public Object3d(Point point, float[] color) {
+    public Object3d(Number3d point, float[] color) {
         this(color);
         this.point = point;
     }
 
-    public Object3d(Point point) {
+    public Object3d(Number3d point) {
         this(point, Color.RED_DARK);
         this.point = point;
     }
 
-    Object3d(AbstractRenderable renderable, Point point, float[] color) {
+    Object3d(AbstractRenderable renderable, Number3d point, float[] color) {
         this(point, color);
         this.object = renderable;
     }
@@ -272,7 +272,7 @@ public abstract class Object3d {
         this.scene = scene;
     }
 
-    public void setPoint(Point point) {
+    public void setPoint(Number3d point) {
         this.point = point;
     }
 
@@ -302,7 +302,7 @@ public abstract class Object3d {
     }
 
 
-    public Point getPoint() {
+    public Number3d getPoint() {
         return point;
     }
 

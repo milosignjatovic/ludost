@@ -1,11 +1,10 @@
 package com.ignja.ludost.object;
 
-import com.ignja.gl.object.Object3d;
 import com.ignja.gl.object.Object3dContainer;
-import com.ignja.gl.object.Point;
 import com.ignja.gl.renderable.AbstractRenderable;
 import com.ignja.gl.renderable.Square;
 import com.ignja.gl.util.Color;
+import com.ignja.gl.vo.Number3d;
 
 /**
  * Created by milos on 4/4/17.
@@ -18,7 +17,7 @@ public class BoardPosition extends Object3dContainer {
     private Board board;
 
     public BoardPosition(Board board, float x, float y) {
-        super(new Point(x, y));
+        super(new Number3d(x, y, 0f));
         this.TAG = "BoardPosition";
         this.object = createBlackSquare();
         this.setParent(board);
