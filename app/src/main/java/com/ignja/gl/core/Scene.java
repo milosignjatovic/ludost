@@ -86,8 +86,6 @@ public class Scene implements IObject3dContainer {
     public void addChild(Object3d $object) {
         if (_children.contains($object)) return;
         _children.add($object);
-        $object.setParent(this);
-        $object.setScene(this);
     }
 
     public void handleClickEvent(int screenWidth, int screenHeight, float touchX, float touchY, float[] viewMatrix, float[] projectionMatrix, float hAngle) {

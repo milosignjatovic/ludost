@@ -56,9 +56,6 @@ public class Object3dContainer extends Object3d implements IObject3dContainer
 	public void addChild(Object3d $object)
 	{
 		_children.add($object);
-		
-		$object.parent(this);
-		$object.scene(this.scene());
 	}
 	
 	public void addChildAt(Object3d $o, int $index) 

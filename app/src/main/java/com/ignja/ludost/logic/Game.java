@@ -61,6 +61,7 @@ public class Game {
     public Game(Board board, Player[] player) {
         this.TAG = "LUDOST GAME LOGIC";
         this.dice = new Dice();
+        this.dice.setParent(board);
         this.board = board;
 
         TextureVo texture = new TextureVo("stonetexture");
@@ -68,6 +69,7 @@ public class Game {
 
         this.player = player;
         for (Player p: player) {
+            p.setParent(board);
         }
         initFlow();
         bindFlow();
@@ -128,11 +130,11 @@ public class Game {
 
     }
 
-    public void draw(float[] mvpMatrix, int glProgram) {
-        this.board.draw(mvpMatrix, glProgram);
-        this.dice.draw(mvpMatrix, glProgram);
+    public void draw(float[] mvpMatrix, int glProgram, float[] modelViewMatrix, float[] projectionMatrix) {
+        this.board.draw(mvpMatrix, glProgram, modelViewMatrix, projectionMatrix);
+        this.dice.draw(mvpMatrix, glProgram, modelViewMatrix, projectionMatrix);
         for (int i = 0; i < player.length; i++) {
-            this.player[i].draw(mvpMatrix, glProgram);
+            this.player[i].draw(mvpMatrix, glProgram, modelViewMatrix, projectionMatrix);
         }
     }
 

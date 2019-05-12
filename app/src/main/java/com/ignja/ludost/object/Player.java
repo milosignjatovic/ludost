@@ -1,7 +1,6 @@
 package com.ignja.ludost.object;
 
 import com.ignja.gl.object.Object3d;
-import com.ignja.gl.object.Object3dContainer;
 
 import java.util.ArrayList;
 
@@ -9,7 +8,7 @@ import java.util.ArrayList;
  * Created by Ignja on 01/02/17.
  *
  */
-public class Player extends Object3dContainer {
+public class Player extends Object3d {
 
     private ArrayList<Piece> pieces = new ArrayList<>();
 
@@ -30,17 +29,19 @@ public class Player extends Object3dContainer {
     }
 
     private void addPiece(int positionIndex) {
-        pieces.add(new Piece(this.board.getPosition(positionIndex), this.color));
+        Piece p = new Piece(this.board.getPosition(positionIndex), this.color);
+        p.setParent(this.board);
+        pieces.add(p);
     }
 
     public ArrayList<Piece> getPieces() {
         return pieces;
     }
 
-    public void draw(float[] mvpMatrix, int glProgram) {
-        super.draw(mvpMatrix, glProgram);
+    public void draw(float[] mvpMatrix, int glProgram, float[] modelViewMatrix, float[] projectionMatrix) {
+        super.draw(mvpMatrix, glProgram, modelViewMatrix, projectionMatrix);
         for (Piece piece : pieces) {
-            piece.draw(mvpMatrix, glProgram);
+            piece.draw(mvpMatrix, glProgram, modelViewMatrix, projectionMatrix);
         }
     }
 

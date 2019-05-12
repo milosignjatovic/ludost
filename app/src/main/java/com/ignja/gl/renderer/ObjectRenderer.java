@@ -1,6 +1,7 @@
 package com.ignja.gl.renderer;
 
 import android.opengl.GLES30;
+import android.opengl.Matrix;
 
 import com.ignja.gl.object.Object3d;
 import com.ignja.gl.renderable.AbstractRenderable;
@@ -26,9 +27,23 @@ public class ObjectRenderer {
     /**
      * Draw single object into scene
      */
-    public void render(Object3d object, float[] mvpMatrix, int glProgram) {
+    public void render(Object3d object, float[] mvpMatrix, int glProgram, float[] u_ModelViewMatrix, float[] u_ProjectionMatrix) {
+        // Object transformation on ModelView
+        // TODO Child objects should contain parent transformations ?
+        if (object.parent() != null) {
+            Matrix.translateM(u_ModelViewMatrix, 0,
+                    object.parent.getX(), object.parent.getY(), object.parent.getZ()
+            );
+            // TODO Do not mix ObjectRotation/Position and CameraTransformation
+            // nego rotacija objekta!!! (a to trenutno nemamo)
+            Matrix.rotateM(u_ModelViewMatrix, 0, Shared.renderer().getHAngle(), 0, 0, 1.0f);
+        }
+        Matrix.translateM(u_ModelViewMatrix, 0, object.getX(), object.getY(), object.getZ());
+        Matrix.rotateM(u_ModelViewMatrix, 0, Shared.renderer().getHAngle(), 0, 0, 1.0f);
+        Matrix.scaleM(u_ModelViewMatrix, 0, 1, 1, 1);
+
         // get handle to vertex shader's vPosition member
-        int mPositionHandle = GLES30.glGetAttribLocation(glProgram, "vPosition");
+        int mPositionHandle = GLES30.glGetAttribLocation(glProgram, "a_Position");
 
         // Enable a handle to the triangle vertices
         GLES30.glEnableVertexAttribArray(mPositionHandle);
@@ -52,6 +67,9 @@ public class ObjectRenderer {
                 COORDS_PER_COLOR * 4, object.object.getColorBuffer());
         MyGLRenderer.checkGlError("MIK glVertexAttribPointer");
 
+
+
+        // OLD
         // get handle to shape's transformation matrix
         int mMVPMatrixHandle = GLES30.glGetUniformLocation(glProgram, "uMVPMatrix");
         MyGLRenderer.checkGlError("glGetUniformLocation");
@@ -59,6 +77,28 @@ public class ObjectRenderer {
         // Apply the projection and view transformation
         GLES30.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mvpMatrix, 0);
         MyGLRenderer.checkGlError("glUniformMatrix4fv");
+
+
+
+
+        // NEW
+        // get handle to shape's model view matrix
+        int u_ModelViewMatrixHandle = GLES30.glGetUniformLocation(glProgram, "u_ModelViewMatrix");
+        MyGLRenderer.checkGlError("glGetUniformLocation");
+
+        // Apply the model view and view transformation
+        GLES30.glUniformMatrix4fv(u_ModelViewMatrixHandle, 1, false, u_ModelViewMatrix, 0);
+        MyGLRenderer.checkGlError("glUniformMatrix4fv");
+
+
+        // get handle to shape's model view matrix
+        int u_ProjectionMatrixHandle = GLES30.glGetUniformLocation(glProgram, "u_ProjectionMatrix");
+        MyGLRenderer.checkGlError("glGetUniformLocation");
+
+        // Apply the model view and view transformation
+        GLES30.glUniformMatrix4fv(u_ProjectionMatrixHandle, 1, false, u_ProjectionMatrix, 0);
+        MyGLRenderer.checkGlError("glUniformMatrix4fv");
+
 
         drawObject_textures(object.object);
 
@@ -70,6 +110,13 @@ public class ObjectRenderer {
         else {
             Shared.gl().glEnable(GL10.GL_CULL_FACE);
         }
+
+        // calculate camera transformation
+        Matrix.setLookAtM(u_ModelViewMatrix, 0,
+                0f, -8f, 6f, //eye
+                0f, 0f, 0f, // center
+                0f, -1.0f, 0.0f // eye vertical
+        );
 
         // Draw the square
         GLES30.glDrawElements(

@@ -1,6 +1,6 @@
 package com.ignja.ludost.object;
 
-import com.ignja.gl.object.Object3dContainer;
+import com.ignja.gl.object.Object3d;
 import com.ignja.gl.renderable.AbstractRenderable;
 import com.ignja.gl.util.Color;
 import com.ignja.gl.renderable.Square;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
  *
  */
 
-public class Board extends Object3dContainer {
+public class Board extends Object3d {
 
 
     private static final int POSITIONS = 8;
@@ -142,10 +142,10 @@ public class Board extends Object3dContainer {
         return this.boardPositions.get(index);
     }
 
-    public void draw(float[] mvpMatrix, int glProgram) {
-        super.draw(mvpMatrix, glProgram);
+    public void draw(float[] mvpMatrix, int glProgram, float[] modelViewMatrix, float[] projectionMatrix) {
+        super.draw(mvpMatrix, glProgram, modelViewMatrix, projectionMatrix);
         for (BoardPosition boardPosition: boardPositions)
-        boardPosition.draw(mvpMatrix, glProgram);
+        boardPosition.draw(mvpMatrix, glProgram, modelViewMatrix, projectionMatrix);
     }
 
     public void handleClickEvent(int screenWidth, int screenHeight, float touchX, float touchY, float[] viewMatrix, float[] projectionMatrix, float hAngle) {

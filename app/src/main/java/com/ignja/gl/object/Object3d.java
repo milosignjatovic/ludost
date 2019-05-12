@@ -14,6 +14,7 @@ import com.ignja.gl.renderable.Triangle;
 import com.ignja.gl.renderer.ObjectRenderer;
 import com.ignja.gl.util.Color;
 import com.ignja.gl.util.LoggerConfig;
+import com.ignja.gl.util.Shared;
 import com.ignja.gl.util.Utils;
 import com.ignja.gl.vo.Number3d;
 
@@ -30,7 +31,7 @@ public abstract class Object3d {
 
     private Scene scene;
 
-    private IObject3dContainer parent;
+    public Object3d parent;
 
     private Number3d position = new Number3d(0,0,0);
     private Number3d rotation = new Number3d(0,0,0);
@@ -119,23 +120,21 @@ public abstract class Object3d {
     }
 
     public float getX() {
-        return this.position.x;
+        return (parent!= null ? parent.getX() : 0) + this.position.x;
     }
 
     public float getY() {
-        return this.position.y;
+        return (parent!= null ? parent.getY() : 0) + this.position.y;
     }
 
     public float getZ() {
-        return this.position.z;
+        return (parent!= null ? parent.getZ() : 0) + this.position.z;
     }
 
-    public void draw(float[] mvpMatrix, int glProgram) {
+    public void draw(float[] mvpMatrix, int glProgram, float[] modelViewMatrix, float[] projectionMatrix) {
         ObjectRenderer objectRenderer = new ObjectRenderer();
-        if (this.object != null && this.position != null) {
-            Matrix.translateM(mvpMatrix, 0, getX(), getY(), getZ());
-            objectRenderer.render(this, mvpMatrix, glProgram);
-            Matrix.translateM(mvpMatrix, 0, -getX(), -getY(), -getZ());
+        if (this.object != null) {
+            objectRenderer.render(this, mvpMatrix, glProgram, modelViewMatrix, projectionMatrix);
         }
     }
 
@@ -153,8 +152,20 @@ public abstract class Object3d {
 
             float[] tmpMatrix;
             tmpMatrix = viewMatrix.clone();
-            Matrix.rotateM(tmpMatrix, 0, hAngle, 0, 0, 1.0f);
+
+            // Apply the same transformations as in ObjectRenderer
+            if (this.parent() != null) {
+                Matrix.translateM(tmpMatrix, 0,
+                        this.parent.getX(), this.parent.getY(), this.parent.getZ()
+                );
+                // TODO ne valja ovo... ne bi trebalo da se applyjuje rotacija kamere
+                // nego rotacija objekta!!! (a to trenutno nemamo)
+                Matrix.rotateM(tmpMatrix, 0, Shared.renderer().getHAngle(), 0, 0, 1.0f);
+            }
             Matrix.translateM(tmpMatrix, 0, getX(), getY(), getZ());
+            Matrix.rotateM(tmpMatrix, 0, Shared.renderer().getHAngle(), 0, 0, 1.0f);
+            Matrix.scaleM(tmpMatrix, 0, 1, 1, 1);
+
             short[] drawOrder = this.object.getDrawOrder();
             for (int i = 0; i < drawOrder.length/3; i++) {
                 float[] resultVector = new float[4];
@@ -258,7 +269,7 @@ public abstract class Object3d {
         return out;
     }
 
-    public void setParent(IObject3dContainer parent) {
+    public void setParent(Object3d parent) {
         this.parent = parent;
     }
 
@@ -266,14 +277,14 @@ public abstract class Object3d {
         this.scene = scene;
     }
 
-    public IObject3dContainer parent()
+    public Object3d parent()
     {
         return parent;
     }
 
-    public void parent(IObject3dContainer $container) /*package-private*/
+    public void parent(Object3d $object) /*package-private*/
     {
-        parent = $container;
+        parent = $object;
     }
 
     /**
@@ -299,6 +310,9 @@ public abstract class Object3d {
         return position;
     }
 
+    /**
+     * Relative to parent object (if any)
+     */
     public void position(Number3d position) {
         this.position = position;
     }

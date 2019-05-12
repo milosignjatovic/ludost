@@ -1,6 +1,6 @@
 package com.ignja.ludost.object;
 
-import com.ignja.gl.object.Object3dContainer;
+import com.ignja.gl.object.Object3d;
 import com.ignja.gl.renderable.Cuboid;
 import com.ignja.gl.vo.Number3d;
 
@@ -8,7 +8,7 @@ import com.ignja.gl.vo.Number3d;
  * Created by milos on 4/4/17.
  */
 
-public class Piece extends Object3dContainer {
+public class Piece extends Object3d {
 
     BoardPosition boardPosition;
 

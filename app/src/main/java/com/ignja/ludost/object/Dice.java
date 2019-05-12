@@ -1,6 +1,6 @@
 package com.ignja.ludost.object;
 
-import com.ignja.gl.object.Object3dContainer;
+import com.ignja.gl.object.Object3d;
 import com.ignja.gl.util.Color;
 import com.ignja.gl.renderable.Cube;
 import com.ignja.gl.vo.Number3d;
@@ -10,7 +10,7 @@ import com.ignja.gl.vo.Number3d;
  *
  */
 
-public class Dice extends Object3dContainer {
+public class Dice extends Object3d {
 
     private int value;
 
