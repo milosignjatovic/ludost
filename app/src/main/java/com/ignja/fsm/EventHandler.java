@@ -1,4 +1,4 @@
-package com.ignja.gl.fsm;
+package com.ignja.fsm;
 
 /**
  * Created by milos on 5/6/19.

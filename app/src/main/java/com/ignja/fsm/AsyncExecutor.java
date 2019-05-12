@@ -1,4 +1,4 @@
-package com.ignja.gl.fsm;
+package com.ignja.fsm;
 
 import android.support.annotation.NonNull;
 
