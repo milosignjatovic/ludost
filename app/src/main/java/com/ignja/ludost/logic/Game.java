@@ -1,5 +1,6 @@
 package com.ignja.ludost.logic;
 
+import android.os.SystemClock;
 import android.util.Log;
 
 import com.ignja.fsm.Event;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
  *
  */
 
-public class Game {
+public class Game extends StatefulContext {
 
     protected String TAG = "Game (Flow? Logic?)";
 
@@ -33,7 +34,7 @@ public class Game {
 
     private Player[] player;
 
-    private Dice dice;
+    public Dice dice;
 
     private static class GameFlowContext extends StatefulContext {
         private String info = "Pomozi boze";
@@ -84,14 +85,17 @@ public class Game {
             return;
         }
         flow = FlowBuilder.from(INIT_STATE).transit(
-                onStart.to(SELECT_PLAYER).transit(
+                onStart.to(ROLL_DICE).transit(
                         onPlayerSelected.to(ROLL_DICE).transit(
                                 onDiceClick.to(SELECT_PIECE).transit(
                                     onPieceSelected.to(SELECT_PLAYER)
                                 )
                         )
                 ),
-                onExit.to(INIT_STATE)
+                onExit.to(INIT_STATE),
+                onDiceClick.to(ROLL_DICE).transit(
+                        onPieceSelected.to(SELECT_PLAYER)
+                )
         ).executor(new UIThreadExecutor());
     }
 
@@ -108,23 +112,34 @@ public class Game {
                 Log.i(TAG, "INIT_STATE exited");
             }
         });
+
         SELECT_PLAYER.whenEnter(new StateHandler<GameFlowContext>() {
             @Override
             public void call(State<GameFlowContext> state, GameFlowContext context) throws Exception {
                 Log.i(TAG, "SELECT PLAYER entered");
+                // TODO
+                // - check if there are available players
+                // - select first available players
+                // - wait for user to role the dice (timeout -> next available player)
+                // - dice rolled -> animate, random number
+                // - check for available pieces
+                // - Info message if there are no avail pieces, or Wait for player to select piece (timeout -> next available player)
+                // - piece selected -> animate -> movement result (won game?)
             }
         });
+
         ROLL_DICE.whenEnter(new StateHandler<GameFlowContext>() {
             @Override
             public void call(State<GameFlowContext> state, GameFlowContext context) throws Exception {
                 Log.i(TAG, "ROLL_DICE entered");
             }
         });
+
         onDiceClick.whenTriggered(new EventHandler<GameFlowContext>() {
             @Override
             public void call(Event<GameFlowContext> event, State<GameFlowContext> from, State<GameFlowContext> to, GameFlowContext context) throws Exception {
                 int diceResult = (int)(Math.random()*6) + 1;
-                Log.i(TAG, "Dice rolled: " + diceResult);
+                Log.i(TAG, from + ", to: " + to + ",  Dice rolled: " + diceResult);
             }
         });
 
@@ -168,6 +183,7 @@ public class Game {
             } else if (nearestHit instanceof Dice) {
                 try {
                     onDiceClick.trigger(this.flow.getContext());
+                    dice.clickedAt(SystemClock.uptimeMillis());
                 } catch (Exception e) {
                     // TODO
                 }

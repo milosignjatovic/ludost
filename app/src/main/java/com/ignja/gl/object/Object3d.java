@@ -131,8 +131,18 @@ public abstract class Object3d {
         return (parent!= null ? parent.getZ() : 0) + this.position.z;
     }
 
+    public float translateZ(float dZ) {
+        return this.position.z = this.position.z + dZ;
+    }
+
+    // Stub
+    protected void update() {
+
+    }
+
     public void draw(float[] mvpMatrix, int glProgram, float[] modelViewMatrix, float[] projectionMatrix) {
         ObjectRenderer objectRenderer = new ObjectRenderer();
+        this.update();
         if (this.object != null) {
             float[] tmp;
             tmp = mvpMatrix.clone();
@@ -349,4 +359,16 @@ public abstract class Object3d {
         this.object.clear();
     }
 
+    public boolean clicked = false;
+
+    public long clickedAtTime;
+
+    public void clickedAt(long uptimeMillis) {
+        this.clickedAtTime = uptimeMillis;
+        this.clicked = true;
+    }
+
+    public long clickedAt() {
+        return this.clickedAtTime;
+    }
 }
