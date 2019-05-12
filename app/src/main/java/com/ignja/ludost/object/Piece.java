@@ -13,15 +13,15 @@ public class Piece extends Object3d {
     BoardPosition boardPosition;
 
     Piece(BoardPosition boardPosition, float[] color) {
-        super(new Number3d(boardPosition.getX(), boardPosition.getY(), 0.35f), color);
+        super(new Number3d(boardPosition.getX(), boardPosition.getY(), 0.4f), color);
         this.TAG = "PieceObject";
-        this.object = new Cuboid(0.25f, 0.25f, 0.7f, color);
+        this.object = new Cuboid(0.32f, 0.32f, 0.8f, color);
         this.moveTo(boardPosition); // Not needed here?
     }
 
     public void moveTo(BoardPosition boardPosition) {
         this.boardPosition = boardPosition;
-        this.position(new Number3d(boardPosition.getX(), boardPosition.getY(), 0.35f));
+        this.position(new Number3d(boardPosition.getX(), boardPosition.getY(), 0.4f));
     }
 
 }

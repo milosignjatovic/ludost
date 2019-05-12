@@ -19,12 +19,12 @@ public class BoardPosition extends Object3d {
     public BoardPosition(Board board, float x, float y) {
         super(new Number3d(x, y, 0f));
         this.TAG = "BoardPosition";
-        this.object = createBlackSquare();
+        this.object = createPositionSquare();
         this.setParent(board);
     }
 
-    private AbstractRenderable createBlackSquare() {
-        float a = 0.22f;
+    private AbstractRenderable createPositionSquare() {
+        float a = 0.23f;
         return new Square(new float[]{
                 -a, a, 0.01f,
                 -a, -a, 0.01f,

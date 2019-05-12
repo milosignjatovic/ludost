@@ -19,6 +19,14 @@ public class Square extends AbstractRenderable {
         }, new short[]{
                 0, 1, 2,
                 2, 3, 0
+        }, new float[]{
+                //Top normal
+                0f, 1f, 0f,
+                0f, 1f, 0f,
+                0f, 1f, 0f,
+                0f, 1f, 0f,
+                0f, 1f, 0f,
+                0f, 1f, 0f,
         });
     }
 

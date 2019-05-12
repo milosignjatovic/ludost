@@ -7,6 +7,7 @@ uniform highp mat4 u_ProjectionMatrix;
 
 attribute vec4 vPosition;
 attribute vec4 vColor;
+attribute vec4 vNormal;
 
 attribute vec4 a_Position;
 attribute vec2 a_TexCoord;
@@ -28,6 +29,6 @@ void main() {
     //frag_TexCoord = a_TexCoord;
     frag_Position = vec3(gl_Position);
     frag_Color = vColor;
-    frag_Normal = vec3(uMVPMatrix * vec4(a_Normal, 1.0));
+    frag_Normal = vec3(uMVPMatrix * vNormal);
 
 }

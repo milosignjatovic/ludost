@@ -17,6 +17,7 @@ import java.nio.ShortBuffer;
 public class AbstractRenderable implements RenderableInterface {
 
     private final FloatBuffer vertexBuffer;
+    private final FloatBuffer normalsBuffer;
     private final ShortBuffer drawListBuffer;
 
     // number of coordinates per vertex in this array
@@ -32,12 +33,14 @@ public class AbstractRenderable implements RenderableInterface {
 
     private FloatBuffer colorBuffer;
 
+    public final float[] normals;
+
     private short[] drawOrder;
 
     // TODO Initialize buffers in renderer, when objects are pushed into scene?
     // TODO Not in the object itself
 
-    protected AbstractRenderable(float[] coords, float[] color, short[] drawOrder) {
+    protected AbstractRenderable(float[] coords, float[] color, short[] drawOrder, float[] normals) {
         this.coords = coords;
         if (color.length/COORDS_PER_COLOR != drawOrder.length) {
             if (LoggerConfig.ON) {
@@ -54,6 +57,16 @@ public class AbstractRenderable implements RenderableInterface {
         vertexBuffer = bb.asFloatBuffer();
         vertexBuffer.put(coords);
         vertexBuffer.position(0);
+
+        this.normals = normals;
+        ByteBuffer bbNormals = ByteBuffer.allocateDirect(
+                // (# of coordinate values * 4 bytes per float)
+                normals.length * FLOAT_SIZE);
+        bbNormals.order(ByteOrder.nativeOrder());
+        normalsBuffer = bbNormals.asFloatBuffer();
+        normalsBuffer.put(normals);
+        normalsBuffer.position(0);
+
 
         colorBuffer = ByteBuffer
             .allocateDirect(color.length * FLOAT_SIZE) // allocate memory
@@ -86,12 +99,17 @@ public class AbstractRenderable implements RenderableInterface {
         return vertexBuffer;
     }
 
+    public FloatBuffer getNormalsBuffer() {
+        return normalsBuffer;
+    }
+
     public ShortBuffer getDrawListBuffer() {
         return drawListBuffer;
     }
 
     public void clear() {
         if (this.vertexBuffer != null) this.vertexBuffer.clear();
+        if (this.normalsBuffer != null) this.normalsBuffer.clear();
         if (this.colorBuffer != null) this.colorBuffer.clear();
     }
 

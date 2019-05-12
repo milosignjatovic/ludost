@@ -21,8 +21,10 @@ public class ObjectRenderer {
     // number of coordinates per vertex in this array
     private static final int COORDS_PER_VERTEX = 3;
     private static final int COORDS_PER_COLOR = 4;
+    private static final int COORDS_PER_NORMAL = 3;
 
     private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
+    private final int normalsStride = COORDS_PER_NORMAL * 4; // 4 bytes per vertex
 
     /**
      * Draw single object into scene
@@ -66,6 +68,21 @@ public class ObjectRenderer {
                 GLES30.GL_FLOAT, false,
                 COORDS_PER_COLOR * 4, object.object.getColorBuffer());
         MyGLRenderer.checkGlError("MIK glVertexAttribPointer");
+
+
+        // get handle to vertex shader's vNormal member
+        int mNormalHandle = GLES30.glGetAttribLocation(glProgram, "vNormal");
+        MyGLRenderer.checkGlError("glGetAttribLocation");
+
+        // Enable a handle to the triangle vertices
+        GLES30.glEnableVertexAttribArray(mNormalHandle);
+
+        // Prepare the triangle coordinate data
+        GLES30.glVertexAttribPointer(
+                mNormalHandle, COORDS_PER_NORMAL,
+                GLES30.GL_FLOAT, false,
+                normalsStride, object.object.getNormalsBuffer());
+        MyGLRenderer.checkGlError("glVertexAttribPointer");
 
 
 
@@ -132,6 +149,9 @@ public class ObjectRenderer {
 
         // Disable color array
         GLES30.glDisableVertexAttribArray(mColorHandle);
+
+        // Disable normal array
+        GLES30.glDisableVertexAttribArray(mNormalHandle);
     }
 
     private void drawObject_textures(AbstractRenderable $o)

@@ -105,6 +105,55 @@ public class Cuboid extends AbstractRenderable {
                 // Bottom
                 20, 21, 22,
                 22, 23, 20
+        }, new float[]{
+                //Front normal
+                0f, 0f, 1f,
+                0f, 0f, 1f,
+                0f, 0f, 1f,
+                0f, 0f, 1f,
+                0f, 0f, 1f,
+                0f, 0f, 1f,
+
+                //Back normal
+                0f, 0f, -1f,
+                0f, 0f, -1f,
+                0f, 0f, -1f,
+                0f, 0f, -1f,
+                0f, 0f, -1f,
+                0f, 0f, -1f,
+
+                //Left normal
+                -1f, 0f, 0f,
+                -1f, 0f, 0f,
+                -1f, 0f, 0f,
+                -1f, 0f, 0f,
+                -1f, 0f, 0f,
+                -1f, 0f, 0f,
+
+                //Right normal
+                1f, 0f, 0f,
+                1f, 0f, 0f,
+                1f, 0f, 0f,
+                1f, 0f, 0f,
+                1f, 0f, 0f,
+                1f, 0f, 0f,
+
+                //Top normal
+                0f, 1f, 0f,
+                0f, 1f, 0f,
+                0f, 1f, 0f,
+                0f, 1f, 0f,
+                0f, 1f, 0f,
+                0f, 1f, 0f,
+
+                //Bottom normal
+                0f, -1f, 0f,
+                0f, -1f, 0f,
+                0f, -1f, 0f,
+                0f, -1f, 0f,
+                0f, -1f, 0f,
+                0f, -1f, 0f
         });
+
     }
 }
