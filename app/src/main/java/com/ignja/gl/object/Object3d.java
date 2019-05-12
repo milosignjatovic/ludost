@@ -134,7 +134,11 @@ public abstract class Object3d {
     public void draw(float[] mvpMatrix, int glProgram, float[] modelViewMatrix, float[] projectionMatrix) {
         ObjectRenderer objectRenderer = new ObjectRenderer();
         if (this.object != null) {
-            objectRenderer.render(this, mvpMatrix, glProgram, modelViewMatrix, projectionMatrix);
+            float[] tmp;
+            tmp = mvpMatrix.clone();
+            Matrix.translateM(tmp, 0, getX(), getY(), getZ());
+            objectRenderer.render(this, tmp, glProgram, modelViewMatrix, projectionMatrix);
+            //Matrix.translateM(mvpMatrix, 0, -getX(), -getY(), -getZ());
         }
     }
 

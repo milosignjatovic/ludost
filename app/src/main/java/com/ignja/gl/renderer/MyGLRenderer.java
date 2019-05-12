@@ -148,11 +148,11 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         _scene.lights().add(_light);
 
         // Set the camera position (View matrix)
-//        Matrix.setLookAtM(mViewMatrix, 0,
-//                0f, -8f, 6f, //eye
-//                0f, 0f, 0f, // center
-//                0f, -1.0f, 0.0f // eye vertical
-//        );
+        Matrix.setLookAtM(mViewMatrix, 0,
+                0f, -8f, 6f, //eye
+                0f, 0f, 0f, // center
+                0f, -1.0f, 0.0f // eye vertical
+        );
 
         // TODO Simple light
         //drawSetupLights();
@@ -272,7 +272,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         drawSetup();
         // TODO Move to object model transformation
         // Calculate the projection and view transformation
-        //Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
+        Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 
 
         // Draw square

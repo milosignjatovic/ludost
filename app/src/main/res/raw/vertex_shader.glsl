@@ -22,12 +22,12 @@ void main() {
     // The matrix must be included as a modifier of gl_Position.
     // Note that the uMVPMatrix factor *must be first* in order
     // for the matrix multiplication product to be correct.
-    //gl_Position = uMVPMatrix * vPosition;
+    gl_Position = uMVPMatrix * vPosition;
 
     frag_TexCoord = a_TexCoord;
     frag_Normal = (u_ModelViewMatrix * vec4(a_Normal, 0.0)).xyz;
     //gl_Position = u_ProjectionMatrix * u_ModelViewMatrix * a_Position;
-    gl_Position = u_ProjectionMatrix * u_ModelViewMatrix * a_Position;
+    //gl_Position = u_ProjectionMatrix * u_ModelViewMatrix * a_Position;
 
     varyingColor = vColor;
 }

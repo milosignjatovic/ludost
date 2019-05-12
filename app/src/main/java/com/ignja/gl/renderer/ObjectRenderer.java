@@ -28,22 +28,22 @@ public class ObjectRenderer {
      * Draw single object into scene
      */
     public void render(Object3d object, float[] mvpMatrix, int glProgram, float[] u_ModelViewMatrix, float[] u_ProjectionMatrix) {
-        // Object transformation on ModelView
-        // TODO Child objects should contain parent transformations ?
-        if (object.parent() != null) {
-            Matrix.translateM(u_ModelViewMatrix, 0,
-                    object.parent.getX(), object.parent.getY(), object.parent.getZ()
-            );
-            // TODO Do not mix ObjectRotation/Position and CameraTransformation
-            // nego rotacija objekta!!! (a to trenutno nemamo)
-            Matrix.rotateM(u_ModelViewMatrix, 0, Shared.renderer().getHAngle(), 0, 0, 1.0f);
-        }
-        Matrix.translateM(u_ModelViewMatrix, 0, object.getX(), object.getY(), object.getZ());
-        Matrix.rotateM(u_ModelViewMatrix, 0, Shared.renderer().getHAngle(), 0, 0, 1.0f);
-        Matrix.scaleM(u_ModelViewMatrix, 0, 1, 1, 1);
+//        // Object transformation on ModelView
+//        // TODO Child objects should contain parent transformations ?
+//        if (object.parent() != null) {
+//            Matrix.translateM(u_ModelViewMatrix, 0,
+//                    object.parent.getX(), object.parent.getY(), object.parent.getZ()
+//            );
+//            // TODO Do not mix ObjectRotation/Position and CameraTransformation
+//            // nego rotacija objekta!!! (a to trenutno nemamo)
+//            Matrix.rotateM(u_ModelViewMatrix, 0, Shared.renderer().getHAngle(), 0, 0, 1.0f);
+//        }
+//        Matrix.translateM(u_ModelViewMatrix, 0, object.getX(), object.getY(), object.getZ());
+//        Matrix.rotateM(u_ModelViewMatrix, 0, Shared.renderer().getHAngle(), 0, 0, 1.0f);
+//        Matrix.scaleM(u_ModelViewMatrix, 0, 1, 1, 1);
 
         // get handle to vertex shader's vPosition member
-        int mPositionHandle = GLES30.glGetAttribLocation(glProgram, "a_Position");
+        int mPositionHandle = GLES30.glGetAttribLocation(glProgram, "vPosition");
 
         // Enable a handle to the triangle vertices
         GLES30.glEnableVertexAttribArray(mPositionHandle);
@@ -112,11 +112,11 @@ public class ObjectRenderer {
         }
 
         // calculate camera transformation
-        Matrix.setLookAtM(u_ModelViewMatrix, 0,
-                0f, -8f, 6f, //eye
-                0f, 0f, 0f, // center
-                0f, -1.0f, 0.0f // eye vertical
-        );
+//        Matrix.setLookAtM(u_ModelViewMatrix, 0,
+//                0f, -8f, 6f, //eye
+//                0f, 0f, 0f, // center
+//                0f, -1.0f, 0.0f // eye vertical
+//        );
 
         // Draw the square
         GLES30.glDrawElements(
