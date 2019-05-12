@@ -126,9 +126,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Set the background frame color
         GLES30.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-        GLES30.glEnable(GLES30.GL_DEPTH_TEST);
-        GLES30.glDepthFunc(GLES30.GL_LEQUAL);
-        GLES30.glDisable(GLES30.GL_CULL_FACE);
+        reset();
 
         Board board = new Board();
         Player player1 = new Player(board, Color.RED_DARK, 0);
@@ -158,7 +156,6 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         // TODO Simple light
         //drawSetupLights();
-
     }
 
     protected void drawSetupLights()
@@ -271,10 +268,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onDrawFrame(GL10 gl) {
-        float[] scratch = new float[16];
-
-        clearScene();
-
+        drawSetup();
         // Calculate the projection and view transformation
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 
@@ -302,14 +296,17 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         }
     }
 
-    private void clearScene() {
-        // clear surface on each frame?
-//        GLES30.glClearColor(
-//                Color.GRAY_DARK[0],
-//                Color.GRAY_DARK[1],
-//                Color.GRAY_DARK[2],
-//                Color.GRAY_DARK[3]
-//        );
+
+
+    private void drawSetup() {
+        if (_scene.backgroundColor() != null) {
+            GLES30.glClearColor(
+                    _scene.backgroundColor().r / 255f,
+                    _scene.backgroundColor().g / 255f,
+                    _scene.backgroundColor().b / 255f,
+                    _scene.backgroundColor().a / 255f
+            );
+        }
 
         // Draw background color
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);
@@ -415,6 +412,45 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, $bitmap, 0);
 
         return glTextureId; // 1
+    }
+
+    private void reset() {
+        // Reset TextureManager
+        Shared.textureManager().reset();
+
+        // Do OpenGL settings which we are using as defaults, or which we will not be changing on-draw
+
+        // Explicit depth settings
+        _gl.glEnable(GL10.GL_DEPTH_TEST);
+        _gl.glClearDepthf(1.0f);
+        _gl.glDepthFunc(GL10.GL_LESS);
+        _gl.glDepthRangef(0,1f);
+        _gl.glDepthMask(true);
+
+        // Alpha enabled
+        _gl.glEnable(GL10.GL_BLEND);
+        _gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+
+        // "Transparency is best implemented using glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+        // with primitives sorted from farthest to nearest."
+
+        // Texture
+        _gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST); // (OpenGL default is GL_NEAREST_MIPMAP)
+        _gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR); // (is OpenGL default)
+
+        // CCW frontfaces only, by default
+        _gl.glFrontFace(GL10.GL_CCW);
+        _gl.glCullFace(GL10.GL_BACK);
+        _gl.glEnable(GL10.GL_CULL_FACE);
+
+        // Disable lights by default
+        for (int i = GL10.GL_LIGHT0; i < GL10.GL_LIGHT0 + NUM_GLLIGHTS; i++) {
+            //_gl.glDisable(i);
+        }
+
+        //
+        // Scene object init only happens here, when we get GL for the first time
+        //
     }
 
 }

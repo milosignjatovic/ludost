@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.WindowManager;
 
+import com.ignja.gl.core.GLActivity;
 import com.ignja.gl.core.ISceneController;
 import com.ignja.gl.core.Scene;
 import com.ignja.gl.core.TextureManager;
@@ -31,77 +32,7 @@ import com.ignja.gl.util.Utils;
 import com.ignja.gl.view.MyGLSurfaceView;
 import com.ignja.ludost.R;
 
-public class OpenGLESActivity extends Activity implements ISceneController {
+public class OpenGLESActivity extends GLActivity implements ISceneController {
 
-    private GLSurfaceView mGLView;
 
-    public Scene scene;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // Hide Title bar (GL in full screen)
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        // Create a GLSurfaceView instance and set it
-        // as the ContentView for this Activity
-        // Shared class is used to store singletons
-        Shared.context(this);
-        scene = new Scene(this);
-        Shared.renderer(new MyGLRenderer(scene));
-        mGLView = new MyGLSurfaceView(this);
-        // Render the view only when there is a change in the drawing data
-        //mGLView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
-        mGLView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
-        setContentView(mGLView);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        // The following call pauses the rendering thread.
-        // If your OpenGL application is memory intensive,
-        // you should consider de-allocating objects that
-        // consume significant memory here.
-        mGLView.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // The following call resumes a paused rendering thread.
-        // If you de-allocated graphic objects for onPause()
-        // this is a good place to re-allocate them.
-        mGLView.onResume();
-    }
-
-    @Override
-    public void initScene() {
-
-    }
-
-    @Override
-    public void updateScene() {
-
-    }
-
-    @Override
-    public Handler getInitSceneHandler() {
-        return null;
-    }
-
-    @Override
-    public Runnable getInitSceneRunnable() {
-        return null;
-    }
-
-    @Override
-    public Handler getUpdateSceneHandler() {
-        return null;
-    }
-
-    @Override
-    public Runnable getUpdateSceneRunnable() {
-        return null;
-    }
 }

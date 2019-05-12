@@ -134,7 +134,7 @@ public abstract class Object3d {
         ObjectRenderer objectRenderer = new ObjectRenderer();
         if (this.object != null && this.position != null) {
             Matrix.translateM(mvpMatrix, 0, getX(), getY(), getZ());
-            objectRenderer.render(this.object, mvpMatrix, glProgram);
+            objectRenderer.render(this, mvpMatrix, glProgram);
             Matrix.translateM(mvpMatrix, 0, -getX(), -getY(), -getZ());
         }
     }
@@ -322,6 +322,13 @@ public abstract class Object3d {
 
     public String name() {
         return name;
+    }
+
+    /**
+     * Clear object for garbage collection.
+     */
+    public void clear() {
+        this.object.clear();
     }
 
 }

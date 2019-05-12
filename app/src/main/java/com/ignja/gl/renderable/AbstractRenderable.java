@@ -90,4 +90,9 @@ public class AbstractRenderable implements RenderableInterface {
         return drawListBuffer;
     }
 
+    public void clear() {
+        if (this.vertexBuffer != null) this.vertexBuffer.clear();
+        if (this.colorBuffer != null) this.colorBuffer.clear();
+    }
+
 }

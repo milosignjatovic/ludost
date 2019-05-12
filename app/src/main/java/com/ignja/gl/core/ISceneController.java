@@ -9,7 +9,7 @@ import android.os.Handler;
  * The RendererActivity class implements this interface.
  * 
  * But you could use any other class to implement this interface, 
- * not just the Activity class.
+ * not just the GLActivity class.
  *   
  */
 public interface ISceneController 

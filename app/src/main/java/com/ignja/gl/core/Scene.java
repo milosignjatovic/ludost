@@ -4,8 +4,10 @@ import android.graphics.Bitmap;
 
 import com.ignja.gl.object.IObject3dContainer;
 import com.ignja.gl.object.Object3d;
+import com.ignja.gl.object.Object3dContainer;
 import com.ignja.gl.util.Shared;
 import com.ignja.gl.util.Utils;
+import com.ignja.gl.vo.Color4;
 import com.ignja.ludost.R;
 import com.ignja.ludost.logic.Game;
 
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 public class Scene implements IObject3dContainer {
 
     private ManagedLightList _lights;
+    private Color4 _backgroundColor;
 
     private ArrayList<Object3d> _children = new ArrayList<>();
 
@@ -31,6 +34,41 @@ public class Scene implements IObject3dContainer {
     public Scene(ISceneController sceneController) {
         _sceneController = sceneController;
         _lights = new ManagedLightList();
+    }
+
+    /**
+     * Resets Scene to default settings.
+     * Removes and clears any attached Object3ds.
+     * Resets light list.
+     */
+    public void reset() {
+        clearChildren(this);
+
+        _children = new ArrayList<Object3d>();
+        _lights = new ManagedLightList();
+        _backgroundColor = new Color4(0,0,0,255);
+
+        //_camera = new CameraVo();
+
+
+        //lightingEnabled(true);
+    }
+
+    public Color4 backgroundColor() {
+        return _backgroundColor;
+    }
+
+
+    void init() {
+        this.reset();
+        //_sceneController.initScene();
+        //_sceneController.getInitSceneHandler().post(_sceneController.getInitSceneRunnable());
+    }
+
+    void update()
+    {
+        _sceneController.updateScene();
+        _sceneController.getUpdateSceneHandler().post(_sceneController.getUpdateSceneRunnable());
     }
 
     public void setGame(Game game) {
@@ -124,6 +162,28 @@ public class Scene implements IObject3dContainer {
     public ManagedLightList lights()
     {
         return _lights;
+    }
+
+    /**
+     * Used by Renderer
+     */
+    ArrayList<Object3d> children() /*package-private*/
+    {
+        return _children;
+    }
+
+    private void clearChildren(IObject3dContainer $c)
+    {
+        for (int i = $c.numChildren() - 1; i >= 0; i--)
+        {
+            Object3d o = $c.getChildAt(i);
+            o.clear();
+
+            if (o instanceof Object3dContainer)
+            {
+                clearChildren((Object3dContainer)o);
+            }
+        }
     }
 
 }
