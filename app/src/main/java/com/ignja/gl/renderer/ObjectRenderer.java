@@ -73,8 +73,10 @@ public class ObjectRenderer {
 
         // Draw the square
         GLES30.glDrawElements(
-                GLES30.GL_TRIANGLES, object.object.getDrawOrder().length,
-                GLES30.GL_UNSIGNED_SHORT, object.object.getDrawListBuffer());
+                GLES30.GL_TRIANGLES,
+                object.object.getDrawOrder().length,
+                GLES30.GL_UNSIGNED_SHORT,
+                object.object.getDrawListBuffer());
 
 
         // Disable vertex array

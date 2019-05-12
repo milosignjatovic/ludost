@@ -10,10 +10,10 @@ public class Cuboid extends AbstractRenderable {
 
     public Cuboid(float a, float b, float c, float[] color) {
         super(new float[]{
-                a/2f, b/2f, c/2f, // TOP
-                a/2f, -b/2f, c/2f,
+                -a/2f, b/2f, c/2f, // TOP
                 -a/2f, -b/2f, c/2f,
-                -a/2f, b/2f, c/2f,
+                a/2f, -b/2f, c/2f,
+                a/2f, b/2f, c/2f,
 
                 -a/2f, b/2f, c/2f, // LEFT
                 -a/2f, b/2f, -c/2f,

@@ -10,10 +10,10 @@ public class Cube extends AbstractRenderable {
 
     public Cube(float a, float[] color) {
         super(new float[]{
-                a/2f, a/2f, a/2f, // TOP
-                a/2f, -a/2f, a/2f,
+                -a/2f, a/2f, a/2f, // TOP
                 -a/2f, -a/2f, a/2f,
-                -a/2f, a/2f, a/2f,
+                a/2f, -a/2f, a/2f,
+                a/2f, a/2f, a/2f,
 
                 -a/2f, a/2f, a/2f, // LEFT
                 -a/2f, a/2f, -a/2f,
