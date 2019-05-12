@@ -129,7 +129,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         reset();
 
         Board board = new Board();
-        Player player1 = new Player(board, Color.RED_DARK, 0);
+        Player player1 = new Player(board, Color.RED, 0);
         Player player2 = new Player(board, Color.GREEN_DARK, 1);
         Player player3 = new Player(board, Color.ORANGE, 2);
         Player player4 = new Player(board, Color.PINK, 3);

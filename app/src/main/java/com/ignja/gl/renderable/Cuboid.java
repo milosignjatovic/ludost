@@ -40,32 +40,18 @@ public class Cuboid extends AbstractRenderable {
                 -a/2f, -b/2f,  c/2f,
                 -a/2f, -b/2f, -c/2f,
         }, new float[]{
-                1.0f, color[1], color[2], color[3],
                 color[0], color[1], color[2], color[3],
                 color[0], color[1], color[2], color[3],
-                1.0f, color[1], color[2], color[3],
                 color[0], color[1], color[2], color[3],
                 color[0], color[1], color[2], color[3],
-
-                color[0], 0.3f, color[2], color[3],
-                color[0], color[1], color[2], color[3],
-                color[0], color[1], color[2], color[3],
-                color[0], 0.6f, color[2], color[3],
-                color[0], color[1], color[2], color[3],
-                color[0], color[1], color[2], color[3],
-
-                color[0], color[1], 0.3f, color[3],
-                color[0], color[1], color[2], color[3],
-                color[0], color[1], color[2], color[3],
-                color[0], color[1], 0.6f, color[3],
                 color[0], color[1], color[2], color[3],
                 color[0], color[1], color[2], color[3],
 
                 color[0], color[1], color[2], color[3],
-                0.4f, color[1], 0.6f, color[3],
                 color[0], color[1], color[2], color[3],
                 color[0], color[1], color[2], color[3],
-                0.6f, color[1], 0.4f, color[3],
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
                 color[0], color[1], color[2], color[3],
 
                 color[0], color[1], color[2], color[3],
@@ -76,10 +62,24 @@ public class Cuboid extends AbstractRenderable {
                 color[0], color[1], color[2], color[3],
 
                 color[0], color[1], color[2], color[3],
-                color[0], 0.0f, color[2], color[3],
                 color[0], color[1], color[2], color[3],
                 color[0], color[1], color[2], color[3],
-                color[0], 0, color[2], color[3],
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
                 color[0], color[1], color[2], color[3]
         }, new short[] {
                 // Front

@@ -17,6 +17,7 @@ varying vec4 varyingColor;
 varying lowp vec4 frag_Color;
 varying lowp vec2 frag_TexCoord;
 varying lowp vec3 frag_Normal;
+varying lowp vec3 frag_Position;
 
 void main() {
     // The matrix must be included as a modifier of gl_Position.
@@ -24,10 +25,11 @@ void main() {
     // for the matrix multiplication product to be correct.
     gl_Position = uMVPMatrix * vPosition;
 
-    frag_TexCoord = a_TexCoord;
-    frag_Normal = (u_ModelViewMatrix * vec4(a_Normal, 0.0)).xyz;
+    //frag_TexCoord = a_TexCoord;
+    frag_Position = vec3(gl_Position);
+    frag_Color = vColor;
+    frag_Normal = vec3(uMVPMatrix * vec4(a_Normal, 1.0));
     //gl_Position = u_ProjectionMatrix * u_ModelViewMatrix * a_Position;
     //gl_Position = u_ProjectionMatrix * u_ModelViewMatrix * a_Position;
 
-    varyingColor = vColor;
 }

@@ -42,46 +42,46 @@ public class Cube extends AbstractRenderable {
 
 
         }, new float[]{
-                0.5f, color[1], color[2], color[3],
-                0.5f, color[1], color[2], color[3],
-                0.5f, color[1], color[2], color[3],
-                0.5f, color[1], color[2], color[3],
-                0.5f, color[1], color[2], color[3],
-                0.5f, color[1], color[2], color[3],
-
-                color[0], 0.5f, color[2], color[3],
-                color[0], 0.5f, color[2], color[3],
-                color[0], 0.5f, color[2], color[3],
-                color[0], 0.5f, color[2], color[3],
-                color[0], 0.5f, color[2], color[3],
-                color[0], 0.5f, color[2], color[3],
-
-                color[0], color[1], 0.5f, color[3],
-                color[0], color[1], 0.5f, color[3],
-                color[0], color[1], 0.5f, color[3],
-                color[0], color[1], 0.5f, color[3],
-                color[0], color[1], 0.5f, color[3],
-                color[0], color[1], 0.5f, color[3],
-
-                0f, color[1], color[2], color[3],
-                0f, color[1], color[2], color[3],
-                0f, color[1], color[2], color[3],
-                0f, color[1], color[2], color[3],
-                0f, color[1], color[2], color[3],
-                0f, color[1], color[2], color[3],
-
-                color[0], 0f, color[2], color[3],
-                color[0], 0f, color[2], color[3],
-                color[0], 0f, color[2], color[3],
-                color[0], 0f, color[2], color[3],
-                color[0], 0f, color[2], color[3],
-                color[0], 0f, color[2], color[3],
-
-                color[0], color[1], color[2], color[3],
-                color[0], 0.0f, color[2], color[3],
                 color[0], color[1], color[2], color[3],
                 color[0], color[1], color[2], color[3],
-                color[0], 0, color[2], color[3],
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
+                color[0], color[1], color[2], color[3],
                 color[0], color[1], color[2], color[3]
         }, new short[] {
                 // Front
