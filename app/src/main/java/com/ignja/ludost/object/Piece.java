@@ -15,7 +15,7 @@ public class Piece extends Object3d {
     Piece(BoardPosition boardPosition, float[] color) {
         super(new Number3d(boardPosition.getX(), boardPosition.getY(), 0.35f), color);
         this.TAG = "PieceObject";
-        this.object = new Cuboid(0.2f, 0.2f, 0.7f, color);
+        this.object = new Cuboid(0.25f, 0.25f, 0.7f, color);
         this.moveTo(boardPosition); // Not needed here?
     }
 

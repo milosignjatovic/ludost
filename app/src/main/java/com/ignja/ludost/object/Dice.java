@@ -15,9 +15,9 @@ public class Dice extends Object3d {
     private int value;
 
     public Dice() {
-        super(new Number3d(0, 0, 0.35f));
+        super(new Number3d(0, 0, 0.5f));
         this.TAG = "DiceObject";
-        this.object = new Cube(0.7f, Color.YELLOW);
+        this.object = new Cube(1.0f, Color.ALMOND);
     }
 
     private int getValue() {

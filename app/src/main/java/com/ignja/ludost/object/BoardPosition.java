@@ -30,7 +30,7 @@ public class BoardPosition extends Object3d {
                 -a, -a, 0.01f,
                 a, -a, 0.01f,
                 a, a, 0.01f
-        }, Color.WHITE);
+        }, Color.BLUE_STEEL);
     }
 
 }

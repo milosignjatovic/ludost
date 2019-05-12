@@ -130,9 +130,9 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         Board board = new Board();
         Player player1 = new Player(board, Color.RED, 0);
-        Player player2 = new Player(board, Color.GREEN_DARK, 1);
-        Player player3 = new Player(board, Color.ORANGE, 2);
-        Player player4 = new Player(board, Color.PINK, 3);
+        Player player2 = new Player(board, Color.GREEN, 1);
+        Player player3 = new Player(board, Color.YELLOW, 2);
+        Player player4 = new Player(board, Color.BLUE, 3);
         Player[] playerArray = new Player[] {player1, player2, player3, player4};
         //this._scene = new Scene();
         this._scene.initScene();
@@ -149,8 +149,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         // Set the camera position (View matrix)
         Matrix.setLookAtM(mViewMatrix, 0,
-                0f, -8f, 6f, //eye
-                0f, 0f, 0f, // center
+                0f, -8f, 5f, //eye
+                0f, -2f, 0f, // center (look at)
                 0f, -1.0f, 0.0f // eye vertical
         );
 

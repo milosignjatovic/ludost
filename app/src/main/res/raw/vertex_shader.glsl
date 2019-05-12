@@ -29,7 +29,5 @@ void main() {
     frag_Position = vec3(gl_Position);
     frag_Color = vColor;
     frag_Normal = vec3(uMVPMatrix * vec4(a_Normal, 1.0));
-    //gl_Position = u_ProjectionMatrix * u_ModelViewMatrix * a_Position;
-    //gl_Position = u_ProjectionMatrix * u_ModelViewMatrix * a_Position;
 
 }

@@ -135,7 +135,7 @@ public class Board extends Object3d {
                 -a/2, -a/2, 0f,
                 a/2, -a/2, 0f,
                 a/2, a/2, 0f
-        }, Color.GRAY_LIGHT);
+        }, Color.BLUE_LIGHT);
     }
 
     public BoardPosition getPosition(int index) {

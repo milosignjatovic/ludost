@@ -19,11 +19,17 @@ public class Color {
 
     public static float[] YELLOW = { 1f, 1f, 0f, 1.0f };
 
+    public static float[] ALMOND = { 0.95f, 0.9f, 0.7f, 1.0f };
+
     public static float[] ORANGE = { 1f, 0.6f, 0.1f, 1.0f };
 
     public static float[] BLUE = { 0f, 0f, 1f, 1.0f };
 
-    public static float[] BLUE_DARK = { 0f, 0f, 0.5f, 1f };
+    public static float[] BLUE_NAVY = { 0f, 0f, 0.502f, 1f };
+
+    public static float[] BLUE_LIGHT = { 0.678f, 0.847f, 0.902f, 1f };
+
+    public static float[] BLUE_STEEL = {0.275f, 0.51f, 0.706f, 1f};
 
     public static float[] RED = { 1f, 0f, 0f, 1.0f };
 

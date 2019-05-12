@@ -109,6 +109,7 @@ public class ObjectRenderer {
         }
         else {
             Shared.gl().glEnable(GL10.GL_CULL_FACE);
+            Shared.gl().glCullFace(GL10.GL_BACK);
         }
 
         // calculate camera transformation
