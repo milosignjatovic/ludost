@@ -17,9 +17,6 @@ package com.ignja.gl.view;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
-import android.view.MotionEvent;
-
-import com.ignja.gl.util.Shared;
 
 /**
  * A view container where OpenGL ES graphics can be drawn on screen.
@@ -30,73 +27,9 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
     public MyGLSurfaceView(Context context) {
         super(context);
-        // Create an OpenGL ES 2.0 context.
         setEGLContextClientVersion(2);
-        //fix for error No Config chosen, but I don't know what this does.
         super.setEGLConfigChooser(8 , 8, 8, 8, 16, 0);
-        // Set the Renderer for drawing on the GLSurfaceView
-        //mRenderer = new MyGLRenderer();
-        setRenderer(Shared.renderer());
 
-    }
-
-    private final float TOUCH_SCALE_FACTOR = 180.0f / 1600;
-
-    private float mPreviousX;
-    private float mPreviousY;
-
-    @Override
-    public boolean onTouchEvent(MotionEvent e) {
-        // MotionEvent reports input details from the touch screen
-        // and other input controls. In this case, you are only
-        // interested in events where the touch position changed.
-
-        float x = e.getX();
-        float y = e.getY();
-        switch (e.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                handleClickEvent(x, y);
-                break;
-            case MotionEvent.ACTION_MOVE:
-                handleDragEvent(x, y);
-                break;
-        }
-
-        mPreviousX = x;
-        mPreviousY = y;
-        return true;
-    }
-
-    private void handleClickEvent(float x, float y) {
-        String m = x + " - " + y;
-        Shared.renderer().handleClickEvent(x, y);
-        requestRender();
-    }
-
-    private void handleDragEvent(float x, float y) {
-        float dx = x - mPreviousX;
-        float dy = y - mPreviousY;
-
-        // reverse direction of rotation above the mid-line
-        if (y > getHeight() / 2) {
-            dx = dx * -1;
-        }
-        setHAngle(dx);
-        requestRender();
-    }
-
-    /**
-     * Calculate horizontal camera angle based on MotionEvent movement (dx)
-     * Example: angle = 180.0f / 320
-     */
-    private void setHAngle(float dx) {
-        Shared.renderer().setHAngle(
-                Shared.renderer().getHAngle() -
-                        (dx * TOUCH_SCALE_FACTOR));
-    }
-
-    public Renderer getRenderer() {
-        return Shared.renderer();
     }
 
 }

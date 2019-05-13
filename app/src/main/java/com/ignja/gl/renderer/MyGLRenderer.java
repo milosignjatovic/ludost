@@ -26,14 +26,9 @@ import android.opengl.Matrix;
 import android.util.Log;
 
 import com.ignja.gl.core.TextureManager;
-import com.ignja.gl.vo.Light;
 import com.ignja.ludost.R;
 
 import com.ignja.gl.core.Scene;
-import com.ignja.ludost.object.Board;
-import com.ignja.ludost.logic.Game;
-import com.ignja.ludost.object.Player;
-import com.ignja.gl.util.Color;
 import com.ignja.gl.util.LoggerConfig;
 import com.ignja.gl.util.ShaderHelper;
 import com.ignja.gl.util.Shared;
@@ -127,122 +122,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES30.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
         reset();
-
         this._scene.init();
 
-        // Set the camera position (View matrix)
-        Matrix.setLookAtM(mViewMatrix, 0,
-                0f, -8f, 5f, //eye
-                0f, -2f, 0f, // center (look at)
-                0f, -1.0f, 0.0f // eye vertical
-        );
-
-        // TODO Simple light
-        //drawSetupLights();
-    }
-
-    protected void drawSetupLights()
-    {
-        // GL_LIGHTS enabled/disabled based on enabledDirty list
-        for (int glIndex = 0; glIndex < NUM_GLLIGHTS; glIndex++)
-        {
-            if (_scene.lights().glIndexEnabledDirty()[glIndex] == true)
-            {
-                if (_scene.lights().glIndexEnabled()[glIndex] == true)
-                {
-                    _gl.glEnable(GL10.GL_LIGHT0 + glIndex);
-
-                    // make light's properties dirty to force update
-                    // _scene.lights().getLightByGlIndex(glIndex).setAllDirty();
-                }
-                else
-                {
-                    _gl.glDisable(GL10.GL_LIGHT0 + glIndex);
-                }
-
-                _scene.lights().glIndexEnabledDirty()[glIndex] = false; // clear dirtyflag
-            }
-        }
-
-        // Lights' properties
-
-        Light[] lights = _scene.lights().toArray();
-        for (int i = 0; i < lights.length; i++)
-        {
-            Light light = lights[i];
-
-//            if (light.isDirty()) // .. something has changed
-//            {
-                // Check all of Light's properties for dirty
-
-                int glLightId = GL10.GL_LIGHT0 + _scene.lights().getGlIndexByLight(light);
-
-//                if (light.position.isDirty())
-//                {
-//                    light.commitPositionAndTypeBuffer();
-//                    _gl.glLightfv(glLightId, GL10.GL_POSITION, light._positionAndTypeBuffer);
-//                    light.position.clearDirtyFlag();
-//                }
-//                if (light.ambient.isDirty())
-//                {
-//                    light.ambient.commitToFloatBuffer();
-//                    _gl.glLightfv(glLightId, GL10.GL_AMBIENT, light.ambient.floatBuffer());
-//                    light.ambient.clearDirtyFlag();
-//                }
-//                if (light.diffuse.isDirty())
-//                {
-//                    light.diffuse.commitToFloatBuffer();
-//                    _gl.glLightfv(glLightId, GL10.GL_DIFFUSE, light.diffuse.floatBuffer());
-//                    light.diffuse.clearDirtyFlag();
-//                }
-//                if (light.specular.isDirty())
-//                {
-//                    light.specular.commitToFloatBuffer();
-//                    _gl.glLightfv(glLightId, GL10.GL_SPECULAR, light.specular.floatBuffer());
-//                    light.specular.clearDirtyFlag();
-//                }
-//                if (light.emissive.isDirty())
-//                {
-//                    light.emissive.commitToFloatBuffer();
-//                    _gl.glLightfv(glLightId, GL10.GL_EMISSION, light.emissive.floatBuffer());
-//                    light.emissive.clearDirtyFlag();
-//                }
-//
-//                if (light.direction.isDirty())
-//                {
-//                    light.direction.commitToFloatBuffer();
-//                    _gl.glLightfv(glLightId, GL10.GL_SPOT_DIRECTION, light.direction.floatBuffer());
-//                    light.direction.clearDirtyFlag();
-//                }
-//                if (light._spotCutoffAngle.isDirty())
-//                {
-//                    _gl.glLightf(glLightId, GL10.GL_SPOT_CUTOFF, light._spotCutoffAngle.get());
-//                }
-//                if (light._spotExponent.isDirty())
-//                {
-//                    _gl.glLightf(glLightId, GL10.GL_SPOT_EXPONENT, light._spotExponent.get());
-//                }
-
-//                if (light._isVisible.isDirty())
-//                {
-                    if (light.isVisible()) {
-                        _gl.glEnable(glLightId);
-                    } else {
-                        _gl.glDisable(glLightId);
-                    }
-//                    light._isVisible.clearDirtyFlag();
-//                }
-
-//                if (light._attenuation.isDirty())
-//                {
-                    //_gl.glLightf(glLightId, GL10.GL_CONSTANT_ATTENUATION, light._attenuation.x);
-                    //_gl.glLightf(glLightId, GL10.GL_LINEAR_ATTENUATION, light._attenuation.y);
-                    //_gl.glLightf(glLightId, GL10.GL_QUADRATIC_ATTENUATION, light._attenuation.z);
-//                }
-
-//                light.clearDirtyFlag();
-//            }
-        }
     }
 
     private boolean touch = false;
@@ -252,31 +133,14 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
     @Override
     public void onDrawFrame(GL10 gl) {
         setGl(gl);
+        // Update 'model'
+        this._scene.update();
         drawSetup();
-        // TODO Move to object model transformation
         // Calculate the projection and view transformation
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
-
-
-        // Draw square
-        //this.draw(blueSquare, mMVPMatrix);
-
-        // Create a rotation for the triangle
-
-        // Use the following code to generate constant rotation.
-        // Leave this code out when using TouchEvents.
-//        long time = SystemClock.uptimeMillis() ; // % 4000L;
-//        float angle = 0.03f * ((int) time) * 7 / 22;
-//        if (LoggerConfig.ON) {
-//            Log.i("AUTOROTATE", Float.toString(angle));
-//        }
-        float angle = 0;
-        Matrix.rotateM(mMVPMatrix, 0, hAngle + angle, 0, 0, 1.0f);
-
         this._scene.getGame().draw(mMVPMatrix, glProgram, mViewMatrix, mProjectionMatrix);
-
         if (touch) {
-            this._scene.handleClickEvent(screenWidth, screenHeight, touchX, touchY, mViewMatrix, mProjectionMatrix, hAngle + angle);
+            this._scene.handleClickEvent(screenWidth, screenHeight, touchX, touchY, mViewMatrix, mProjectionMatrix, hAngle);
             touch = false;
         }
     }
@@ -292,6 +156,13 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
                     _scene.backgroundColor().a / 255f
             );
         }
+
+        // Camera
+        Matrix.setLookAtM(mViewMatrix, 0,
+                _scene.camera().position.x,_scene.camera().position.y,_scene.camera().position.z,
+                _scene.camera().target.x,_scene.camera().target.y,_scene.camera().target.z,
+                _scene.camera().upAxis.x,_scene.camera().upAxis.y,_scene.camera().upAxis.z
+                );
 
         // Draw background color
         GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT | GLES30.GL_DEPTH_BUFFER_BIT);

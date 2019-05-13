@@ -1,14 +1,10 @@
 package com.ignja.gl.core;
 
-import android.graphics.Bitmap;
-
 import com.ignja.gl.object.IObject3dContainer;
 import com.ignja.gl.object.Object3d;
 import com.ignja.gl.object.Object3dContainer;
-import com.ignja.gl.util.Shared;
-import com.ignja.gl.util.Utils;
+import com.ignja.gl.vo.CameraVo;
 import com.ignja.gl.vo.Color4;
-import com.ignja.ludost.R;
 import com.ignja.ludost.logic.Game;
 
 import java.util.ArrayList;
@@ -23,7 +19,7 @@ public class Scene implements IObject3dContainer {
 
     private ArrayList<Object3d> _children = new ArrayList<>();
 
-    private float[] camera;
+    private CameraVo camera;
 
     private ArrayList<Object3d> clickedObjects = new ArrayList<>();
 
@@ -48,10 +44,15 @@ public class Scene implements IObject3dContainer {
         _lights = new ManagedLightList();
         _backgroundColor = new Color4(0,0,0,255);
 
-        //_camera = new CameraVo();
+        camera = new CameraVo();
+    }
 
+    public CameraVo camera() {
+        return camera;
+    }
 
-        //lightingEnabled(true);
+    public void camera(CameraVo camera) {
+        this.camera = camera;
     }
 
     public Color4 backgroundColor() {
@@ -59,11 +60,16 @@ public class Scene implements IObject3dContainer {
     }
 
 
-
-    void update()
-    {
+    /**
+     * Used by renderer
+     */
+    public void update() {
         _sceneController.updateScene();
-        _sceneController.getUpdateSceneHandler().post(_sceneController.getUpdateSceneRunnable());
+    }
+
+    public void init() {
+        reset();
+        _sceneController.initScene();
     }
 
     public void setGame(Game game) {
@@ -85,14 +91,6 @@ public class Scene implements IObject3dContainer {
 
     public void handleClickEvent(int screenWidth, int screenHeight, float touchX, float touchY, float[] viewMatrix, float[] projectionMatrix, float hAngle) {
         this.game.handleClickEvent(screenWidth, screenHeight, touchX, touchY, viewMatrix, projectionMatrix, hAngle);
-    }
-
-    public void init() {
-        reset();
-        _sceneController.initScene();
-        Bitmap b = Utils.makeBitmapFromResourceId(Shared.context(), R.drawable.stonetexture);
-        Shared.textureManager().addTextureId(b, "stonetexture", false);
-        b.recycle();
     }
 
     public void addChildAt(Object3d $o, int $index)

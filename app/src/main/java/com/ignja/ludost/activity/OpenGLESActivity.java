@@ -15,22 +15,14 @@
  */
 package com.ignja.ludost.activity;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
-import android.opengl.GLSurfaceView;
-import android.os.Bundle;
-import android.os.Handler;
-import android.view.WindowManager;
+import android.view.MotionEvent;
 
 import com.ignja.gl.core.GLActivity;
 import com.ignja.gl.core.ISceneController;
-import com.ignja.gl.core.Scene;
-import com.ignja.gl.core.TextureManager;
-import com.ignja.gl.renderer.MyGLRenderer;
 import com.ignja.gl.util.Color;
 import com.ignja.gl.util.Shared;
 import com.ignja.gl.util.Utils;
-import com.ignja.gl.view.MyGLSurfaceView;
 import com.ignja.gl.vo.Light;
 import com.ignja.ludost.R;
 import com.ignja.ludost.logic.Game;
@@ -39,9 +31,21 @@ import com.ignja.ludost.object.Player;
 
 public class OpenGLESActivity extends GLActivity implements ISceneController {
 
+    /**
+     * Touch events -> camera transformation
+     */
+    private float _dx;
+    private float _dy;
+    private float _rot;
+
+    private float mPreviousX;
+    private float mPreviousY;
+
     @Override
     public void initScene() {
         super.initScene();
+
+        this.TAG = "Lugost Activity (OpenGLESActivity)";
 
         // Lights
         Light light1 = new Light();
@@ -52,8 +56,10 @@ public class OpenGLESActivity extends GLActivity implements ISceneController {
         light1.emissive.setAll(0, 0, 0, 0);
         scene.lights().add(light1);
 
-        // TODO Camera
-        // TODO Textures
+        // Textures
+        Bitmap b = Utils.makeBitmapFromResourceId(Shared.context(), R.drawable.stonetexture);
+        Shared.textureManager().addTextureId(b, "stonetexture", false);
+        b.recycle();
 
         // Init Game
         Board board = new Board();
@@ -62,8 +68,66 @@ public class OpenGLESActivity extends GLActivity implements ISceneController {
         Player player3 = new Player(board, Color.YELLOW, 2);
         Player player4 = new Player(board, Color.BLUE, 3);
         Player[] playerArray = new Player[] {player1, player2, player3, player4};
-
         Game game = new Game(board, playerArray);
         scene.setGame(game);
     }
+
+    @Override
+    public void updateScene() {
+        super.updateScene();
+
+        if (_dx != 0) {
+            /**
+             * When trackball moves horizontally...
+             *
+             * Rotate camera around center of the scene in a circle.
+             * Its position is 2 units above the boxes, but its target() position
+             * remains at the scene origin, so the camera always looks towards the center.
+             */
+
+            _rot += -_dx;
+            float y = (float)Math.cos(_rot*Utils.DEG) * -8f; // 8f = distance from center
+            float x = (float)Math.sin(_rot*Utils.DEG) * 8f;
+            scene.camera().position.setAll(x,y, scene.camera().position.z); // 5f = height
+
+            _dx = 0;
+        }
+
+        if (_dy != 0) {
+            scene.camera().position.setAll(
+                    scene.camera().position.x,
+                    scene.camera().position.y,
+                    Math.max(3f, Math.min(14f, scene.camera().position.z + _dy/10))
+            );
+            _dy = 0;
+        }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        super.onTouchEvent(event);
+        float x = event.getX();
+        float y = event.getY();
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                handleClickEvent(event.getX(), event.getY());
+                break;
+            case MotionEvent.ACTION_MOVE:
+                _dx = (x - mPreviousX);
+                _dy = (y - mPreviousY);
+                if (y < this.getWindow().getDecorView().getHeight() / 2) {
+                    _dx = _dx * -1;
+                }
+                break;
+        }
+
+        mPreviousX = x;
+        mPreviousY = y;
+        return true;
+    }
+
+    private void handleClickEvent(float x, float y) {
+        Shared.renderer().handleClickEvent(x, y);
+    }
+
 }

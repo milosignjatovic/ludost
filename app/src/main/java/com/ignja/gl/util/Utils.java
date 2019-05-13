@@ -26,6 +26,8 @@ public class Utils {
 
     private static final int BYTES_PER_FLOAT = 4;
 
+    public static final float DEG = (float)(Math.PI / 180f);
+
     /**
      * intersectRayAndTriangle(): intersect a ray with a 3D triangle
      *

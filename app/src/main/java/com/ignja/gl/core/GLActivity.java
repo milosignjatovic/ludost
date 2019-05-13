@@ -19,6 +19,8 @@ public abstract class GLActivity extends Activity implements ISceneController {
     public Scene scene;
     private GLSurfaceView mGLView;
 
+    protected String TAG = "GLActivity";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +37,7 @@ public abstract class GLActivity extends Activity implements ISceneController {
         mGLView = new MyGLSurfaceView(this);
         // Render the view only when there is a change in the drawing data
         //mGLView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+        mGLView.setRenderer(Shared.renderer());
         mGLView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
         onCreateSetContentView();
     }

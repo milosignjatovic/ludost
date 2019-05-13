@@ -148,7 +148,6 @@ public abstract class Object3d {
             tmp = mvpMatrix.clone();
             Matrix.translateM(tmp, 0, getX(), getY(), getZ());
             objectRenderer.render(this, tmp, glProgram, modelViewMatrix, projectionMatrix);
-            //Matrix.translateM(mvpMatrix, 0, -getX(), -getY(), -getZ());
         }
     }
 
