@@ -32,7 +32,6 @@ public abstract class GLActivity extends Activity implements ISceneController {
         Shared.context(this);
         scene = new Scene(this);
         Shared.renderer(new MyGLRenderer(scene));
-        scene.init();
         mGLView = new MyGLSurfaceView(this);
         // Render the view only when there is a change in the drawing data
         //mGLView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
@@ -40,7 +39,14 @@ public abstract class GLActivity extends Activity implements ISceneController {
         onCreateSetContentView();
     }
 
-    @Override
+    /**
+     * Instantiation of Object3D's, setting their properties, and adding Object3D's
+     * to the scene should be done here. Or any point thereafter.
+     *
+     * Note that this method is always called after GLCanvas is created, which occurs
+     * not only on Activity.onCreate(), but on Activity.onResume() as well.
+     * It is the user's responsibility to build the logic to restore state on-resume.
+     */
     public void initScene() {
 
     }

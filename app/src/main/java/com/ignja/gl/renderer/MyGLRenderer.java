@@ -128,24 +128,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         reset();
 
-        Board board = new Board();
-        Player player1 = new Player(board, Color.RED, 0);
-        Player player2 = new Player(board, Color.GREEN, 1);
-        Player player3 = new Player(board, Color.YELLOW, 2);
-        Player player4 = new Player(board, Color.BLUE, 3);
-        Player[] playerArray = new Player[] {player1, player2, player3, player4};
-        //this._scene = new Scene();
-        this._scene.initScene();
-        Game game = new Game(board, playerArray);
-        this._scene.setGame(game);
-
-        Light _light = new Light();
-        _light.position.setAll(0, 0, +3);
-        _light.diffuse.setAll(255, 255, 255, 255);
-        _light.ambient.setAll(0, 0, 0, 0);
-        _light.specular.setAll(0, 0, 0, 0);
-        _light.emissive.setAll(0, 0, 0, 0);
-        _scene.lights().add(_light);
+        this._scene.init();
 
         // Set the camera position (View matrix)
         Matrix.setLookAtM(mViewMatrix, 0,

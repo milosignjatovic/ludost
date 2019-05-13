@@ -59,11 +59,6 @@ public class Scene implements IObject3dContainer {
     }
 
 
-    void init() {
-        this.reset();
-        //_sceneController.initScene();
-        //_sceneController.getInitSceneHandler().post(_sceneController.getInitSceneRunnable());
-    }
 
     void update()
     {
@@ -92,7 +87,9 @@ public class Scene implements IObject3dContainer {
         this.game.handleClickEvent(screenWidth, screenHeight, touchX, touchY, viewMatrix, projectionMatrix, hAngle);
     }
 
-    public void initScene() {
+    public void init() {
+        reset();
+        _sceneController.initScene();
         Bitmap b = Utils.makeBitmapFromResourceId(Shared.context(), R.drawable.stonetexture);
         Shared.textureManager().addTextureId(b, "stonetexture", false);
         b.recycle();
