@@ -38,7 +38,7 @@ public class AbstractRenderable implements RenderableInterface {
     private short[] drawOrder;
 
     // TODO Initialize buffers in renderer, when objects are pushed into scene?
-    // TODO Not in the object itself
+    // TODO Not in the renderables itself
 
     protected AbstractRenderable(float[] coords, float[] color, short[] drawOrder, float[] normals) {
         this.coords = coords;

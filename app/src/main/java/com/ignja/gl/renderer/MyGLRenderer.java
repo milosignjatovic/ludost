@@ -35,7 +35,7 @@ import com.ignja.gl.util.Shared;
 import com.ignja.gl.util.TextResourceReader;
 
 /**
- * Provides drawing instructions for a GLSurfaceView object. This class
+ * Provides drawing instructions for a GLSurfaceView renderables. This class
  * must override the OpenGL ES drawing lifecycle methods:
  * <ul>
  *   <li>{@link android.opengl.GLSurfaceView.Renderer#onSurfaceCreated}</li>
@@ -305,7 +305,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         }
 
         //
-        // Scene object init only happens here, when we get GL for the first time
+        // Scene renderables init only happens here, when we get GL for the first time
         //
     }
 

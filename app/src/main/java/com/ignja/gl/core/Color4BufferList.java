@@ -46,7 +46,7 @@ public class Color4BufferList
 	}
 	
 	/**
-	 * Clear object in preparation for garbage collection
+	 * Clear renderables in preparation for garbage collection
 	 */
 	public void clear()
 	{

@@ -40,7 +40,7 @@ public class ShaderHelper {
         }
 
         if (compileStatus[0] == 0) {
-        // If it failed, delete the shader object.
+        // If it failed, delete the shader renderables.
             GLES30.glDeleteShader(shaderObjectId);
             if (LoggerConfig.ON) {
                 Log.w(TAG, "Compilation of shader failed.");
@@ -76,7 +76,7 @@ public class ShaderHelper {
         }
 
         if (linkStatus[0] == 0) {
-            // If it failed, delete the program object.
+            // If it failed, delete the program renderables.
             GLES30.glDeleteProgram(programObjectId);
             if (LoggerConfig.ON) {
                 Log.w(TAG, "Linking of program failed.");

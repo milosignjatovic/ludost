@@ -1,5 +1,7 @@
 package com.ignja.gl.renderable;
 
+import com.ignja.gl.util.Color;
+
 /**
  * Created by Ignja on 01/02/17.
 
@@ -40,14 +42,16 @@ public class Cuboid extends AbstractRenderable {
                 -a/2f, -b/2f,  c/2f,
                 -a/2f, -b/2f, -c/2f,
         }, new float[]{
-                color[0], color[1], color[2], color[3],
+                // TOP?
+                Color.GRAY_LIGHT[0], Color.GRAY_LIGHT[1], Color.GRAY_LIGHT[2], Color.GRAY_LIGHT[3],
                 color[0], color[1], color[2], color[3],
                 color[0], color[1], color[2], color[3],
                 color[0], color[1], color[2], color[3],
                 color[0], color[1], color[2], color[3],
                 color[0], color[1], color[2], color[3],
 
-                color[0], color[1], color[2], color[3],
+                // BOTTOM?
+                Color.WHITE[0], Color.WHITE[1], Color.WHITE[2], Color.WHITE[3],
                 color[0], color[1], color[2], color[3],
                 color[0], color[1], color[2], color[3],
                 color[0], color[1], color[2], color[3],

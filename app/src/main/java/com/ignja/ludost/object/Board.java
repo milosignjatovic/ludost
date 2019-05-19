@@ -24,7 +24,7 @@ public class Board extends Object3d {
     public Board() {
         super(Color.BLUE);
         this.TAG = "BoardObject";
-        this.object = this.createBoardSquare();
+        this.addRenderable(this.createBoardSquare());
 
         // start 0
         this.boardPositions.add(0, new BoardPosition(this, -4.5f, 4.5f));

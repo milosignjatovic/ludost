@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import javax.microedition.khronos.opengles.GL10;
 
 /**
- * Contains the properties of a texture which can be assigned to an object.
- * An object can be assigned multiple TextureVo's by adding them to 
+ * Contains the properties of a texture which can be assigned to an renderables.
+ * An renderables can be assigned multiple TextureVo's by adding them to
  * the Object3d's TextureList (usually up to just 2 w/ current Android hardware).
  * 
  *  The "textureEnvs" ArrayList defines what texture environment commands 

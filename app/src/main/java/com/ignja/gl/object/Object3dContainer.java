@@ -33,7 +33,7 @@ public class Object3dContainer extends Object3d implements IObject3dContainer
 	 * Adds container functionality to Object3d.
 	 * 
 	 * Subclass Object3dContainer instead of Object3d if you
-	 * believe you may want to add children to that object. 
+	 * believe you may want to add children to that renderables.
 	 */
 	public Object3dContainer(int $maxVerts, int $maxFaces)
 	{

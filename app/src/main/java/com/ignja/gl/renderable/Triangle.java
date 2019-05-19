@@ -18,7 +18,7 @@ package com.ignja.gl.renderable;
 import com.ignja.gl.util.Color;
 
 /**
- * A two-dimensional triangle for use as a drawn object in OpenGL ES 2.0.
+ * A two-dimensional triangle for use as a drawn renderables in OpenGL ES 2.0.
  */
 public class Triangle extends AbstractRenderable {
 

@@ -18,6 +18,7 @@ import com.ignja.gl.util.Shared;
 import com.ignja.gl.util.Utils;
 import com.ignja.gl.vo.Number3d;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -38,9 +39,9 @@ public abstract class Object3d {
     private Number3d scale = new Number3d(1,1,1);
 
     /**
-     * Renderable. TODO ArrayList? (more than one renderable in single object)
+     * Renderable. TODO ArrayList? (more than one renderable in single renderables)
      */
-    public AbstractRenderable object;
+    public ArrayList<AbstractRenderable> renderables;
 
     protected boolean isClicked = false;
 
@@ -64,6 +65,7 @@ public abstract class Object3d {
     public Object3d() {
         this.color = Color.ORANGE;
         this.position = new Number3d();
+        this.renderables = new ArrayList<>();
         this.name = "";
     }
 
@@ -72,21 +74,19 @@ public abstract class Object3d {
         this.position = new Number3d();
         this.name = "";
         _textures = new TextureList();
+        renderables = new ArrayList<>();
     }
 
     public Object3d(Number3d position, float[] color) {
         this(color);
         this.position = position;
+        renderables = new ArrayList<>();
     }
 
     public Object3d(Number3d position) {
         this(position, Color.RED_DARK);
         this.position = position;
-    }
-
-    Object3d(AbstractRenderable renderable, Number3d position, float[] color) {
-        this(position, color);
-        this.object = renderable;
+        renderables = new ArrayList<>();
     }
 
     /**
@@ -143,12 +143,13 @@ public abstract class Object3d {
     public void draw(float[] mvpMatrix, int glProgram, float[] modelViewMatrix, float[] projectionMatrix) {
         ObjectRenderer objectRenderer = new ObjectRenderer();
         this.update();
-        if (this.object != null) {
-            float[] tmp;
-            tmp = mvpMatrix.clone();
-            Matrix.translateM(tmp, 0, getX(), getY(), getZ());
-            objectRenderer.render(this, tmp, glProgram, modelViewMatrix, projectionMatrix);
-        }
+        float[] tmp;
+        tmp = mvpMatrix.clone();
+        Matrix.translateM(tmp, 0, getX(), getY(), getZ());
+        Matrix.rotateM(tmp, 0, rotation().x, 1, 0, 0);
+        Matrix.rotateM(tmp, 0, rotation().y, 0, 1, 0);
+        Matrix.rotateM(tmp, 0, rotation().z, 0, 0, 1);
+        objectRenderer.render(this, tmp, glProgram, modelViewMatrix, projectionMatrix);
     }
 
     public void handleClickEvent(int screenWidth, int screenHeight, float touchX, float touchY, float[] viewMatrix, float[] projectionMatrix, float hAngle) {
@@ -157,92 +158,94 @@ public abstract class Object3d {
 
     // TODO Extract from Object?
     private void rayPicking(int viewWidth, int viewHeight, float rx, float ry, float[] viewMatrix, float[] projectionMatrix, float hAngle) {
-        if (this.object != null && this.position != null) {
-            float [] near_xyz = unProject(rx, ry, 0, viewMatrix, projectionMatrix, viewWidth, viewHeight);
-            float [] far_xyz = unProject(rx, ry, 1, viewMatrix, projectionMatrix, viewWidth, viewHeight);
-            float[] vertices;
-            vertices = this.object.coords;
+        for (AbstractRenderable renderable: this.renderables) {
+            if (this.position != null) {
+                float [] near_xyz = unProject(rx, ry, 0, viewMatrix, projectionMatrix, viewWidth, viewHeight);
+                float [] far_xyz = unProject(rx, ry, 1, viewMatrix, projectionMatrix, viewWidth, viewHeight);
+                float[] vertices;
+                vertices = renderable.coords;
 
-            float[] tmpMatrix;
-            tmpMatrix = viewMatrix.clone();
+                float[] tmpMatrix;
+                tmpMatrix = viewMatrix.clone();
 
-            // Apply the same transformations as in ObjectRenderer
-            if (this.parent() != null) {
-                Matrix.translateM(tmpMatrix, 0,
-                        this.parent.getX(), this.parent.getY(), this.parent.getZ()
-                );
-                // TODO ne valja ovo... ne bi trebalo da se applyjuje rotacija kamere
-                // nego rotacija objekta!!! (a to trenutno nemamo)
-                Matrix.rotateM(tmpMatrix, 0, Shared.renderer().getHAngle(), 0, 0, 1.0f);
-            }
-            Matrix.translateM(tmpMatrix, 0, getX(), getY(), getZ());
-            Matrix.rotateM(tmpMatrix, 0, Shared.renderer().getHAngle(), 0, 0, 1.0f);
-            Matrix.scaleM(tmpMatrix, 0, 1, 1, 1);
-
-            short[] drawOrder = this.object.getDrawOrder();
-            for (int i = 0; i < drawOrder.length/3; i++) {
-                float[] resultVector = new float[4];
-                float[] inputVector = new float[4];
-
-                // A
-                inputVector[0] = vertices[drawOrder[3*i]*3];
-                inputVector[1] = vertices[drawOrder[3*i]*3+1];
-                inputVector[2] = vertices[drawOrder[3*i]*3+2];
-                inputVector[3] = 1;
-                Matrix.multiplyMV(resultVector, 0, tmpMatrix, 0, inputVector,0);
-                float[] a = new float[3];
-                a[0] = resultVector[0]/resultVector[3];
-                a[1] = resultVector[1]/resultVector[3];
-                a[2] = resultVector[2]/resultVector[3];
-
-                // B
-                inputVector[0] = vertices[drawOrder[3*i+1]*3];
-                inputVector[1] = vertices[drawOrder[3*i+1]*3+1];
-                inputVector[2] = vertices[drawOrder[3*i+1]*3+2];
-                inputVector[3] = 1;
-                Matrix.multiplyMV(resultVector, 0, tmpMatrix, 0, inputVector,0);
-                float[] b = new float[3];
-                b[0] = resultVector[0]/resultVector[3];
-                b[1] = resultVector[1]/resultVector[3];
-                b[2] = resultVector[2]/resultVector[3];
-
-                // C
-                inputVector[0] = vertices[drawOrder[3*i+2]*3];
-                inputVector[1] = vertices[drawOrder[3*i+2]*3+1];
-                inputVector[2] = vertices[drawOrder[3*i+2]*3+2];
-                inputVector[3] = 1;
-                Matrix.multiplyMV(resultVector, 0, tmpMatrix, 0, inputVector,0);
-                float[] c = new float[3];
-                c[0] = resultVector[0]/resultVector[3];
-                c[1] = resultVector[1]/resultVector[3];
-                c[2] = resultVector[2]/resultVector[3];
-
-                Triangle t1 = new Triangle(
-                        new float[] {a[0], a[1], a[2]},
-                        new float[] {b[0], b[1], b[2]},
-                        new float[] {c[0], c[1], c[2]});
-
-                float[] intersectionPoint = new float[3];
-                int intersects1 = Utils.intersectRayAndTriangle(near_xyz, far_xyz, t1, intersectionPoint);
-                if (intersects1 == 1 || intersects1 == 2) {
-                    // TODO Eye object instead of constants?
-                    float distance = (float) Math.sqrt(
-                        (intersectionPoint[0]-0f)*(intersectionPoint[0]-0f)
-                            + (intersectionPoint[1]-8f)*(intersectionPoint[1]-8f)
-                            + (intersectionPoint[2]-6f)*(intersectionPoint[2]-6f)
+                // Apply the same transformations as in ObjectRenderer
+                if (this.parent() != null) {
+                    Matrix.translateM(tmpMatrix, 0,
+                            this.parent.getX(), this.parent.getY(), this.parent.getZ()
                     );
-                    this.click();
-                    this.distance = distance;
-                    this.intersectionPoint = intersectionPoint;
-                    if (LoggerConfig.ON) {
-                        Log.d(TAG, "HIT " + this
-                                + " Intersection point: " + Arrays.toString(intersectionPoint)
-                                + ", Distance: " + distance);
+                    // TODO ne valja ovo... ne bi trebalo da se applyjuje rotacija kamere
+                    // nego rotacija objekta!!! (a to trenutno nemamo)
+                    Matrix.rotateM(tmpMatrix, 0, Shared.renderer().getHAngle(), 0, 0, 1.0f);
+                }
+                Matrix.translateM(tmpMatrix, 0, getX(), getY(), getZ());
+                Matrix.rotateM(tmpMatrix, 0, Shared.renderer().getHAngle(), 0, 0, 1.0f);
+                Matrix.scaleM(tmpMatrix, 0, 1, 1, 1);
+
+                short[] drawOrder = renderable.getDrawOrder();
+                for (int i = 0; i < drawOrder.length/3; i++) {
+                    float[] resultVector = new float[4];
+                    float[] inputVector = new float[4];
+
+                    // A
+                    inputVector[0] = vertices[drawOrder[3*i]*3];
+                    inputVector[1] = vertices[drawOrder[3*i]*3+1];
+                    inputVector[2] = vertices[drawOrder[3*i]*3+2];
+                    inputVector[3] = 1;
+                    Matrix.multiplyMV(resultVector, 0, tmpMatrix, 0, inputVector,0);
+                    float[] a = new float[3];
+                    a[0] = resultVector[0]/resultVector[3];
+                    a[1] = resultVector[1]/resultVector[3];
+                    a[2] = resultVector[2]/resultVector[3];
+
+                    // B
+                    inputVector[0] = vertices[drawOrder[3*i+1]*3];
+                    inputVector[1] = vertices[drawOrder[3*i+1]*3+1];
+                    inputVector[2] = vertices[drawOrder[3*i+1]*3+2];
+                    inputVector[3] = 1;
+                    Matrix.multiplyMV(resultVector, 0, tmpMatrix, 0, inputVector,0);
+                    float[] b = new float[3];
+                    b[0] = resultVector[0]/resultVector[3];
+                    b[1] = resultVector[1]/resultVector[3];
+                    b[2] = resultVector[2]/resultVector[3];
+
+                    // C
+                    inputVector[0] = vertices[drawOrder[3*i+2]*3];
+                    inputVector[1] = vertices[drawOrder[3*i+2]*3+1];
+                    inputVector[2] = vertices[drawOrder[3*i+2]*3+2];
+                    inputVector[3] = 1;
+                    Matrix.multiplyMV(resultVector, 0, tmpMatrix, 0, inputVector,0);
+                    float[] c = new float[3];
+                    c[0] = resultVector[0]/resultVector[3];
+                    c[1] = resultVector[1]/resultVector[3];
+                    c[2] = resultVector[2]/resultVector[3];
+
+                    Triangle t1 = new Triangle(
+                            new float[] {a[0], a[1], a[2]},
+                            new float[] {b[0], b[1], b[2]},
+                            new float[] {c[0], c[1], c[2]});
+
+                    float[] intersectionPoint = new float[3];
+                    int intersects1 = Utils.intersectRayAndTriangle(near_xyz, far_xyz, t1, intersectionPoint);
+                    if (intersects1 == 1 || intersects1 == 2) {
+                        // TODO Eye renderables instead of constants?
+                        float distance = (float) Math.sqrt(
+                                (intersectionPoint[0]-0f)*(intersectionPoint[0]-0f)
+                                        + (intersectionPoint[1]-8f)*(intersectionPoint[1]-8f)
+                                        + (intersectionPoint[2]-6f)*(intersectionPoint[2]-6f)
+                        );
+                        this.click();
+                        this.distance = distance;
+                        this.intersectionPoint = intersectionPoint;
+                        if (LoggerConfig.ON) {
+                            Log.d(TAG, "HIT " + this
+                                    + " Intersection point: " + Arrays.toString(intersectionPoint)
+                                    + ", Distance: " + distance);
+                        }
                     }
                 }
+            } else {
+                Log.i(TAG, "Sta je ovo?");
             }
-        } else {
-            Log.i(TAG, "Sta je ovo?");
         }
 
     }
@@ -324,14 +327,14 @@ public abstract class Object3d {
     }
 
     /**
-     * Relative to parent object (if any)
+     * Relative to parent renderables (if any)
      */
     public void position(Number3d position) {
         this.position = position;
     }
 
     /**
-     * X/Y/Z euler rotation of object, using Euler angles.
+     * X/Y/Z euler rotation of renderables, using Euler angles.
      * Units should be in degrees, to match OpenGL usage.
      */
     public Number3d rotation()
@@ -340,7 +343,7 @@ public abstract class Object3d {
     }
 
     /**
-     * X/Y/Z scale of object.
+     * X/Y/Z scale of renderables.
      */
     public Number3d scale()
     {
@@ -352,10 +355,13 @@ public abstract class Object3d {
     }
 
     /**
-     * Clear object for garbage collection.
+     * Clear renderables for garbage collection.
      */
     public void clear() {
-        this.object.clear();
+        for (AbstractRenderable renderable: this.renderables
+             ) {
+            renderable.clear();
+        }
     }
 
     public boolean clicked = false;
@@ -370,4 +376,9 @@ public abstract class Object3d {
     public long clickedAt() {
         return this.clickedAtTime;
     }
+
+    public void addRenderable(AbstractRenderable renderable) {
+        this.renderables.add(renderable);
+    }
+
 }
