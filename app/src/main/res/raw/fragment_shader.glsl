@@ -8,6 +8,9 @@ varying vec3 light_Position;
 varying vec3 frag_Position;
 varying vec4 frag_Color;
 varying vec3 frag_Normal;
+varying lowp vec2 frag_TexCoord;
+
+uniform sampler2D texture_sampler;
 
 void main() {
 
@@ -32,5 +35,6 @@ void main() {
     cos_angle = clamp(cos_angle, 0.1, 1.0);
 
     // Scale the color of this fragment based on its angle to the light.
-    gl_FragColor = vec4(vec3(frag_Color) * cos_angle, frag_Color.a);
+    vec4 myColor = vec4(vec3(frag_Color) * cos_angle, frag_Color.a);
+    gl_FragColor = texture2D(texture_sampler, frag_TexCoord).rgba * myColor.rgba;
 }

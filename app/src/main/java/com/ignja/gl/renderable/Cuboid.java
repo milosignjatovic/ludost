@@ -43,7 +43,7 @@ public class Cuboid extends AbstractRenderable {
                 -a/2f, -b/2f, -c/2f,
         }, new float[]{
                 // TOP?
-                Color.GRAY_LIGHT[0], Color.GRAY_LIGHT[1], Color.GRAY_LIGHT[2], Color.GRAY_LIGHT[3],
+                color[0], color[1], color[2], color[3],
                 color[0], color[1], color[2], color[3],
                 color[0], color[1], color[2], color[3],
                 color[0], color[1], color[2], color[3],
@@ -51,7 +51,7 @@ public class Cuboid extends AbstractRenderable {
                 color[0], color[1], color[2], color[3],
 
                 // BOTTOM?
-                Color.WHITE[0], Color.WHITE[1], Color.WHITE[2], Color.WHITE[3],
+                color[0], color[1], color[2], color[3],
                 color[0], color[1], color[2], color[3],
                 color[0], color[1], color[2], color[3],
                 color[0], color[1], color[2], color[3],
@@ -157,6 +157,36 @@ public class Cuboid extends AbstractRenderable {
                 0f, -1f, 0f,
                 0f, -1f, 0f,
                 0f, -1f, 0f
+        }, new float[] {
+                1.0f, 1.0f, /* Back. */
+                0.0f, 1.0f,
+                1.0f, 0.0f,
+                0.0f, 0.0f,
+
+                0.0f, 1.0f, /* Front. */
+                1.0f, 1.0f,
+                0.0f, 0.0f,
+                1.0f, 0.0f,
+
+                0.0f, 1.0f, /* Left. */
+                0.0f, 0.0f,
+                1.0f, 0.0f,
+                1.0f, 1.0f,
+
+                1.0f, 1.0f, /* Right. */
+                1.0f, 0.0f,
+                0.0f, 0.0f,
+                0.0f, 1.0f,
+
+                0.0f, 1.0f, /* Top. */
+                0.0f, 0.0f,
+                1.0f, 0.0f,
+                1.0f, 1.0f,
+
+                0.0f, 0.0f, /* Bottom. */
+                0.0f, 1.0f,
+                1.0f, 1.0f,
+                1.0f, 0.0f
         });
 
     }

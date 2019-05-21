@@ -24,7 +24,7 @@ public class Board extends Object3d {
     public Board() {
         super(Color.BLUE);
         this.TAG = "BoardObject";
-        this.addRenderable(this.createBoardSquare());
+        this.addRenderable(this.createBoardSquare(), "none");
 
         // start 0
         this.boardPositions.add(0, new BoardPosition(this, -4.5f, 4.5f));
@@ -135,7 +135,7 @@ public class Board extends Object3d {
                 -a/2, -a/2, 0f,
                 a/2, -a/2, 0f,
                 a/2, a/2, 0f
-        }, Color.BLUE_LIGHT);
+        }, Color.ALMOND);
     }
 
     public BoardPosition getPosition(int index) {

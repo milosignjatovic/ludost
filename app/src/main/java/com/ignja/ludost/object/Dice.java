@@ -6,6 +6,7 @@ import com.ignja.gl.object.Object3d;
 import com.ignja.gl.renderable.Square;
 import com.ignja.gl.util.Color;
 import com.ignja.gl.renderable.Cube;
+import com.ignja.gl.util.Shared;
 import com.ignja.gl.util.Utils;
 import com.ignja.gl.vo.Number3d;
 
@@ -21,34 +22,36 @@ public class Dice extends Object3d {
     public Dice() {
         super(new Number3d(0, 0, 0.5f));
         this.TAG = "DiceObject";
-        this.addRenderable(new Cube(1.0f, Color.ALMOND));
+        this.addRenderable(
+                new Cube(1.0f, Color.WHITE), "stonetexture"
+        );
         float dotR = 0.08f;
         // CAMERA TOP 1
-        this.addRenderable(new Square(new float[]{
-                -dotR, dotR, 0.51f,
-                -dotR, -dotR, 0.51f,
-                dotR, -dotR, 0.51f,
-                dotR, dotR, 0.51f
-        }, Color.GRAY_DARK));
+//        this.addRenderable(new Square(new float[]{
+//                -dotR, dotR, 0.51f,
+//                -dotR, -dotR, 0.51f,
+//                dotR, -dotR, 0.51f,
+//                dotR, dotR, 0.51f
+//        }, Color.GRAY_DARK));
         // CAMERA BACK 3
-        this.addRenderable(new Square(new float[]{
-                dotR, 0.51f, dotR,
-                dotR, 0.51f, -dotR,
-                -dotR, 0.51f, -dotR,
-                -dotR, 0.51f, dotR
-        }, Color.GRAY_DARK));
-        this.addRenderable(new Square(new float[]{
-                dotR + 0.3f, 0.51f, dotR + 0.3f,
-                dotR + 0.3f, 0.51f, -dotR + 0.3f,
-                -dotR + 0.3f, 0.51f, -dotR + 0.3f,
-                -dotR + 0.3f, 0.51f, dotR + 0.3f
-        }, Color.GRAY_DARK));
-        this.addRenderable(new Square(new float[]{
-                dotR - 0.3f, 0.51f, dotR - 0.3f,
-                dotR - 0.3f, 0.51f, -dotR - 0.3f,
-                -dotR - 0.3f, 0.51f, -dotR - 0.3f,
-                -dotR - 0.3f, 0.51f, dotR - 0.3f
-        }, Color.GRAY_DARK));
+//        this.addRenderable(new Square(new float[]{
+//                dotR, 0.51f, dotR,
+//                dotR, 0.51f, -dotR,
+//                -dotR, 0.51f, -dotR,
+//                -dotR, 0.51f, dotR
+//        }, Color.GRAY_DARK));
+//        this.addRenderable(new Square(new float[]{
+//                dotR + 0.3f, 0.51f, dotR + 0.3f,
+//                dotR + 0.3f, 0.51f, -dotR + 0.3f,
+//                -dotR + 0.3f, 0.51f, -dotR + 0.3f,
+//                -dotR + 0.3f, 0.51f, dotR + 0.3f
+//        }, Color.GRAY_DARK));
+//        this.addRenderable(new Square(new float[]{
+//                dotR - 0.3f, 0.51f, dotR - 0.3f,
+//                dotR - 0.3f, 0.51f, -dotR - 0.3f,
+//                -dotR - 0.3f, 0.51f, -dotR - 0.3f,
+//                -dotR - 0.3f, 0.51f, dotR - 0.3f
+//        }, Color.GRAY_DARK));
     }
 
     private int getValue() {

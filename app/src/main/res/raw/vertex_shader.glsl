@@ -26,7 +26,7 @@ void main() {
     // for the matrix multiplication product to be correct.
     gl_Position = uMVPMatrix * vPosition;
 
-    //frag_TexCoord = a_TexCoord;
+    frag_TexCoord = a_TexCoord;
     frag_Position = vec3(gl_Position);
     frag_Color = vColor;
     frag_Normal = vec3(uMVPMatrix * vNormal);

@@ -66,7 +66,7 @@ public class Game extends StatefulContext {
         this.board = board;
 
         TextureVo texture = new TextureVo("stonetexture");
-        this.board.addTexture(texture);
+        this.dice.addTexture(texture);
 
         this.player = player;
         for (Player p: player) {

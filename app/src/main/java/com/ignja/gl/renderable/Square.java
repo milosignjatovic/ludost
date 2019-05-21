@@ -27,6 +27,8 @@ public class Square extends AbstractRenderable {
                 0f, 1f, 0f,
                 0f, 1f, 0f,
                 0f, 1f, 0f,
+        }, new float[] {
+
         });
     }
 

@@ -29,12 +29,16 @@ public class Triangle extends AbstractRenderable {
                 color[0], color[1], color[2], color[3]
         }, new short[]{0,1,2}, new float[]{
 
+        }, new float[] {
+
         });
     }
 
     public Triangle(float[] coords) {
         super(coords, Color.WHITE, new short[]{0,1,2}, new float[]{
                 0f, 0f, 1f,
+        }, new float[] {
+
         });
     }
 
@@ -45,6 +49,8 @@ public class Triangle extends AbstractRenderable {
                 c[0], c[1], c[2]
         }, Color.WHITE, new short[]{0,1,2}, new float[]{
                 0f, 0f, 1f,
+        }, new float[] {
+
         });
     }
 

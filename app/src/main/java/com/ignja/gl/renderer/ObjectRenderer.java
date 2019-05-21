@@ -1,10 +1,13 @@
 package com.ignja.gl.renderer;
 
+import android.opengl.GLES20;
 import android.opengl.GLES30;
 
 import com.ignja.gl.object.Object3d;
 import com.ignja.gl.renderable.AbstractRenderable;
 import com.ignja.gl.util.Shared;
+
+import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -21,9 +24,13 @@ public class ObjectRenderer {
     private static final int COORDS_PER_VERTEX = 3;
     private static final int COORDS_PER_COLOR = 4;
     private static final int COORDS_PER_NORMAL = 3;
+    private static final int COORDS_PER_TEXTURE_COORD = 2;
 
     private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
     private final int normalsStride = COORDS_PER_NORMAL * 4; // 4 bytes per vertex
+    private final int textureCoordsStride = COORDS_PER_TEXTURE_COORD * 4; // 4 bytes per vertex
+
+
 
     /**
      * Draw single renderables into scene
@@ -49,6 +56,9 @@ public class ObjectRenderer {
             // Enable a handle to the triangle vertices
             GLES30.glEnableVertexAttribArray(mColorHandle);
 
+            // TODO Revert, Commented because of texture
+            // (glsl compiler is optimizing code and removing unused variables,
+            // so assignement is causing exeption since there is no variable defined in shader))
             // Prepare the triangle color data
             GLES30.glVertexAttribPointer(
                     mColorHandle, COORDS_PER_COLOR,
@@ -58,18 +68,18 @@ public class ObjectRenderer {
 
 
             // get handle to vertex shader's vNormal member
-            int mNormalHandle = GLES30.glGetAttribLocation(glProgram, "vNormal");
-            MyGLRenderer.checkGlError("glGetAttribLocation");
-
-            // Enable a handle to the triangle vertices
-            GLES30.glEnableVertexAttribArray(mNormalHandle);
-
-            // Prepare the triangle coordinate data
-            GLES30.glVertexAttribPointer(
-                    mNormalHandle, COORDS_PER_NORMAL,
-                    GLES30.GL_FLOAT, false,
-                    normalsStride, renderable.getNormalsBuffer());
-            MyGLRenderer.checkGlError("glVertexAttribPointer");
+//            int mNormalHandle = GLES30.glGetAttribLocation(glProgram, "vNormal");
+//            MyGLRenderer.checkGlError("glGetAttribLocation");
+//
+//            // Enable a handle to the triangle vertices
+//            GLES30.glEnableVertexAttribArray(mNormalHandle);
+//
+//            // Prepare the triangle coordinate data
+//            GLES30.glVertexAttribPointer(
+//                    mNormalHandle, COORDS_PER_NORMAL,
+//                    GLES30.GL_FLOAT, false,
+//                    normalsStride, renderable.getNormalsBuffer());
+//            MyGLRenderer.checkGlError("glVertexAttribPointer");
 
 
             // OLD
@@ -101,7 +111,17 @@ public class ObjectRenderer {
             MyGLRenderer.checkGlError("glUniformMatrix4fv");
 
 
-            drawObject_textures(renderable);
+            //drawObject_textures(renderable);
+            int mTextureCoordinateHandle;
+            if (renderable.hasTexture()) {
+                Shared.gl().glActiveTexture(GLES20.GL_TEXTURE0); // TODO More than one texture on object
+                mTextureCoordinateHandle = GLES20.glGetAttribLocation(glProgram, "a_TexCoord");
+                GLES20.glVertexAttribPointer(mTextureCoordinateHandle,
+                        COORDS_PER_TEXTURE_COORD,
+                        GLES20.GL_FLOAT, false,
+                        0, renderable.getTextureCoordsBuffer());
+                GLES20.glEnableVertexAttribArray(mTextureCoordinateHandle);
+            }
 
             // Backface culling
             boolean doubleSidedEnabled = false;
@@ -131,74 +151,44 @@ public class ObjectRenderer {
             GLES30.glDisableVertexAttribArray(mPositionHandle);
 
             // Disable color array
-            GLES30.glDisableVertexAttribArray(mColorHandle);
+            //GLES30.glDisableVertexAttribArray(mColorHandle);
 
             // Disable normal array
-            GLES30.glDisableVertexAttribArray(mNormalHandle);
+            //GLES30.glDisableVertexAttribArray(mNormalHandle);
         }
     }
 
-    private void drawObject_textures(AbstractRenderable $o)
-    {
-        // iterate thru renderables's textures
+    private void drawObject_textures(AbstractRenderable renderable) {
+        if (renderable.hasTexture()) {
+            String glVersion = Shared.gl().glGetString(GL10.GL_VERSION);
+            Shared.gl().glActiveTexture(GLES20.GL_TEXTURE0); // TODO More than one texture on object
 
-//        for (int i = 0; i < RenderCaps.maxTextureUnits(); i++)
-        //for (int i = 0; i < GL10.GL_MAX_TEXTURE_UNITS; i++)
-        //{
-            int i = 0;
-            //Shared.gl().glActiveTexture(GL10.GL_TEXTURE0);
-            //Shared.gl().glClientActiveTexture(GL10.GL_TEXTURE0);
+            FloatBuffer x = renderable.getTextureCoordsBuffer();
+            Shared.gl().glTexCoordPointer(
+                    AbstractRenderable.COORDS_PER_TEXTURE_COORD,
+                    GL10.GL_FLOAT,
+                    textureCoordsStride,
+                    x);
 
-//                if ($o.hasUvs() && $o.texturesEnabled()) {
-//
-//                $o.vertices().uvs().buffer().position(0);
-//                _gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, $o.vertices().uvs().buffer());
-//
-                //TextureVo textureVo = $o.textures().get(i) : null;
-//
-                //if (textureVo != null)
-                //{
-//                    // activate texture
-//                    int glId = _textureManager.getGlTextureId(textureVo.textureId);
-//                    _gl.glBindTexture(GL10.GL_TEXTURE_2D, glId);
-//                    _gl.glEn_glable(GL10.GL_TEXTURE_2D);
-//                    _gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-//
-//                    int minFilterType = _textureManager.hasMipMap(textureVo.textureId) ? GL10.GL_LINEAR_MIPMAP_NEAREST : GL10.GL_NEAREST;
-//                    _gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, minFilterType);
-//                    _gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR); // (OpenGL default)
-//
-//                    // do texture environment settings
-//                    for (int j = 0; j < textureVo.textureEnvs.size(); j++)
-//                    {
-//                        _gl.glTexEnvx(GL10.GL_TEXTURE_ENV, textureVo.textureEnvs.get(j).pname, textureVo.textureEnvs.get(j).param);
-//                    }
-//
-//                    // texture wrapping settings
-                    //GLES30.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, (GL10.GL_CLAMP_TO_EDGE));
-                    //GLES30.glTexParameterx(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, (GL10.GL_REPEAT));
-//
-//                    // texture offset, if any
-//                    if (textureVo.offsetU != 0 || textureVo.offsetV != 0)
-//                    {
-//                        _gl.glMatrixMode(GL10.GL_TEXTURE);
-//                        _gl.glLoadIdentity();
-//                        _gl.glTranslatef(textureVo.offsetU, textureVo.offsetV, 0);
-//                        _gl.glMatrixMode(GL10.GL_MODELVIEW); // .. restore matrixmode
-//                    }
-//                }
-//                else
-//                {
-//                    _gl.glBindTexture(GL10.GL_TEXTURE_2D, 0);
-//                    _gl.glDisable(GL10.GL_TEXTURE_2D);
-//                    _gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-//                }
-//            } else {
-            //Shared.gl().glBindTexture(GL10.GL_TEXTURE_2D, 1); // glId
-            //Shared.gl().glDisable(GL10.GL_TEXTURE_2D);
-            //Shared.gl().glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-//            }
-        //}
+//            GLES30.glVertexAttribPointer(
+//                    mPositionHandle, COORDS_PER_VERTEX,
+//                    GLES30.GL_FLOAT, false,
+//                    vertexStride, renderable.getVertexBuffer());
+
+            // Needed because texture is not power of 2 :) (Finally)
+            GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
+            GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
+
+            // Filtering
+            GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
+            GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_NEAREST);
+
+            int glid = renderable.getTextureId();
+            Shared.gl().glBindTexture(GLES30.GL_TEXTURE_2D, glid);
+
+            Shared.gl().glEnable(GLES30.GL_TEXTURE_2D);
+            Shared.gl().glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+        }
     }
 
 }

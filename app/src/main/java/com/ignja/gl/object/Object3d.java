@@ -377,6 +377,13 @@ public abstract class Object3d {
         return this.clickedAtTime;
     }
 
+    public void addRenderable(AbstractRenderable renderable, String textureName) {
+        if (Shared.textureManager().contains(textureName)) {
+            renderable.setTextureId(Shared.textureManager().getGlTextureId(textureName));
+        }
+        this.renderables.add(renderable);
+    }
+
     public void addRenderable(AbstractRenderable renderable) {
         this.renderables.add(renderable);
     }

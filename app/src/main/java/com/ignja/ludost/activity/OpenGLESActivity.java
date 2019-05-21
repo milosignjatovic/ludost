@@ -41,9 +41,17 @@ public class OpenGLESActivity extends GLActivity implements ISceneController {
     private float mPreviousX;
     private float mPreviousY;
 
+    private int screenWidth;
+    private int screenHeight;
+
+    private float XY_TOUCH_SCALE_FACTOR = 8f;
+    private float Z_TOUCH_SCALE_FACTOR = 8f;
+
     @Override
     public void initScene() {
         super.initScene();
+        this.screenWidth = this.getWindow().getDecorView().getWidth();
+        this.screenHeight = this.getWindow().getDecorView().getHeight();
 
         this.TAG = "Lugost Activity (OpenGLESActivity)";
 
@@ -57,7 +65,7 @@ public class OpenGLESActivity extends GLActivity implements ISceneController {
         scene.lights().add(light1);
 
         // Textures
-        Bitmap b = Utils.makeBitmapFromResourceId(Shared.context(), R.drawable.stonetexture);
+        Bitmap b = Utils.makeBitmapFromResourceId(Shared.context(), R.drawable.white_wooden_texture);
         Shared.textureManager().addTextureId(b, "stonetexture", false);
         b.recycle();
 
@@ -85,22 +93,20 @@ public class OpenGLESActivity extends GLActivity implements ISceneController {
              * remains at the scene origin, so the camera always looks towards the center.
              */
 
-            _rot += -_dx;
-            float y = (float)Math.cos(_rot*Utils.DEG) * -8f; // 8f = distance from center
-            float x = (float)Math.sin(_rot*Utils.DEG) * 8f;
-            scene.camera().position.setAll(x,y, scene.camera().position.z); // 5f = height
-
+            _rot += - _dx / this.screenWidth;
+            scene.camera().position.x = (float)Math.sin(_rot * XY_TOUCH_SCALE_FACTOR) * 8f;
+            scene.camera().position.y = (float)Math.cos(_rot * XY_TOUCH_SCALE_FACTOR) * -8f; // 8f = distance from center
             _dx = 0;
         }
 
         if (_dy != 0) {
-            scene.camera().position.setAll(
-                    scene.camera().position.x,
-                    scene.camera().position.y,
-                    Math.max(3f, Math.min(14f, scene.camera().position.z + _dy/10))
-            );
+            scene.camera().position.z = Math.max(3f, Math.min(14f, scene.camera().position.z + _dy / Z_TOUCH_SCALE_FACTOR));
             _dy = 0;
         }
+        scene.camera().position.setAll(
+                scene.camera().position.x,
+                scene.camera().position.y,
+                scene.camera().position.z);
     }
 
     @Override

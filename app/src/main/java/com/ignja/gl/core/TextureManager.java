@@ -121,13 +121,8 @@ public class TextureManager {
 		set.toArray(a);
 		return a;
 	}
-	
-	/**
-	 * Used by Renderer
-	 * 
-	 */
-	int getGlTextureId(String $textureId) /*package-private*/
-	{
+
+	public int getGlTextureId(String $textureId) {
 		return _idToTextureName.get($textureId);
 	}
 	

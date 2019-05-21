@@ -23,24 +23,30 @@ public class AbstractRenderable implements RenderableInterface {
     // number of coordinates per vertex in this array
     static final int COORDS_PER_VERTEX = 3;
     static final int COORDS_PER_COLOR = 4;
+    public static final int COORDS_PER_TEXTURE_COORD = 2;
 
     static final int SHORT_SIZE = 2;
     static final int FLOAT_SIZE = 4;
 
     private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
+    private final int tetureCoordsStride = COORDS_PER_TEXTURE_COORD * 4; // 4 bytes per vertex
 
     public final float[] coords;
+    private final float[] textureCoords;
 
     private FloatBuffer colorBuffer;
+
+    private FloatBuffer textureCoordsBuffer;
 
     public final float[] normals;
 
     private short[] drawOrder;
+    private Integer glTextureId;
 
     // TODO Initialize buffers in renderer, when objects are pushed into scene?
     // TODO Not in the renderables itself
 
-    protected AbstractRenderable(float[] coords, float[] color, short[] drawOrder, float[] normals) {
+    protected AbstractRenderable(float[] coords, float[] color, short[] drawOrder, float[] normals, float[] texture_coords) {
         this.coords = coords;
         if (color.length/COORDS_PER_COLOR != drawOrder.length) {
             if (LoggerConfig.ON) {
@@ -85,10 +91,28 @@ public class AbstractRenderable implements RenderableInterface {
         drawListBuffer = dlb.asShortBuffer();
         drawListBuffer.put(drawOrder);
         drawListBuffer.position(0);
+
+        if (texture_coords.length/COORDS_PER_TEXTURE_COORD != drawOrder.length) {
+            if (LoggerConfig.ON) {
+                Log.e("D", "TEXTURE ERROR");
+                throw new RuntimeException("TEXTURE ERROR 22");
+            }
+        }
+        this.textureCoords = texture_coords;
+        textureCoordsBuffer = ByteBuffer
+                .allocateDirect(texture_coords.length * FLOAT_SIZE)
+                .order(ByteOrder.nativeOrder())
+                .asFloatBuffer()
+                .put(texture_coords);
+        textureCoordsBuffer.position(0);
     }
 
     public FloatBuffer getColorBuffer() {
         return colorBuffer;
+    }
+
+    public FloatBuffer getTextureCoordsBuffer() {
+        return textureCoordsBuffer;
     }
 
     public short[] getDrawOrder() {
@@ -113,4 +137,14 @@ public class AbstractRenderable implements RenderableInterface {
         if (this.colorBuffer != null) this.colorBuffer.clear();
     }
 
+    public void setTextureId(Integer glTextureId) {
+        this.glTextureId = glTextureId;
+    }
+    public int getTextureId() {
+        return this.glTextureId;
+    }
+
+    public boolean hasTexture() {
+        return glTextureId != null;
+    }
 }
