@@ -105,7 +105,7 @@ public class Dice extends Object3d {
         super.update();
         if (this.clicked) {
             float dT = SystemClock.uptimeMillis() - this.clickedAt();
-            float dZ = -0.000002f * dT*dT + 0.0016f * dT;
+            float dZ = -0.000001f * dT*dT + 0.0008f * dT;
             this.translateZ(dZ);
             // TODO druga f-ja
             this.rotation().x += dT * this.rotateX;
