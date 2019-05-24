@@ -118,6 +118,9 @@ public class Dice extends Object3d {
                 this.position().z = 0.4f;
 
                 // normalize rotation angle
+                this.rotation().x += dT * this.rotateX;
+                this.rotation().y += dT * this.rotateY;
+                this.rotation().z += dT * this.rotateZ;
                 this.rotation().x = (int)(this.rotation().x / 90) * 90;
                 this.rotation().y = (int)(this.rotation().y / 90) * 90;
                 this.rotation().z = (int)(this.rotation().z / 90) * 90;

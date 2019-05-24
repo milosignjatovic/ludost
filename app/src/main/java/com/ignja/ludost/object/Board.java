@@ -26,104 +26,117 @@ public class Board extends Object3d {
         this.TAG = "BoardObject";
         this.addRenderable(this.createBoardSquare(), "boardTexture");
 
-        // start 0
+        // start - player 1 - green
         this.boardPositions.add(0, new BoardPosition(this, -4.15f, 4.15f));
         this.boardPositions.add(1, new BoardPosition(this, -3.3f, 4.15f));
         this.boardPositions.add(2, new BoardPosition(this, -4.15f, 3.3f));
         this.boardPositions.add(3, new BoardPosition(this, -3.3f, 3.3f));
 
-        // start 1
-        this.boardPositions.add(4, new BoardPosition(this, 3.3f, 4.15f));
-        this.boardPositions.add(5, new BoardPosition(this, 4.15f, 4.15f));
-        this.boardPositions.add(6, new BoardPosition(this, 4.15f, 3.3f));
-        this.boardPositions.add(7, new BoardPosition(this, 3.3f, 3.3f));
+        // start - player 2 - yellow
+        this.boardPositions.add(4, new BoardPosition(this, -3.3f, -4.15f));
+        this.boardPositions.add(5, new BoardPosition(this, -4.15f, -4.15f));
+        this.boardPositions.add(6, new BoardPosition(this, -4.15f, -3.3f));
+        this.boardPositions.add(7, new BoardPosition(this, -3.3f, -3.3f));
 
-        // start 2
+        // start 2 - player 3 - blue
         this.boardPositions.add(8, new BoardPosition(this, 3.3f, -4.15f));
         this.boardPositions.add(9, new BoardPosition(this, 4.15f, -4.15f));
         this.boardPositions.add(10, new BoardPosition(this, 4.15f, -3.3f));
         this.boardPositions.add(11, new BoardPosition(this, 3.3f, -3.3f));
 
-        // start 3
-        this.boardPositions.add(12, new BoardPosition(this, -3.3f, -4.15f));
-        this.boardPositions.add(13, new BoardPosition(this, -4.15f, -4.15f));
-        this.boardPositions.add(14, new BoardPosition(this, -4.15f, -3.3f));
-        this.boardPositions.add(15, new BoardPosition(this, -3.3f, -3.3f));
+        // start 3 - player 4 - red
+        this.boardPositions.add(12, new BoardPosition(this, 3.3f, 4.15f));
+        this.boardPositions.add(13, new BoardPosition(this, 4.15f, 4.15f));
+        this.boardPositions.add(14, new BoardPosition(this, 4.15f, 3.3f));
+        this.boardPositions.add(15, new BoardPosition(this, 3.3f, 3.3f));
 
 
-        // end 0
-        this.boardPositions.add(16, new BoardPosition(this, 0f, 3.9f));
-        this.boardPositions.add(17, new BoardPosition(this, 0f, 3.4f));
-        this.boardPositions.add(18, new BoardPosition(this, 0f, 2.9f));
-        this.boardPositions.add(19, new BoardPosition(this, 0f, 2.4f));
-
-        // end 1
-        this.boardPositions.add(20, new BoardPosition(this, 0f, -3.9f));
-        this.boardPositions.add(21, new BoardPosition(this, 0f, -3.4f));
-        this.boardPositions.add(22, new BoardPosition(this, 0f, -2.9f));
-        this.boardPositions.add(23, new BoardPosition(this, 0f, -2.4f));
-
-        // end 2
-        this.boardPositions.add(24, new BoardPosition(this, -3.9f, 0f));
-        this.boardPositions.add(25, new BoardPosition(this, -3.4f, 0f));
-        this.boardPositions.add(26, new BoardPosition(this, -2.9f, 0f));
-        this.boardPositions.add(27, new BoardPosition(this, -2.4f, 0f));
-
-        // end 3
-        this.boardPositions.add(28, new BoardPosition(this, 3.9f, 0f));
-        this.boardPositions.add(29, new BoardPosition(this, 3.4f, 0f));
-        this.boardPositions.add(30, new BoardPosition(this, 2.9f, 0f));
-        this.boardPositions.add(31, new BoardPosition(this, 2.4f, 0f));
 
 
-        // road
-        this.boardPositions.add(32, new BoardPosition(this, -0.8f, 4.5f));
-        this.boardPositions.add(33, new BoardPosition(this, 0f, 4.5f));
-        this.boardPositions.add(34, new BoardPosition(this, 0.8f, 4.5f));
+        // end - player 1 - green
+        this.boardPositions.add(16, new BoardPosition(this, 0f, 3.362f));
+        this.boardPositions.add(17, new BoardPosition(this, 0f, 2.522f));
+        this.boardPositions.add(18, new BoardPosition(this, 0f, 1.682f));
+        this.boardPositions.add(19, new BoardPosition(this, 0f, 0.842f));
 
-        this.boardPositions.add(35, new BoardPosition(this, 1f, 3.7f));
-        this.boardPositions.add(36, new BoardPosition(this, 1.2f, 3.0f));
-        this.boardPositions.add(37, new BoardPosition(this, 1.5f, 2.4f));
-        this.boardPositions.add(38, new BoardPosition(this, 1.9f, 1.9f));
-        this.boardPositions.add(39, new BoardPosition(this, 2.4f, 1.5f));
-        this.boardPositions.add(40, new BoardPosition(this, 3.0f, 1.2f));
-        this.boardPositions.add(41, new BoardPosition(this, 3.7f, 1f));
+        // end- player 3 - blue
+        this.boardPositions.add(20, new BoardPosition(this, 0f, -3.32f));
+        this.boardPositions.add(21, new BoardPosition(this, 0f, -2.48f));
+        this.boardPositions.add(22, new BoardPosition(this, 0f, -1.64f));
+        this.boardPositions.add(23, new BoardPosition(this, 0f, -0.842f));
 
-        this.boardPositions.add(42, new BoardPosition(this, 4.5f, 0.8f));
-        this.boardPositions.add(43, new BoardPosition(this, 4.5f, 0f));
-        this.boardPositions.add(44, new BoardPosition(this, 4.5f, -0.8f));
+        // end - player 2 - yellow
+        this.boardPositions.add(24, new BoardPosition(this, -3.32f, 0f));
+        this.boardPositions.add(25, new BoardPosition(this, -2.48f, 0f));
+        this.boardPositions.add(26, new BoardPosition(this, -1.64f, 0f));
+        this.boardPositions.add(27, new BoardPosition(this, -0.8f, 0f));
 
-        this.boardPositions.add(45, new BoardPosition(this, 1f, -3.7f));
-        this.boardPositions.add(46, new BoardPosition(this, 1.2f, -3.0f));
-        this.boardPositions.add(47, new BoardPosition(this, 1.5f, -2.4f));
-        this.boardPositions.add(48, new BoardPosition(this, 1.9f, -1.9f));
-        this.boardPositions.add(49, new BoardPosition(this, 2.4f, -1.5f));
-        this.boardPositions.add(50, new BoardPosition(this, 3.0f, -1.2f));
-        this.boardPositions.add(51, new BoardPosition(this, 3.7f, -1f));
+        // end - player 4 - red
+        this.boardPositions.add(28, new BoardPosition(this, 3.362f, 0f));
+        this.boardPositions.add(29, new BoardPosition(this, 2.522f, 0f));
+        this.boardPositions.add(30, new BoardPosition(this, 1.682f, 0f));
+        this.boardPositions.add(31, new BoardPosition(this, 0.842f, 0f));
 
-        this.boardPositions.add(52, new BoardPosition(this, 0.8f, -4.5f));
-        this.boardPositions.add(53, new BoardPosition(this, 0f, -4.5f));
-        this.boardPositions.add(54, new BoardPosition(this, -0.8f, -4.5f));
 
-        this.boardPositions.add(55, new BoardPosition(this, -1f, -3.7f));
-        this.boardPositions.add(56, new BoardPosition(this, -1.2f, -3.0f));
-        this.boardPositions.add(57, new BoardPosition(this, -1.5f, -2.4f));
-        this.boardPositions.add(58, new BoardPosition(this, -1.9f, -1.9f));
-        this.boardPositions.add(59, new BoardPosition(this, -2.4f, -1.5f));
-        this.boardPositions.add(60, new BoardPosition(this, -3.0f, -1.2f));
-        this.boardPositions.add(61, new BoardPosition(this, -3.7f, -1f));
+        // road - red->green flat line
+        this.boardPositions.add(32, new BoardPosition(this, -0.8f, 4.16f));
+        this.boardPositions.add(33, new BoardPosition(this, 0f, 4.16f));
+        this.boardPositions.add(34, new BoardPosition(this, 0.8f, 4.16f));
 
-        this.boardPositions.add(62, new BoardPosition(this, -4.5f, -0.8f));
-        this.boardPositions.add(63, new BoardPosition(this, -4.5f, 0f));
-        this.boardPositions.add(64, new BoardPosition(this, -4.5f, 0.8f));
+        // player 1 - circle start
+        this.boardPositions.add(35, new BoardPosition(this, -0.8f, 3.362f));
+        this.boardPositions.add(36, new BoardPosition(this, -0.8f, 2.522f));
+        this.boardPositions.add(37, new BoardPosition(this, -0.8f, 1.682f));
+        this.boardPositions.add(38, new BoardPosition(this, -0.8f, 0.842f));
+        this.boardPositions.add(39, new BoardPosition(this, -1.64f, 0.842f));
+        this.boardPositions.add(40, new BoardPosition(this, -2.48f, 0.842f));
+        this.boardPositions.add(41, new BoardPosition(this, -3.32f, 0.842f));
 
-        this.boardPositions.add(65, new BoardPosition(this, -1f, 3.7f));
-        this.boardPositions.add(66, new BoardPosition(this, -1.2f, 3.0f));
-        this.boardPositions.add(67, new BoardPosition(this, -1.5f, 2.4f));
-        this.boardPositions.add(68, new BoardPosition(this, -1.9f, 1.9f));
-        this.boardPositions.add(69, new BoardPosition(this, -2.4f, 1.5f));
-        this.boardPositions.add(70, new BoardPosition(this, -3.0f, 1.2f));
-        this.boardPositions.add(71, new BoardPosition(this, -3.7f, 1f));
+        // green->yellow flat line
+        this.boardPositions.add(42, new BoardPosition(this, -4.16f, -0.842f));
+        this.boardPositions.add(43, new BoardPosition(this, -4.16f, 0f));
+        this.boardPositions.add(44, new BoardPosition(this, -4.16f, 0.842f));
+
+
+        // player 2 - yellow - circle start
+        this.boardPositions.add(45, new BoardPosition(this, -3.32f, -0.842f));
+        this.boardPositions.add(46, new BoardPosition(this, -2.48f, -0.842f));
+        this.boardPositions.add(47, new BoardPosition(this, -1.64f, -0.842f));
+        this.boardPositions.add(48, new BoardPosition(this, -0.842f, -0.842f));
+        this.boardPositions.add(49, new BoardPosition(this, -0.842f, -1.682f));
+        this.boardPositions.add(50, new BoardPosition(this, -0.842f, -2.522f));
+        this.boardPositions.add(51, new BoardPosition(this, -0.842f, -3.362f));
+
+        // yellow->blue flat line
+        this.boardPositions.add(52, new BoardPosition(this, -0.842f, -4.16f));
+        this.boardPositions.add(53, new BoardPosition(this, 0f, -4.16f));
+        this.boardPositions.add(54, new BoardPosition(this, 0.842f, -4.16f));
+
+        // player 3 - blue - circle start
+        this.boardPositions.add(55, new BoardPosition(this, 0.842f, -3.362f));
+        this.boardPositions.add(56, new BoardPosition(this, 0.842f, -2.522f));
+        this.boardPositions.add(57, new BoardPosition(this, 0.842f, -1.682f));
+        this.boardPositions.add(58, new BoardPosition(this, 0.842f, -0.842f));
+        this.boardPositions.add(59, new BoardPosition(this, 1.64f, -0.842f));
+        this.boardPositions.add(60, new BoardPosition(this, 2.48f, -0.842f));
+        this.boardPositions.add(61, new BoardPosition(this, 3.32f, -0.842f));
+
+
+        // blue->red flat line
+        this.boardPositions.add(62, new BoardPosition(this, 4.16f, 0.8f));
+        this.boardPositions.add(63, new BoardPosition(this, 4.16f, 0f));
+        this.boardPositions.add(64, new BoardPosition(this, 4.16f, -0.8f));
+
+        // player 4 - red - circle start
+        this.boardPositions.add(65, new BoardPosition(this, 3.32f, 0.842f));
+        this.boardPositions.add(66, new BoardPosition(this, 2.48f, 0.842f));
+        this.boardPositions.add(67, new BoardPosition(this, 1.64f, 0.842f));
+        this.boardPositions.add(68, new BoardPosition(this, 0.842f, 3.3626f));
+        this.boardPositions.add(69, new BoardPosition(this, 0.842f, 2.522f));
+        this.boardPositions.add(70, new BoardPosition(this, 0.842f, 1.682f));
+        this.boardPositions.add(71, new BoardPosition(this, 0.842f, 0.842f));
+
+
 
 
 

@@ -24,7 +24,7 @@ public class BoardPosition extends Object3d {
     }
 
     private AbstractRenderable createPositionSquare() {
-        float a = 0.23f;
+        float a = 0.12f;
         return new Square(new float[]{
                 -a, a, 0.01f,
                 -a, -a, 0.01f,

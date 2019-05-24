@@ -80,9 +80,9 @@ public class OpenGLESActivity extends GLActivity implements ISceneController {
         // Init Game
         Board board = new Board();
         Player player1 = new Player(board, Color.GREEN_PALE, 0);
-        Player player2 = new Player(board, Color.RED, 1);
+        Player player2 = new Player(board, Color.YELLOW, 1);
         Player player3 = new Player(board, Color.BLUE_STEEL, 2);
-        Player player4 = new Player(board, Color.YELLOW, 3);
+        Player player4 = new Player(board, Color.RED, 3);
         Player[] playerArray = new Player[] {player1, player2, player3, player4};
         Game game = new Game(board, playerArray);
         scene.setGame(game);
