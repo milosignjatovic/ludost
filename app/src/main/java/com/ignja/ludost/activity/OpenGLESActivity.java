@@ -44,8 +44,8 @@ public class OpenGLESActivity extends GLActivity implements ISceneController {
     private int screenWidth;
     private int screenHeight;
 
-    private float XY_TOUCH_SCALE_FACTOR = 8f;
-    private float Z_TOUCH_SCALE_FACTOR = 8f;
+    private float XY_TOUCH_SCALE_FACTOR = 7f;
+    private float Z_TOUCH_SCALE_FACTOR = 7f;
 
     @Override
     public void initScene() {
@@ -65,16 +65,24 @@ public class OpenGLESActivity extends GLActivity implements ISceneController {
         scene.lights().add(light1);
 
         // Textures
-        Bitmap b = Utils.makeBitmapFromResourceId(Shared.context(), R.drawable.white_wooden_texture);
-        Shared.textureManager().addTextureId(b, "stonetexture", false);
-        b.recycle();
+        Bitmap diceTexture = Utils.makeBitmapFromResourceId(Shared.context(), R.drawable.dice_texture_white_01);
+        Shared.textureManager().addTextureId(diceTexture, "diceTexture", false);
+        diceTexture.recycle();
+
+        Bitmap boardTexture = Utils.makeBitmapFromResourceId(Shared.context(), R.drawable.ludo_board_03);
+        Shared.textureManager().addTextureId(boardTexture, "boardTexture", false);
+        boardTexture.recycle();
+
+        Bitmap pieceTexture = Utils.makeBitmapFromResourceId(Shared.context(), R.drawable.metal_white_texture_01);
+        Shared.textureManager().addTextureId(pieceTexture, "pieceTexture", false);
+        pieceTexture.recycle();
 
         // Init Game
         Board board = new Board();
-        Player player1 = new Player(board, Color.RED, 0);
-        Player player2 = new Player(board, Color.GREEN, 1);
-        Player player3 = new Player(board, Color.YELLOW, 2);
-        Player player4 = new Player(board, Color.BLUE, 3);
+        Player player1 = new Player(board, Color.GREEN_PALE, 0);
+        Player player2 = new Player(board, Color.RED, 1);
+        Player player3 = new Player(board, Color.BLUE_STEEL, 2);
+        Player player4 = new Player(board, Color.YELLOW, 3);
         Player[] playerArray = new Player[] {player1, player2, player3, player4};
         Game game = new Game(board, playerArray);
         scene.setGame(game);

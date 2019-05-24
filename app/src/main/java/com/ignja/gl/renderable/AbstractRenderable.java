@@ -32,7 +32,7 @@ public class AbstractRenderable implements RenderableInterface {
     private final int tetureCoordsStride = COORDS_PER_TEXTURE_COORD * 4; // 4 bytes per vertex
 
     public final float[] coords;
-    private final float[] textureCoords;
+    private float[] textureCoords;
 
     private FloatBuffer colorBuffer;
 
@@ -146,5 +146,15 @@ public class AbstractRenderable implements RenderableInterface {
 
     public boolean hasTexture() {
         return glTextureId != null;
+    }
+
+    public void setTextureCoords(float[] textureCoords) {
+        this.textureCoords = textureCoords;
+        textureCoordsBuffer = ByteBuffer
+                .allocateDirect(textureCoords.length * FLOAT_SIZE)
+                .order(ByteOrder.nativeOrder())
+                .asFloatBuffer()
+                .put(textureCoords);
+        textureCoordsBuffer.position(0);
     }
 }

@@ -39,7 +39,7 @@ public abstract class Object3d {
     private Number3d scale = new Number3d(1,1,1);
 
     /**
-     * Renderable. TODO ArrayList? (more than one renderable in single renderables)
+     * Renderables array list
      */
     public ArrayList<AbstractRenderable> renderables;
 
@@ -358,8 +358,7 @@ public abstract class Object3d {
      * Clear renderables for garbage collection.
      */
     public void clear() {
-        for (AbstractRenderable renderable: this.renderables
-             ) {
+        for (AbstractRenderable renderable: this.renderables) {
             renderable.clear();
         }
     }

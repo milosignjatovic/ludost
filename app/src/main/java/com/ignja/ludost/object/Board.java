@@ -24,31 +24,31 @@ public class Board extends Object3d {
     public Board() {
         super(Color.BLUE);
         this.TAG = "BoardObject";
-        this.addRenderable(this.createBoardSquare(), "none");
+        this.addRenderable(this.createBoardSquare(), "boardTexture");
 
         // start 0
-        this.boardPositions.add(0, new BoardPosition(this, -4.5f, 4.5f));
-        this.boardPositions.add(1, new BoardPosition(this, -3.8f, 4.5f));
-        this.boardPositions.add(2, new BoardPosition(this, -4.5f, 3.8f));
-        this.boardPositions.add(3, new BoardPosition(this, -3.8f, 3.8f));
+        this.boardPositions.add(0, new BoardPosition(this, -4.15f, 4.15f));
+        this.boardPositions.add(1, new BoardPosition(this, -3.3f, 4.15f));
+        this.boardPositions.add(2, new BoardPosition(this, -4.15f, 3.3f));
+        this.boardPositions.add(3, new BoardPosition(this, -3.3f, 3.3f));
 
         // start 1
-        this.boardPositions.add(4, new BoardPosition(this, 3.8f, 4.5f));
-        this.boardPositions.add(5, new BoardPosition(this, 4.5f, 4.5f));
-        this.boardPositions.add(6, new BoardPosition(this, 4.5f, 3.8f));
-        this.boardPositions.add(7, new BoardPosition(this, 3.8f, 3.8f));
+        this.boardPositions.add(4, new BoardPosition(this, 3.3f, 4.15f));
+        this.boardPositions.add(5, new BoardPosition(this, 4.15f, 4.15f));
+        this.boardPositions.add(6, new BoardPosition(this, 4.15f, 3.3f));
+        this.boardPositions.add(7, new BoardPosition(this, 3.3f, 3.3f));
 
         // start 2
-        this.boardPositions.add(8, new BoardPosition(this, 3.8f, -4.5f));
-        this.boardPositions.add(9, new BoardPosition(this, 4.5f, -4.5f));
-        this.boardPositions.add(10, new BoardPosition(this, 4.5f, -3.8f));
-        this.boardPositions.add(11, new BoardPosition(this, 3.8f, -3.8f));
+        this.boardPositions.add(8, new BoardPosition(this, 3.3f, -4.15f));
+        this.boardPositions.add(9, new BoardPosition(this, 4.15f, -4.15f));
+        this.boardPositions.add(10, new BoardPosition(this, 4.15f, -3.3f));
+        this.boardPositions.add(11, new BoardPosition(this, 3.3f, -3.3f));
 
         // start 3
-        this.boardPositions.add(12, new BoardPosition(this, -3.8f, -4.5f));
-        this.boardPositions.add(13, new BoardPosition(this, -4.5f, -4.5f));
-        this.boardPositions.add(14, new BoardPosition(this, -4.5f, -3.8f));
-        this.boardPositions.add(15, new BoardPosition(this, -3.8f, -3.8f));
+        this.boardPositions.add(12, new BoardPosition(this, -3.3f, -4.15f));
+        this.boardPositions.add(13, new BoardPosition(this, -4.15f, -4.15f));
+        this.boardPositions.add(14, new BoardPosition(this, -4.15f, -3.3f));
+        this.boardPositions.add(15, new BoardPosition(this, -3.3f, -3.3f));
 
 
         // end 0
@@ -135,7 +135,7 @@ public class Board extends Object3d {
                 -a/2, -a/2, 0f,
                 a/2, -a/2, 0f,
                 a/2, a/2, 0f
-        }, Color.ALMOND);
+        }, Color.WHITE);
     }
 
     public BoardPosition getPosition(int index) {
