@@ -1,8 +1,7 @@
 package com.ignja.fsm;
 
-import android.util.Log;
 
-import com.ignja.gl.util.LoggerConfig;
+import com.ignja.core.util.Log;
 
 import java.util.concurrent.Executor;
 
@@ -58,8 +57,7 @@ public class StateMachineFlow<C extends StatefulContext> {
         execute(new Runnable() {
             @Override
             public void run() {
-                if (LoggerConfig.ON)
-                    Log.d(TAG, String.format("setting current state to %s for %s <<<", state, context));
+                Log.d(TAG, String.format("setting current state to %s for %s <<<", state, context));
 
                 State<C> prevState = context.getState();
                 if (prevState != null) {
@@ -69,8 +67,7 @@ public class StateMachineFlow<C extends StatefulContext> {
                 context.setState(state);
                 context.getState().enter(context);
 
-                if (LoggerConfig.ON)
-                    Log.d(TAG, String.format("setting current state to %s for %s >>>", state, context));
+                Log.d(TAG, String.format("setting current state to %s for %s >>>", state, context));
             }
         });
     }
@@ -96,13 +93,11 @@ public class StateMachineFlow<C extends StatefulContext> {
     protected void callOnEventTriggered(Event<C> event, State<C> from, State<C> to, C context) throws Exception {
         if (onEventTriggeredHandler != null) {
             try {
-                if (LoggerConfig.ON)
-                    Log.d(TAG, String.format("when triggered %s in %s for %s <<<", event, from, context));
+                Log.d(TAG, String.format("when triggered %s in %s for %s <<<", event, from, context));
 
                 onEventTriggeredHandler.call(event, from, to, context);
 
-                if (LoggerConfig.ON)
-                    Log.d(TAG, String.format("when triggered %s in %s for %s >>>", event, from, context));
+                Log.d(TAG, String.format("when triggered %s in %s for %s >>>", event, from, context));
             } catch (Exception e) {
                 // TODO
             }

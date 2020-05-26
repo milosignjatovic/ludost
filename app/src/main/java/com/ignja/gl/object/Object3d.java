@@ -2,8 +2,8 @@ package com.ignja.gl.object;
 
 import android.opengl.GLU;
 import android.opengl.Matrix;
-import android.util.Log;
 
+import com.ignja.core.util.Log;
 import com.ignja.gl.core.FacesBufferedList;
 import com.ignja.gl.core.Scene;
 import com.ignja.gl.core.TextureList;
@@ -13,7 +13,6 @@ import com.ignja.gl.renderable.AbstractRenderable;
 import com.ignja.gl.renderable.Triangle;
 import com.ignja.gl.renderer.ObjectRenderer;
 import com.ignja.gl.util.Color;
-import com.ignja.gl.util.LoggerConfig;
 import com.ignja.gl.util.Shared;
 import com.ignja.gl.util.Utils;
 import com.ignja.gl.vo.Number3d;
@@ -236,11 +235,9 @@ public abstract class Object3d {
                         this.click();
                         this.distance = distance;
                         this.intersectionPoint = intersectionPoint;
-                        if (LoggerConfig.ON) {
-                            Log.d(TAG, "HIT " + this
-                                    + " Intersection point: " + Arrays.toString(intersectionPoint)
-                                    + ", Distance: " + distance);
-                        }
+                        Log.d(TAG, "HIT " + this
+                                + " Intersection point: " + Arrays.toString(intersectionPoint)
+                                + ", Distance: " + distance);
                     }
                 }
             } else {

@@ -23,13 +23,12 @@ import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
 import android.opengl.GLUtils;
 import android.opengl.Matrix;
-import android.util.Log;
 
+import com.ignja.core.util.Log;
 import com.ignja.gl.core.TextureManager;
 import com.ignja.ludost.R;
 
 import com.ignja.gl.core.Scene;
-import com.ignja.gl.util.LoggerConfig;
 import com.ignja.gl.util.ShaderHelper;
 import com.ignja.gl.util.Shared;
 import com.ignja.gl.util.TextResourceReader;
@@ -112,9 +111,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         glProgram = ShaderHelper.linkProgram(vertexShader, fragmentShader);
 
-        if (LoggerConfig.ON) {
-            ShaderHelper.validateProgram(glProgram);
-        }
+        ShaderHelper.validateProgram(glProgram);
 
         GLES30.glUseProgram(glProgram);
 
@@ -176,9 +173,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Adjust the viewport based on geometry changes, such as screen rotation
         // TODO reset zoom on rotate screen?
         GLES30.glViewport(0, 0, width, height);
-        if (LoggerConfig.ON) {
-            Log.i("", "W: " + width + ", H: " + height);
-        }
+        Log.i("", "W: " + width + ", H: " + height);
 
         float ratio = (float) width / height;
 

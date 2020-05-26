@@ -1,7 +1,7 @@
 package com.ignja.gl.util;
 
 import android.opengl.GLES30;
-import android.util.Log;
+import com.ignja.core.util.Log;
 
 /**
  * Created by milos on 01/02/17.
@@ -22,9 +22,7 @@ public class ShaderHelper {
     private static int compileShader(int type, String shaderCode) {
         final int shaderObjectId = GLES30.glCreateShader(type);
         if (shaderObjectId == 0) {
-            if (LoggerConfig.ON) {
-                Log.w(TAG, "Could not create new shader.");
-            }
+            Log.w(TAG, "Could not create new shader.");
             return 0;
         }
         GLES30.glShaderSource(shaderObjectId, shaderCode);
@@ -33,18 +31,14 @@ public class ShaderHelper {
         final int[] compileStatus = new int[1];
         GLES30.glGetShaderiv(shaderObjectId, GLES30.GL_COMPILE_STATUS, compileStatus, 0);
 
-        if (LoggerConfig.ON) {
-            // Print the shader info log to the Android log output.
-            Log.v(TAG, "Results of compiling source:" + "\n" + shaderCode + "\n:"
-                    + GLES30.glGetShaderInfoLog(shaderObjectId));
-        }
+        // Print the shader info log to the Android log output.
+        Log.v(TAG, "Results of compiling source:" + "\n" + shaderCode + "\n:"
+                + GLES30.glGetShaderInfoLog(shaderObjectId));
 
         if (compileStatus[0] == 0) {
         // If it failed, delete the shader renderables.
             GLES30.glDeleteShader(shaderObjectId);
-            if (LoggerConfig.ON) {
-                Log.w(TAG, "Compilation of shader failed.");
-            }
+            Log.w(TAG, "Compilation of shader failed.");
             return 0;
         }
 
@@ -55,9 +49,7 @@ public class ShaderHelper {
         final int programObjectId = GLES30.glCreateProgram();
 
         if (programObjectId == 0) {
-            if (LoggerConfig.ON) {
-                Log.w(TAG, "Could not create new program");
-            }
+            Log.w(TAG, "Could not create new program");
             return 0;
         }
 
@@ -69,18 +61,14 @@ public class ShaderHelper {
         final int[] linkStatus = new int[1];
         GLES30.glGetProgramiv(programObjectId, GLES30.GL_LINK_STATUS, linkStatus, 0);
 
-        if (LoggerConfig.ON) {
         // Print the program info log to the Android log output.
-            Log.v(TAG, "Results of linking program:\n"
-                    + GLES30.glGetProgramInfoLog(programObjectId));
-        }
+        Log.v(TAG, "Results of linking program:\n"
+            + GLES30.glGetProgramInfoLog(programObjectId));
 
         if (linkStatus[0] == 0) {
             // If it failed, delete the program renderables.
             GLES30.glDeleteProgram(programObjectId);
-            if (LoggerConfig.ON) {
-                Log.w(TAG, "Linking of program failed.");
-            }
+            Log.w(TAG, "Linking of program failed.");
             return 0;
         }
 

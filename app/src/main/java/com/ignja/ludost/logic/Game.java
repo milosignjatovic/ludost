@@ -1,7 +1,6 @@
 package com.ignja.ludost.logic;
 
 import android.os.SystemClock;
-import android.util.Log;
 
 import com.ignja.fsm.Event;
 import com.ignja.fsm.EventHandler;
@@ -13,11 +12,11 @@ import com.ignja.fsm.StatefulContext;
 import com.ignja.fsm.UIThreadExecutor;
 import com.ignja.gl.core.TextureVo;
 import com.ignja.gl.object.Object3d;
+import com.ignja.core.util.Log;
 import com.ignja.ludost.object.Board;
 import com.ignja.ludost.object.Dice;
 import com.ignja.ludost.object.Piece;
 import com.ignja.ludost.object.Player;
-import com.ignja.gl.util.LoggerConfig;
 
 import java.util.ArrayList;
 
@@ -103,8 +102,8 @@ public class Game extends StatefulContext {
         INIT_STATE.whenEnter(new StateHandler<GameFlowContext>() {
             @Override
             public void call(State<GameFlowContext> state, GameFlowContext context) throws Exception {
-                Log.i(TAG, "INIT_STATE entered");
-                onStart.trigger(context);
+            Log.i(TAG, "INIT_STATE entered");
+            onStart.trigger(context);
             }
         }).whenLeave(new StateHandler<GameFlowContext>() {
             @Override
@@ -170,13 +169,9 @@ public class Game extends StatefulContext {
                 }
             }
         }
-        if (LoggerConfig.ON) {
-            Log.i("Clicked objects", String.valueOf(clickedObjects));
-        }
+        Log.i("Clicked objects", String.valueOf(clickedObjects));
         if (nearestHit != null) {
-            if (LoggerConfig.ON) {
-                Log.i("Nearest hit", nearestHit.toString());
-            }
+            Log.i("Nearest hit", nearestHit.toString());
             if (nearestHit instanceof Piece) {
                 double randomPosition = Math.random() * 72;
                 ((Piece) nearestHit).moveTo(this.board.getPosition((int)randomPosition));

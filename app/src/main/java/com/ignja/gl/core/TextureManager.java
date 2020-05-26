@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Set;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 
+import com.ignja.core.util.Log;
 import com.ignja.gl.util.Shared;
 
 /**

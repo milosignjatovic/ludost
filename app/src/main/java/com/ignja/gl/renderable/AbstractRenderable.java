@@ -1,8 +1,6 @@
 package com.ignja.gl.renderable;
 
-import android.util.Log;
-
-import com.ignja.gl.util.LoggerConfig;
+import com.ignja.core.util.Log;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -15,6 +13,8 @@ import java.nio.ShortBuffer;
  */
 
 public class AbstractRenderable implements RenderableInterface {
+
+    protected String TAG = "AbstractRenderable";
 
     private final FloatBuffer vertexBuffer;
     private final FloatBuffer normalsBuffer;
@@ -49,10 +49,7 @@ public class AbstractRenderable implements RenderableInterface {
     protected AbstractRenderable(float[] coords, float[] color, short[] drawOrder, float[] normals, float[] texture_coords) {
         this.coords = coords;
         if (color.length/COORDS_PER_COLOR != drawOrder.length) {
-            if (LoggerConfig.ON) {
-                Log.e("D", "COLOR ERROR");
-                throw new RuntimeException("COLOR ERROR 22");
-            }
+            Log.e(TAG, "COLOR ERROR");
         }
 
         // initialize vertex byte buffer for shape coordinates
@@ -93,10 +90,8 @@ public class AbstractRenderable implements RenderableInterface {
         drawListBuffer.position(0);
 
         if (texture_coords.length/COORDS_PER_TEXTURE_COORD != drawOrder.length) {
-            if (LoggerConfig.ON) {
-                Log.e("D", "TEXTURE ERROR");
-                throw new RuntimeException("TEXTURE ERROR 22");
-            }
+            Log.e(TAG, "TEXTURE ERROR");
+            //throw new RuntimeException("TEXTURE ERROR 22");
         }
         this.textureCoords = texture_coords;
         textureCoordsBuffer = ByteBuffer

@@ -3,10 +3,6 @@ package com.ignja.gl.core;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import android.opengl.GLSurfaceView;
-import android.util.Log;
-
-import com.ignja.gl.object.Object3d;
 import com.ignja.gl.renderer.MyGLRenderer;
 import com.ignja.gl.vo.Light;
 

@@ -1,8 +1,6 @@
 package com.ignja.fsm;
 
-import android.util.Log;
-
-import com.ignja.gl.util.LoggerConfig;
+import com.ignja.core.util.Log;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -79,9 +77,7 @@ public class Event <C extends StatefulContext>{
             Log.e(TAG, String.format("Event has no State to map to. You must define event %s transition in map Flow!", this), logicViolationError);
             return;
         }
-        if (LoggerConfig.ON) {
-            Log.d(TAG, String.format("trigger %s for %s", this, context));
-        }
+        Log.d(TAG, String.format("trigger %s for %s", this, context));
         State fromState = fsm.getState();
         State toState = transitions.get(fromState);
         this.fsm.execute(new Runnable() {

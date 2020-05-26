@@ -1,15 +1,15 @@
-package com.ignja.gl.util;
+package com.ignja.core.util;
 
 /**
  * Created by milos on 01/02/17.
  */
 
-public class LoggerConfig {
+class LoggerConfig {
 
     /**
      * Enable application log
      *
      */
-    public static final boolean ON = false;
+    static final boolean ON = false;
 
 }

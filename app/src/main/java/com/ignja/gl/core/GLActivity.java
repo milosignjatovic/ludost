@@ -1,23 +1,17 @@
 package com.ignja.gl.core;
 
-import android.app.ActionBar;
 import android.app.Activity;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import com.ignja.core.util.Log;
 import com.ignja.gl.renderer.MyGLRenderer;
 import com.ignja.gl.util.Shared;
 import com.ignja.gl.view.MyGLSurfaceView;
