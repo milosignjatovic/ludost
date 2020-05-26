@@ -12,17 +12,24 @@ import com.ignja.gl.vo.Number3d;
  * Represents position on the board
  */
 
-public class BoardPosition extends Object3d {
+class BoardPosition extends Object3d {
 
-    private Board board;
+    private boolean visible = false;
 
-    public BoardPosition(Board board, float x, float y) {
+    BoardPosition(Board board, float x, float y) {
         super(new Number3d(x, y, 0f));
         this.TAG = "BoardPosition";
-        //this.addRenderable(this.createPositionSquare());
+        if (visible) {
+            addRenderable(this.createPositionSquare());
+        }
         this.setParent(board);
     }
 
+    /**
+     * If needed, board positions could be rendered, but it's faster if they are part of board texture
+     * (we need them renderable if we want to add some "effect", like Position highlighting etc. )
+     * @return AbstractRenderable
+     */
     private AbstractRenderable createPositionSquare() {
         float a = 0.12f;
         return new Square(new float[]{
