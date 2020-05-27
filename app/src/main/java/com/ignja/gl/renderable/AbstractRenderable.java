@@ -49,7 +49,7 @@ public class AbstractRenderable implements RenderableInterface {
     protected AbstractRenderable(float[] coords, float[] color, short[] drawOrder, float[] normals, float[] texture_coords) {
         this.coords = coords;
         if (color.length/COORDS_PER_COLOR != drawOrder.length) {
-            Log.e(TAG, "COLOR ERROR");
+            //Log.e(TAG, "COLOR ERROR");
         }
 
         // initialize vertex byte buffer for shape coordinates
@@ -90,7 +90,7 @@ public class AbstractRenderable implements RenderableInterface {
         drawListBuffer.position(0);
 
         if (texture_coords.length/COORDS_PER_TEXTURE_COORD != drawOrder.length) {
-            Log.e(TAG, "TEXTURE ERROR");
+            //Log.e(TAG, "TEXTURE ERROR");
             //throw new RuntimeException("TEXTURE ERROR 22");
         }
         this.textureCoords = texture_coords;

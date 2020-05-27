@@ -235,9 +235,10 @@ public abstract class Object3d {
                         this.click();
                         this.distance = distance;
                         this.intersectionPoint = intersectionPoint;
-                        Log.d(TAG, "HIT " + this
-                                + " Intersection point: " + Arrays.toString(intersectionPoint)
-                                + ", Distance: " + distance);
+                        Log.d(TAG, "HIT "
+                                + "\t" + this
+                                + "\tIntersection point: " + Arrays.toString(intersectionPoint)
+                                + "\tIntersection distance: " + distance);
                     }
                 }
             } else {

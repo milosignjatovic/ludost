@@ -10,6 +10,6 @@ class LoggerConfig {
      * Enable application log
      *
      */
-    static final boolean ON = false;
+    static final boolean ON = true;
 
 }
