@@ -48,6 +48,11 @@ public class Game extends StatefulContext {
     private final State<GameFlowContext> SELECT_PIECE = FlowBuilder.state();
 
     /**
+     * General events
+     */
+    private final Event<GameFlowContext> onSettingsIconClick = FlowBuilder.event();
+
+    /**
      * Ludost game events
      */
     private final Event<GameFlowContext> onStart = FlowBuilder.event();
@@ -78,6 +83,7 @@ public class Game extends StatefulContext {
 
     /**
      * Initialize FinalStateMachine
+     * Define transitions from State1 to State2, triggered by game Events
      */
     private void initFlow() {
         if (flow != null) {
@@ -130,6 +136,7 @@ public class Game extends StatefulContext {
         ROLL_DICE.whenEnter(new StateHandler<GameFlowContext>() {
             @Override
             public void call(State<GameFlowContext> state, GameFlowContext context) throws Exception {
+                rollDiceStateEnteredEventHandler();
                 Log.i(TAG, "ROLL_DICE entered");
             }
         });
@@ -137,12 +144,41 @@ public class Game extends StatefulContext {
         onDiceClick.whenTriggered(new EventHandler<GameFlowContext>() {
             @Override
             public void call(Event<GameFlowContext> event, State<GameFlowContext> from, State<GameFlowContext> to, GameFlowContext context) throws Exception {
-                int diceResult = (int)(Math.random()*6) + 1;
-                Log.i(TAG, from + ", to: " + to + ",  Dice rolled: " + diceResult);
+                // Todo call click handler here? not inside onClickHandler in object
+                // Enter start RollingDice state
             }
         });
 
     }
+
+    protected void rollDiceStateEnteredEventHandler() {
+        Log.i("HA!", "RollDice State entered");
+        // TODO highlight the dice
+        // TODO wait for user interaction (click Dice)
+        // highlight clickable items (in this case only dice)
+        // onClick ->
+        //   enter DiceIsRolling state
+        // onDiceDrop ->
+        //   if there are possible user actions (clickable items)
+        //     highlight clickable items (pieces)
+        //     (+ highlight end positions)
+        //     wait for user action (click)
+        //     onPieceClick ->
+        //       move piece to end position
+        //       (+ if possible )
+        //     enterEndPlayerMoveState
+        //   else
+        //     no available actions state
+        //     nextPlayer
+        //   GameStatusCheck... if game finished -> EndGame
+        //  nextPlayer
+    }
+
+
+    /**
+     * Drawing methods down
+     *
+     */
 
     public void draw(float[] mvpMatrix, int glProgram, float[] modelViewMatrix, float[] projectionMatrix) {
         this.board.draw(mvpMatrix, glProgram, modelViewMatrix, projectionMatrix);
