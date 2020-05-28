@@ -103,6 +103,7 @@ public class Dice extends Object3d {
     public void clickedAt(long uptimeMillis) {
         super.clickedAt(uptimeMillis);
 
+        // TODO Matematika nije dobra :/ ... na poslu u emulatoru se malo vise vrti kockica nego kod kuce na xiaomiju i ne "pogadjaju" se brojevi :/
         // TODO disable multiple click (if Dice is already rolling)
 
         int translateX = ThreadLocalRandom.current().nextInt(0, 5); // (min, max+1)
