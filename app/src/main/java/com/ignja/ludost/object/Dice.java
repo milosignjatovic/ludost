@@ -4,11 +4,8 @@ import android.os.SystemClock;
 
 import com.ignja.core.util.Log;
 import com.ignja.gl.object.Object3d;
-import com.ignja.gl.renderable.Square;
 import com.ignja.gl.util.Color;
 import com.ignja.gl.renderable.Cube;
-import com.ignja.gl.util.Shared;
-import com.ignja.gl.util.Utils;
 import com.ignja.gl.vo.Number3d;
 
 import java.util.concurrent.ThreadLocalRandom;
@@ -20,48 +17,25 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Dice extends Object3d {
 
-    private int value = 6;
+    // todo Add Dice Random Initial position
 
-    private int[] diceValue = new int[]{0, 0};
+    private int[][][] diceValues = new int[4][4][4];
+
+    // clickedAt dice rotation angle (starting position)
+    private float startingRotX;
+    private float startingRotY;
+    private float startingRotZ;
 
     public Dice() {
         super(new Number3d(0, 0, 0.4f));
-        this.TAG = "DiceObject";
-        this.addRenderable(
+        TAG = "DiceObject";
+        addRenderable(
                 new Cube(0.8f, Color.WHITE), "diceTexture"
         );
+        setCubeTexture();
 
-        // TODO texture is wrongly applied, sum of opposite sides should equal to 7
-        this.renderables.get(0).setTextureCoords(new float[]{
-                0.25f, 0.67f, /* Top - 6 */
-                0.0f, 0.67f,
-                0.0f, 0.33f,
-                0.25f, 0.33f,
+        initDiceValues();
 
-                0.5f, 0.67f, /* Bottom - 4 */
-                0.25f, 0.67f,
-                0.25f, 0.33f,
-                0.5f, 0.33f,
-
-                0.75f, 0.67f, /* Left - 1 */
-                0.5f, 0.67f,
-                0.5f, 0.33f,
-                0.75f, 0.33f,
-
-                1.0f, 0.67f, /* Right - 3 */
-                0.75f, 0.67f,
-                0.75f, 0.33f,
-                1.0f, 0.33f,
-
-                0.75f, 1.0f, /* Back - 5 */
-                0.5f, 1.0f,
-                0.5f, 0.67f,
-                0.75f, 0.67f,
-
-                0.75f, 0.33f, /* Front - 2 */
-                0.5f, 0.33f,
-                0.5f, 0.0f,
-                0.75f, 0.0f});
         float dotR = 0.08f;
         // CAMERA TOP 1
 //        this.addRenderable(new Square(new float[]{
@@ -91,10 +65,112 @@ public class Dice extends Object3d {
 //        }, Color.GRAY_DARK));
     }
 
-    private int getValue() {
-        return this.value;
+    private void initDiceValues() {
+        diceValues[0][0][0] = 6;
+        diceValues[0][0][1] = 6;
+        diceValues[0][0][2] = 6;
+        diceValues[0][0][3] = 6;
+        diceValues[2][2][0] = 6;
+        diceValues[2][2][1] = 6;
+        diceValues[2][2][2] = 6;
+        diceValues[2][2][3] = 6;
+
+        diceValues[0][1][0] = 4;
+        diceValues[0][3][2] = 4;
+        diceValues[1][0][3] = 4;
+        diceValues[1][1][3] = 4;
+        diceValues[1][2][3] = 4;
+        diceValues[1][3][3] = 4;
+        diceValues[2][3][0] = 4;
+        diceValues[2][1][2] = 4;
+        diceValues[3][0][1] = 4;
+        diceValues[3][1][1] = 4;
+        diceValues[3][2][1] = 4;
+        diceValues[3][3][1] = 4;
+
+        diceValues[0][2][0] = 1;
+        diceValues[0][2][1] = 1;
+        diceValues[0][2][2] = 1;
+        diceValues[0][2][3] = 1;
+        diceValues[2][0][0] = 1;
+        diceValues[2][0][1] = 1;
+        diceValues[2][0][2] = 1;
+        diceValues[2][0][3] = 1;
+
+        diceValues[0][1][2] = 3;
+        diceValues[0][3][0] = 3;
+        diceValues[1][0][1] = 3;
+        diceValues[1][1][1] = 3;
+        diceValues[1][2][1] = 3;
+        diceValues[1][3][1] = 3;
+        diceValues[2][3][2] = 3;
+        diceValues[3][0][3] = 3;
+        diceValues[3][1][3] = 3;
+        diceValues[3][2][3] = 3;
+        diceValues[3][3][3] = 3;
+        diceValues[2][1][0] = 3;
+
+        diceValues[0][1][3] = 2;
+        diceValues[0][3][1] = 2;
+        diceValues[1][0][2] = 2;
+        diceValues[1][1][2] = 2;
+        diceValues[1][2][2] = 2;
+        diceValues[1][3][2] = 2;
+        diceValues[2][1][1] = 2;
+        diceValues[2][3][3] = 2;
+        diceValues[3][0][0] = 2;
+        diceValues[3][1][0] = 2;
+        diceValues[3][2][0] = 2;
+        diceValues[3][3][0] = 2;
+
+        diceValues[0][1][1] = 5;
+        diceValues[0][3][3] = 5;
+        diceValues[1][0][0] = 5;
+        diceValues[1][1][0] = 5;
+        diceValues[1][2][0] = 5;
+        diceValues[1][3][0] = 5;
+        diceValues[2][1][3] = 5;
+        diceValues[2][3][1] = 5;
+        diceValues[3][0][2] = 5;
+        diceValues[3][1][2] = 5;
+        diceValues[3][2][2] = 5;
+        diceValues[3][3][2] = 5;
     }
 
+    private void setCubeTexture() {
+        renderables.get(0).setTextureCoords(new float[]{
+                0.25f, 0.67f, /* Top - 6 */
+                0.0f, 0.67f,
+                0.0f, 0.33f,
+                0.25f, 0.33f,
+
+                0.75f, 0.67f, /* Bottom - 1 */
+                0.5f, 0.67f,
+                0.5f, 0.33f,
+                0.75f, 0.33f,
+
+                0.5f, 0.67f, /* Left- 4 */
+                0.25f, 0.67f,
+                0.25f, 0.33f,
+                0.5f, 0.33f,
+
+                1.0f, 0.67f, /* Right - 3 */
+                0.75f, 0.67f,
+                0.75f, 0.33f,
+                1.0f, 0.33f,
+
+                0.75f, 1.0f, /* Back - 5 */
+                0.5f, 1.0f,
+                0.5f, 0.67f,
+                0.75f, 0.67f,
+
+                0.75f, 0.33f, /* Front - 2 */
+                0.5f, 0.33f,
+                0.5f, 0.0f,
+                0.75f, 0.0f});
+    }
+
+    // dice roll (requested/move) rotation
     private float rotateX = 0f;
     private float rotateY = 0f;
     private float rotateZ = 0f;
@@ -102,95 +178,123 @@ public class Dice extends Object3d {
     @Override
     public void clickedAt(long uptimeMillis) {
         super.clickedAt(uptimeMillis);
+        startingRotX = rotation().x;
+        startingRotY = rotation().y;
+        startingRotZ = rotation().z;
 
         // TODO Matematika nije dobra :/ ... na poslu u emulatoru se malo vise vrti kockica nego kod kuce na xiaomiju i ne "pogadjaju" se brojevi :/
         // TODO disable multiple click (if Dice is already rolling)
 
-        int translateX = ThreadLocalRandom.current().nextInt(0, 5); // (min, max+1)
-        int translateY = ThreadLocalRandom.current().nextInt(0, 5);; //(int)(Math.random()*9) - 4; // 6 - 1 - 4 - 3 (horizontale)
-        int translateZ = 0; // komplikuje racun, ne mora da rotira po trecoj osi za sada
+        // roll rotation count
+        int translateX = ThreadLocalRandom.current().nextInt(-4, 5); // (min, max+1)
+        int translateY = ThreadLocalRandom.current().nextInt(-4, 5);
+        int translateZ = ThreadLocalRandom.current().nextInt(-4, 5);
 
-        // TODO Arrays are not correct (it is adopted to applied texture). When texture is fixed, fix array values as well
-        int[][] diceValues = new int[][]{
-            {6, 5, 4, 2}, // nije dobro zalepljena textura na kocku?... al nema veze to je "ignja" kocka (trebalo bi [6, 4, 1, 3]... kako je na dice_texture_transparent_01.png)
-            {1, 5, 3, 2},
-            {4, 5, 6, 2},
-            {3, 5, 1, 2},
-        };
-
-
-
-        // primeti da se [x,y] koordinatama pristupa kao: diceValues[y][x] // x=ti element u y-tom redu (prvo se asocira red... tako je definisan diceValues array)
-
-
-        // gledajuci matricu, koordinate trenutne vrednosti su malo kontra, [y, x]
-
-
-        // starting diceCoordinate = [0, 0] //x, y
-
-        // calculate final number:
-        //       4
-        //       |
-        //       5
-        //       |
-        // X 1 - 6 - 3
-        //       |
-        //       2
-        //       Y
-
-        int beforeRollX = this.diceValue[1];
-        int beforeRollY = this.diceValue[0];
-        int beforeRollValue = diceValues[beforeRollY][beforeRollX];
-
-        int afterRollY = (beforeRollY + translateY) % 4;
-        int afterRollX = (beforeRollX + translateX) % 4;
-        int afterRollValue = diceValues[afterRollY][afterRollX];
-        Log.d(TAG, "BEFORE [" + beforeRollX + ", " + beforeRollY + "] = " + beforeRollValue +  " + "
-                + "ROLL ["  + translateX + ", " + translateY + "] = "
-                + "AFTER [" + afterRollX + ", " + afterRollY + "] = " + afterRollValue);
-
-        this.diceValue[0] = afterRollY;
-        this.diceValue[1] = afterRollX;
-
-        this.rotateX = (float)(translateX * Math.PI / 800);
-        this.rotateY = (float)(translateY * Math.PI / 800);
-        this.rotateZ = (float)(translateZ * Math.PI / 800);
+        // requested roll rotation angle (degrees)
+        // (radian angle, count * 90deg : 180deg = Xrad : PI -> Xrad = count * PI / 2 )
+        rotateX = (float)(translateX * 90);
+        rotateY = (float)(translateY * 90);
+        rotateZ = (float)(translateZ * 90);
     }
 
     @Override
     protected void update() {
         super.update();
-        if (this.clicked) {
+        if (clicked) {
             handleClickAnimation();
         };
     }
 
     void handleClickAnimation() {
-        float dT = SystemClock.uptimeMillis() - this.clickedAt();
+        float dT = SystemClock.uptimeMillis() - clickedAt(); //ms
+        // kvadratna f-ja skoka kockice, 0-le su [0ms, 800ms/1200ms]
         float dZ = -0.000001f * dT*dT + 0.0008f * dT;
-        this.translateZ(dZ);
-        // TODO druga f-ja
-        this.rotation().x += dT * this.rotateX;
-        this.rotation().y += dT * this.rotateY;
-        this.rotation().z += dT * this.rotateZ;
-        if (this.getZ() <= 0.4f) {
+        translateZ(dZ);
+        // TODO druga f-ja?
+        rotation().x = startingRotX + (dT / 1200) * rotateX; // normalized to flight time (~1200ms)
+        rotation().y = startingRotY + (dT / 1200) * rotateY;
+        rotation().z = startingRotZ + (dT / 1200) * rotateZ;
+
+        if (getZ() <= 0.4f) {
             finishClickAnimation();
         }
     }
 
     void finishClickAnimation() {
-        this.clicked = false;
+        clicked = false;
 
         // normalize Z position
-        this.position().z = 0.4f;
+        position().z = 0.4f;
 
         // normalize rotation angle
-        //this.rotation().x += 0 * this.rotateX;
-        //this.rotation().y += 0 * this.rotateY;
-        //this.rotation().z += 0 * this.rotateZ;
-        this.rotation().x = (int)(this.rotation().x / 90) * 90;
-        this.rotation().y = (int)(this.rotation().y / 90) * 90;
-        this.rotation().z = (int)(this.rotation().z / 90) * 90;
+        // (normalized on 90 degrees (to ensure dice is landed correctly after roll))
+        // (normalize to 0..360 degrees range since we have negative rotations (opposite direction))
+        // (to simplify final value calculation)
+        this.rotation().x = (Math.round(this.rotation().x / 90) * 90 + 360) % 360;
+        this.rotation().y = (Math.round(this.rotation().y / 90) * 90 + 360) % 360;
+        this.rotation().z = (Math.round(this.rotation().z / 90) * 90 + 360) % 360;
 
+        Log.i(TAG, "Dice rolled: " + getDiceValue());
+
+        if (getDiceValue() == 6) {
+            this.renderables.clear();
+            addRenderable(
+                    new Cube(0.8f, getRandomColor()), "diceTexture"
+            );
+            setCubeTexture();
+        }
     }
+
+    private float[] getRandomColor() {
+        float[] color;
+        switch (ThreadLocalRandom.current().nextInt(0, 10)) {
+            case 0:
+                color = Color.ALMOND;
+                break;
+            case 1:
+                color = Color.YELLOW;
+                break;
+            case 2:
+                color = Color.BLUE_STEEL;
+                break;
+            case 3:
+                color = Color.BLUE_LIGHT;
+                break;
+            case 4:
+                color = Color.GREEN_PALE;
+                break;
+            case 5:
+                color = Color.GRAY_LIGHT;
+                break;
+            case 6:
+                color = Color.BLUE_NAVY;
+                break;
+            case 7:
+                color = Color.RED_DARK;
+                break;
+            case 8:
+                color = Color.GRAY_DARK;
+                break;
+            default:
+                color = Color.WHITE;
+        }
+        return color;
+    }
+
+    /**
+     * Read (Calculate) Dice Top value based on rotation angle
+     * starting position is
+     * - 6 is on top
+     *
+     */
+    public int getDiceValue() {
+        // normalize rotation angle to array index
+        // [0, 90, 180, 270] -> [0, 1, 2, 3]
+        int x = (int) (rotation().x/90);
+        int y = (int) (rotation().y/90);
+        int z = (int) (rotation().z/90);
+
+        return diceValues[x][y][z];
+    }
+
 }
