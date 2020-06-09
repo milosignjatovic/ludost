@@ -22,15 +22,15 @@ public class Player extends Object3d {
         super(color);
         this.board = board;
         this.color = color;
-        this.addPiece(4 * index);
-        this.addPiece(4 * index + 1);
-        this.addPiece(4 * index + 2);
-        this.addPiece(4 * index + 3);
+        addPiece(4 * index);
+        addPiece(4 * index + 1);
+        addPiece(4 * index + 2);
+        addPiece(4 * index + 3);
     }
 
     private void addPiece(int positionIndex) {
-        Piece p = new Piece(this.board.getPosition(positionIndex), this.color);
-        p.setParent(this.board);
+        Piece p = new Piece(board.getPosition(positionIndex), color);
+        p.setParent(board);
         pieces.add(p);
     }
 

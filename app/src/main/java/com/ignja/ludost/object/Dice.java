@@ -38,26 +38,26 @@ public class Dice extends Object3d {
 
         float dotR = 0.08f;
         // CAMERA TOP 1
-//        this.addRenderable(new Square(new float[]{
+//        addRenderable(new Square(new float[]{
 //                -dotR, dotR, 0.51f,
 //                -dotR, -dotR, 0.51f,
 //                dotR, -dotR, 0.51f,
 //                dotR, dotR, 0.51f
 //        }, Color.GRAY_DARK));
         // CAMERA BACK 3
-//        this.addRenderable(new Square(new float[]{
+//        addRenderable(new Square(new float[]{
 //                dotR, 0.51f, dotR,
 //                dotR, 0.51f, -dotR,
 //                -dotR, 0.51f, -dotR,
 //                -dotR, 0.51f, dotR
 //        }, Color.GRAY_DARK));
-//        this.addRenderable(new Square(new float[]{
+//        addRenderable(new Square(new float[]{
 //                dotR + 0.3f, 0.51f, dotR + 0.3f,
 //                dotR + 0.3f, 0.51f, -dotR + 0.3f,
 //                -dotR + 0.3f, 0.51f, -dotR + 0.3f,
 //                -dotR + 0.3f, 0.51f, dotR + 0.3f
 //        }, Color.GRAY_DARK));
-//        this.addRenderable(new Square(new float[]{
+//        addRenderable(new Square(new float[]{
 //                dotR - 0.3f, 0.51f, dotR - 0.3f,
 //                dotR - 0.3f, 0.51f, -dotR - 0.3f,
 //                -dotR - 0.3f, 0.51f, -dotR - 0.3f,
@@ -230,14 +230,14 @@ public class Dice extends Object3d {
         // (normalized on 90 degrees (to ensure dice is landed correctly after roll))
         // (normalize to 0..360 degrees range since we have negative rotations (opposite direction))
         // (to simplify final value calculation)
-        this.rotation().x = (Math.round(this.rotation().x / 90) * 90 + 360) % 360;
-        this.rotation().y = (Math.round(this.rotation().y / 90) * 90 + 360) % 360;
-        this.rotation().z = (Math.round(this.rotation().z / 90) * 90 + 360) % 360;
+        rotation().x = (Math.round(rotation().x / 90) * 90 + 360) % 360;
+        rotation().y = (Math.round(rotation().y / 90) * 90 + 360) % 360;
+        rotation().z = (Math.round(rotation().z / 90) * 90 + 360) % 360;
 
         Log.i(TAG, "Dice rolled: " + getDiceValue());
 
         if (getDiceValue() == 6) {
-            this.renderables.clear();
+            renderables.clear();
             addRenderable(
                     new Cube(0.8f, getRandomColor()), "diceTexture"
             );

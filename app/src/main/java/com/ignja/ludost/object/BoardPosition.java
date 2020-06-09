@@ -18,11 +18,11 @@ class BoardPosition extends Object3d {
 
     BoardPosition(Board board, float x, float y) {
         super(new Number3d(x, y, 0f));
-        this.TAG = "BoardPosition";
+        TAG = "BoardPosition";
         if (visible) {
-            addRenderable(this.createPositionSquare());
+            addRenderable(createPositionSquare());
         }
-        this.setParent(board);
+        setParent(board);
     }
 
     /**

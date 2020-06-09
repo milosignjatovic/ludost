@@ -34,7 +34,7 @@ public class Game extends StatefulContext {
 
     private Board board;
 
-    private Player[] player;
+    private Player[] players;
 
     public Dice dice;
 
@@ -59,12 +59,12 @@ public class Game extends StatefulContext {
      * General events
      */
     private final Event<GameFlowContext> onSettingsIconClick = FlowBuilder.event();
+    public static final Event<GameFlowContext> onStartGame = FlowBuilder.event();
+    private final Event<GameFlowContext> onExit = FlowBuilder.event();
 
     /**
      * Ludost game events
      */
-    public static final Event<GameFlowContext> onStartGame = FlowBuilder.event();
-    private final Event<GameFlowContext> onExit = FlowBuilder.event();
     private final Event<GameFlowContext> onPlayerSelected = FlowBuilder.event();
     private final Event<GameFlowContext> onPieceSelected = FlowBuilder.event();
     private final Event<GameFlowContext> onDiceClick = FlowBuilder.event();
@@ -72,21 +72,21 @@ public class Game extends StatefulContext {
     private StateMachineFlow<GameFlowContext> flow;
 
     public Game(Board board, Player[] player) {
-        this.TAG = "LUDOST GAME LOGIC";
-        this.dice = new Dice();
-        this.dice.setParent(board);
+        TAG = "LUDOST GAME LOGIC";
+        dice = new Dice();
+        dice.setParent(board);
         this.board = board;
 
         TextureVo texture = new TextureVo("stonetexture");
-        this.dice.addTexture(texture);
+        dice.addTexture(texture);
 
-        this.player = player;
+        this.players = player;
         for (Player p: player) {
             p.setParent(board);
         }
         initFlow();
         bindFlow();
-        this.flow.start(new GameFlowContext());
+        flow.start(new GameFlowContext());
     }
 
     /**
@@ -139,18 +139,18 @@ public class Game extends StatefulContext {
      */
 
     public void draw(float[] mvpMatrix, int glProgram, float[] modelViewMatrix, float[] projectionMatrix) {
-        this.board.draw(mvpMatrix, glProgram, modelViewMatrix, projectionMatrix);
-        this.dice.draw(mvpMatrix, glProgram, modelViewMatrix, projectionMatrix);
-        for (int i = 0; i < player.length; i++) {
-            this.player[i].draw(mvpMatrix, glProgram, modelViewMatrix, projectionMatrix);
+        board.draw(mvpMatrix, glProgram, modelViewMatrix, projectionMatrix);
+        dice.draw(mvpMatrix, glProgram, modelViewMatrix, projectionMatrix);
+        for (Player p : players) {
+            p.draw(mvpMatrix, glProgram, modelViewMatrix, projectionMatrix);
         }
     }
 
     public void handleClickEvent(int screenWidth, int screenHeight, float touchX, float touchY, float[] viewMatrix, float[] projectionMatrix, float hAngle) {
-        this.board.handleClickEvent(screenWidth, screenHeight, touchX, touchY, viewMatrix, projectionMatrix, hAngle);
-        this.dice.handleClickEvent(screenWidth, screenHeight, touchX, touchY, viewMatrix, projectionMatrix, hAngle);
-        for (int i = 0; i < player.length; i++) {
-            this.player[i].handleClickEvent(screenWidth, screenHeight, touchX, touchY, viewMatrix, projectionMatrix, hAngle);
+        board.handleClickEvent(screenWidth, screenHeight, touchX, touchY, viewMatrix, projectionMatrix, hAngle);
+        dice.handleClickEvent(screenWidth, screenHeight, touchX, touchY, viewMatrix, projectionMatrix, hAngle);
+        for (Player p : players) {
+            p.handleClickEvent(screenWidth, screenHeight, touchX, touchY, viewMatrix, projectionMatrix, hAngle);
         }
         ArrayList<Object3d> clickedObjects = getClickedObjects();
         Object3d nearestHit = null;
@@ -168,10 +168,10 @@ public class Game extends StatefulContext {
             Log.i("Nearest hit", nearestHit.toString());
             if (nearestHit instanceof Piece) {
                 double randomPosition = Math.random() * 72;
-                ((Piece) nearestHit).moveTo(this.board.getPosition((int)randomPosition));
+                ((Piece) nearestHit).moveTo(board.getPosition((int)randomPosition));
             } else if (nearestHit instanceof Dice) {
                 try {
-                    onDiceClick.trigger(this.flow.getContext());
+                    onDiceClick.trigger(flow.getContext());
                     dice.clickedAt(SystemClock.uptimeMillis());
                 } catch (Exception e) {
                     // TODO
@@ -182,15 +182,15 @@ public class Game extends StatefulContext {
 
     private ArrayList<Object3d> getClickedObjects() {
         ArrayList<Object3d> clickedObjects = new ArrayList<>();
-        if (this.board.isClicked()) {
-            clickedObjects.add(this.board);
-            this.board.unClick();
+        if (board.isClicked()) {
+            clickedObjects.add(board);
+            board.unClick();
         }
-        if (this.dice.isClicked()) {
-            clickedObjects.add(this.dice);
-            this.dice.unClick();
+        if (dice.isClicked()) {
+            clickedObjects.add(dice);
+            dice.unClick();
         }
-        for (Player p : player) {
+        for (Player p : players) {
             for (Piece piece : p.getPieces()) {
                 if (piece.isClicked()) {
                     clickedObjects.add(piece);

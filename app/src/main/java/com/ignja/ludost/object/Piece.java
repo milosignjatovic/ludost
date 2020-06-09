@@ -14,9 +14,9 @@ public class Piece extends Object3d {
 
     Piece(BoardPosition boardPosition, float[] color) {
         super(new Number3d(boardPosition.getX(), boardPosition.getY(), 0.3f), color);
-        this.TAG = "PieceObject";
-        this.addRenderable(new Cuboid(0.32f, 0.32f, 0.6f, color), "pieceTexture");
-        this.renderables.get(0).setTextureCoords(new float[]{
+        TAG = "PieceObject";
+        addRenderable(new Cuboid(0.32f, 0.32f, 0.6f, color), "pieceTexture");
+        renderables.get(0).setTextureCoords(new float[]{
                 0.25f, 0.67f, /* Top - 6 */
                 0.0f, 0.67f,
                 0.0f, 0.33f,
@@ -46,12 +46,12 @@ public class Piece extends Object3d {
                 0.5f, 0.33f,
                 0.5f, 0.0f,
                 0.75f, 0.0f});
-        this.moveTo(boardPosition); // Not needed here?
+        moveTo(boardPosition); // Not needed here?
     }
 
     public void moveTo(BoardPosition boardPosition) {
-        this.boardPosition = boardPosition;
-        this.position(new Number3d(boardPosition.getX(), boardPosition.getY(), 0.3f));
+        boardPosition = boardPosition;
+        position(new Number3d(boardPosition.getX(), boardPosition.getY(), 0.3f));
     }
 
 }
