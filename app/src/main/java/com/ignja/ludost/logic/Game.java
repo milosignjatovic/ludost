@@ -3,16 +3,19 @@ package com.ignja.ludost.logic;
 import android.os.SystemClock;
 
 import com.ignja.fsm.Event;
-import com.ignja.fsm.EventHandler;
 import com.ignja.fsm.FlowBuilder;
 import com.ignja.fsm.State;
-import com.ignja.fsm.StateHandler;
 import com.ignja.fsm.StateMachineFlow;
 import com.ignja.fsm.StatefulContext;
 import com.ignja.fsm.UIThreadExecutor;
 import com.ignja.gl.core.TextureVo;
 import com.ignja.gl.object.Object3d;
 import com.ignja.core.util.Log;
+import com.ignja.ludost.logic.eventHandlers.DiceClickEventHandler;
+import com.ignja.ludost.logic.stateHandlers.InitStateEnterHandler;
+import com.ignja.ludost.logic.stateHandlers.InitStateLeaveHandler;
+import com.ignja.ludost.logic.stateHandlers.RollDiceStateEnterHandler;
+import com.ignja.ludost.logic.stateHandlers.SelectPlayerStateEnterHandler;
 import com.ignja.ludost.object.Board;
 import com.ignja.ludost.object.Dice;
 import com.ignja.ludost.object.Piece;
@@ -35,16 +38,21 @@ public class Game extends StatefulContext {
 
     public Dice dice;
 
-    private static class GameFlowContext extends StatefulContext {
+    public static class GameFlowContext extends StatefulContext {
         private String info = "Pomozi boze";
     }
 
     /**
      * Ludost game states
      */
-    private final State<GameFlowContext> INIT_STATE = FlowBuilder.state();
+    // Initial game state (show splash screen, auto transit to next state)
+    private final State<GameFlowContext> INIT = FlowBuilder.state();
+    private final State<GameFlowContext> START_GAME = FlowBuilder.state();
+    // select next player // WAIT_FOR_OBJECT_CLICK?
     private final State<GameFlowContext> SELECT_PLAYER = FlowBuilder.state();
+    // wait for dice click event...
     private final State<GameFlowContext> ROLL_DICE = FlowBuilder.state();
+    // choose one of available player pieces
     private final State<GameFlowContext> SELECT_PIECE = FlowBuilder.state();
 
     /**
@@ -55,7 +63,7 @@ public class Game extends StatefulContext {
     /**
      * Ludost game events
      */
-    private final Event<GameFlowContext> onStart = FlowBuilder.event();
+    public static final Event<GameFlowContext> onStartGame = FlowBuilder.event();
     private final Event<GameFlowContext> onExit = FlowBuilder.event();
     private final Event<GameFlowContext> onPlayerSelected = FlowBuilder.event();
     private final Event<GameFlowContext> onPieceSelected = FlowBuilder.event();
@@ -89,15 +97,15 @@ public class Game extends StatefulContext {
         if (flow != null) {
             return;
         }
-        flow = FlowBuilder.from(INIT_STATE).transit(
-                onStart.to(ROLL_DICE).transit(
+        flow = FlowBuilder.from(INIT).transit(
+                onStartGame.to(ROLL_DICE).transit(
                         onPlayerSelected.to(ROLL_DICE).transit(
                                 onDiceClick.to(SELECT_PIECE).transit(
                                     onPieceSelected.to(SELECT_PLAYER)
                                 )
                         )
                 ),
-                onExit.to(INIT_STATE),
+                onExit.to(INIT),
                 onDiceClick.to(ROLL_DICE).transit(
                         onPieceSelected.to(SELECT_PLAYER)
                 )
@@ -105,73 +113,23 @@ public class Game extends StatefulContext {
     }
 
     private void bindFlow() {
-        INIT_STATE.whenEnter(new StateHandler<GameFlowContext>() {
-            @Override
-            public void call(State<GameFlowContext> state, GameFlowContext context) throws Exception {
-            Log.i(TAG, "INIT_STATE entered");
-            onStart.trigger(context);
-            }
-        }).whenLeave(new StateHandler<GameFlowContext>() {
-            @Override
-            public void call(State<GameFlowContext> state, GameFlowContext context) throws Exception {
-                Log.i(TAG, "INIT_STATE exited");
-            }
-        });
+        // bind state handlers (enter, leave)
+        INIT
+                .whenEnter(new InitStateEnterHandler<GameFlowContext>())
+                .whenLeave(new InitStateLeaveHandler<GameFlowContext>());
 
-        SELECT_PLAYER.whenEnter(new StateHandler<GameFlowContext>() {
-            @Override
-            public void call(State<GameFlowContext> state, GameFlowContext context) throws Exception {
-                Log.i(TAG, "SELECT PLAYER entered");
-                // TODO
-                // - check if there are available players
-                // - select first available players
-                // - wait for user to role the dice (timeout -> next available player)
-                // - dice rolled -> animate, random number
-                // - check for available pieces
-                // - Info message if there are no avail pieces, or Wait for player to select piece (timeout -> next available player)
-                // - piece selected -> animate -> movement result (won game?)
-            }
-        });
+        //START_GAME.whenEnter()
 
-        ROLL_DICE.whenEnter(new StateHandler<GameFlowContext>() {
-            @Override
-            public void call(State<GameFlowContext> state, GameFlowContext context) throws Exception {
-                rollDiceStateEnteredEventHandler();
-                Log.i(TAG, "ROLL_DICE entered");
-            }
-        });
+        SELECT_PLAYER
+                .whenEnter(new SelectPlayerStateEnterHandler<GameFlowContext>());
 
-        onDiceClick.whenTriggered(new EventHandler<GameFlowContext>() {
-            @Override
-            public void call(Event<GameFlowContext> event, State<GameFlowContext> from, State<GameFlowContext> to, GameFlowContext context) throws Exception {
-                // Todo call click handler here? not inside onClickHandler in object
-                // Enter start RollingDice state
-            }
-        });
+        ROLL_DICE
+                .whenEnter(new RollDiceStateEnterHandler<GameFlowContext>());
 
-    }
+        // bind event handlers
+        onDiceClick
+                .whenTriggered(new DiceClickEventHandler<GameFlowContext>());
 
-    protected void rollDiceStateEnteredEventHandler() {
-        Log.i("HA!", "RollDice State entered");
-        // TODO highlight the dice
-        // TODO wait for user interaction (click Dice)
-        // highlight clickable items (in this case only dice)
-        // onClick ->
-        //   enter DiceIsRolling state
-        // onDiceDrop ->
-        //   if there are possible user actions (clickable items)
-        //     highlight clickable items (pieces)
-        //     (+ highlight end positions)
-        //     wait for user action (click)
-        //     onPieceClick ->
-        //       move piece to end position
-        //       (+ if possible )
-        //     enterEndPlayerMoveState
-        //   else
-        //     no available actions state
-        //     nextPlayer
-        //   GameStatusCheck... if game finished -> EndGame
-        //  nextPlayer
     }
 
 
@@ -194,7 +152,7 @@ public class Game extends StatefulContext {
         for (int i = 0; i < player.length; i++) {
             this.player[i].handleClickEvent(screenWidth, screenHeight, touchX, touchY, viewMatrix, projectionMatrix, hAngle);
         }
-        ArrayList<Object3d> clickedObjects = getClicked();
+        ArrayList<Object3d> clickedObjects = getClickedObjects();
         Object3d nearestHit = null;
         for (Object3d clickedObject: clickedObjects) {
             if (null == nearestHit) {
@@ -205,7 +163,7 @@ public class Game extends StatefulContext {
                 }
             }
         }
-        Log.i("Clicked objects", String.valueOf(clickedObjects));
+        Log.i("Clicked objects:", String.valueOf(clickedObjects));
         if (nearestHit != null) {
             Log.i("Nearest hit", nearestHit.toString());
             if (nearestHit instanceof Piece) {
@@ -222,25 +180,25 @@ public class Game extends StatefulContext {
         }
     }
 
-    private ArrayList<Object3d> getClicked() {
-        ArrayList<Object3d> objects = new ArrayList<>();
+    private ArrayList<Object3d> getClickedObjects() {
+        ArrayList<Object3d> clickedObjects = new ArrayList<>();
         if (this.board.isClicked()) {
-            objects.add(this.board);
+            clickedObjects.add(this.board);
             this.board.unClick();
         }
         if (this.dice.isClicked()) {
-            objects.add(this.dice);
+            clickedObjects.add(this.dice);
             this.dice.unClick();
         }
         for (Player p : player) {
             for (Piece piece : p.getPieces()) {
                 if (piece.isClicked()) {
-                    objects.add(piece);
+                    clickedObjects.add(piece);
                     piece.unClick();
                 }
             }
         }
-        return objects;
+        return clickedObjects;
     }
 
 }

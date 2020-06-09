@@ -5,5 +5,7 @@ package com.ignja.fsm;
  */
 public interface StateHandler<C extends StatefulContext> {
 
+    String TAG = "StateHandler";
+
     void call(State<C> state, C context) throws Exception;
 }

@@ -5,5 +5,7 @@ package com.ignja.fsm;
  */
 public interface EventHandler<C extends StatefulContext> {
 
+    String TAG = "EventHandler";
+
     void call(Event<C> event, State<C> from, State<C> to, C context) throws Exception;
 }
