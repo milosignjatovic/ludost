@@ -40,38 +40,50 @@ public class Game extends StatefulContext {
 
     public static class GameFlowContext extends StatefulContext {
         private String info = "Pomozi boze";
+
+        private Integer diceValue = null;
+
+        private Player activePlayer = null;
+
+        public Player getActivePlayer() {
+            return activePlayer;
+        }
+
+        public void setActivePlayer(Player player) {
+            activePlayer = player;
+        }
     }
 
     /**
      * Ludost game states
      */
     // Initial game state (show splash screen, auto transit to next state)
-    private final State<GameFlowContext> INIT = FlowBuilder.state();
-    private final State<GameFlowContext> START_GAME = FlowBuilder.state();
+    private final State<GameFlowContext> INIT = FlowBuilder.state("INIT");
+    private final State<GameFlowContext> START_GAME = FlowBuilder.state("START_GAME");
     // select next player // WAIT_FOR_OBJECT_CLICK?
-    private final State<GameFlowContext> SELECT_PLAYER = FlowBuilder.state();
+    private final State<GameFlowContext> SELECT_NEXT_PLAYER = FlowBuilder.state("SELECT_NEXT_PLAYER");
     // wait for dice click event...
-    private final State<GameFlowContext> ROLL_DICE = FlowBuilder.state();
+    private final State<GameFlowContext> ROLL_DICE = FlowBuilder.state("ROLL_DICE");
     // choose one of available player pieces
-    private final State<GameFlowContext> SELECT_PIECE = FlowBuilder.state();
+    private final State<GameFlowContext> SELECT_PIECE = FlowBuilder.state("SELECT_PIECE");
 
     /**
      * General events
      */
     private final Event<GameFlowContext> onSettingsIconClick = FlowBuilder.event();
-    public static final Event<GameFlowContext> onStartGame = FlowBuilder.event();
-    private final Event<GameFlowContext> onExit = FlowBuilder.event();
+    public static final Event<GameFlowContext> onStartGame = FlowBuilder.event("onStartGame");
+    private final Event<GameFlowContext> onExit = FlowBuilder.event("on_EXIT");
 
     /**
      * Ludost game events
      */
-    private final Event<GameFlowContext> onPlayerSelected = FlowBuilder.event();
-    private final Event<GameFlowContext> onPieceSelected = FlowBuilder.event();
-    private final Event<GameFlowContext> onDiceClick = FlowBuilder.event();
+    private final Event<GameFlowContext> onPlayerSelected = FlowBuilder.event("onPlayerSelected");
+    private final Event<GameFlowContext> onPieceSelected = FlowBuilder.event("onPieceSelected");
+    private final Event<GameFlowContext> onDiceClick = FlowBuilder.event("onDiceClick");
 
     private StateMachineFlow<GameFlowContext> flow;
 
-    public Game(Board board, Player[] player) {
+    public Game(Board board, Player[] players) {
         TAG = "LUDOST GAME LOGIC";
         dice = new Dice();
         dice.setParent(board);
@@ -80,9 +92,9 @@ public class Game extends StatefulContext {
         TextureVo texture = new TextureVo("stonetexture");
         dice.addTexture(texture);
 
-        this.players = player;
-        for (Player p: player) {
-            p.setParent(board);
+        this.players = players;
+        for (Player player: players) {
+            player.setParent(board);
         }
         initFlow();
         bindFlow();
@@ -98,16 +110,16 @@ public class Game extends StatefulContext {
             return;
         }
         flow = FlowBuilder.from(INIT).transit(
-                onStartGame.to(ROLL_DICE).transit(
+                onStartGame.to(SELECT_NEXT_PLAYER).transit(
                         onPlayerSelected.to(ROLL_DICE).transit(
                                 onDiceClick.to(SELECT_PIECE).transit(
-                                    onPieceSelected.to(SELECT_PLAYER)
+                                    onPieceSelected.to(SELECT_NEXT_PLAYER)
                                 )
                         )
                 ),
                 onExit.to(INIT),
                 onDiceClick.to(ROLL_DICE).transit(
-                        onPieceSelected.to(SELECT_PLAYER)
+                        onPieceSelected.to(SELECT_NEXT_PLAYER)
                 )
         ).executor(new UIThreadExecutor());
     }
@@ -120,7 +132,7 @@ public class Game extends StatefulContext {
 
         //START_GAME.whenEnter()
 
-        SELECT_PLAYER
+        SELECT_NEXT_PLAYER
                 .whenEnter(new SelectPlayerStateEnterHandler<GameFlowContext>());
 
         ROLL_DICE

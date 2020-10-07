@@ -15,7 +15,8 @@ public class RollDiceStateEnterHandler<C extends StatefulContext> implements Sta
     @Override
     public void call(State state, StatefulContext context) throws Exception {
         Log.d(TAG, "call");
-        // TODO highlight the dice
+
+        // TODO highlight the dice in current player color
         // TODO wait for user interaction (click Dice)
         // highlight clickable items (in this case only dice)
         // onClick ->
